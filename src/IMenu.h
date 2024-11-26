@@ -8,7 +8,7 @@ class IMenu {
         // pure virtual function to print a given string
         virtual void print(std::string s) = 0;
         // pure virtual function to scan input from user
-        virtual void scan() = 0;
+        virtual std::string scan() = 0;
         // pure virtual function to process the command from user
         virtual std::vector<std::string> nextCommand() = 0; 
 };
