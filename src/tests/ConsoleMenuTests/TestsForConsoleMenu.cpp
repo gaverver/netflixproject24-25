@@ -64,7 +64,6 @@ TEST(ConsoleMenuTests, PrintTest1) {
 TEST(ConsoleMenuTests, PrintTest2) {
     const std::string expected = "Netflix is the best app in the world!\n";
     std::string output = captureOutput("Netflix is the best app in the world!");
-
     // print should print the given string to the buffer - so it is checked here.
     EXPECT_EQ(expected, output);
 }
@@ -73,7 +72,14 @@ TEST(ConsoleMenuTests, PrintTest2) {
 TEST(ConsoleMenuTests, PrintTest3) {
     const std::string expected = "Shlomi, no nervous\n";
     std::string output = captureOutput("Shlomi, no nervous");
+    // print should print the given string to the buffer - so it is checked here.
+    EXPECT_EQ(expected, output);
+}
 
+// test print function of ConsoleMenu class.
+TEST(ConsoleMenuTests, PrintEmptyString) {
+    const std::string expected = "\n";
+    std::string output = captureOutput("");
     // print should print the given string to the buffer - so it is checked here.
     EXPECT_EQ(expected, output);
 }
