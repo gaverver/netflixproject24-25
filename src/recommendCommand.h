@@ -15,10 +15,6 @@ private:
     IMenu& menu;
     // helper function for casting from string to int
     int castStringToInt(std::string str, bool& isValid);
-    // helper function for swapping between two variables
-    void swap(int& x, int& y);
-    // this function will sort by rate and return the highest 10 (by selection algorithm)
-    std::vector<int> sortUntilTen(std::map<int, int> rate);
 
 public:
     // Constructor
