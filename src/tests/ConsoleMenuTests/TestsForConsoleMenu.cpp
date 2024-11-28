@@ -42,9 +42,10 @@ std::string captureInput(const std::string& input) {
  std::vector<std::string> captureVector(const std::string& input) {
     ConsoleMenu console;
     // simulate user's input - it will be simulation
-    std::istringstream inputBuffer(simulation);
+    std::istringstream inputBuffer(input);
     // Get the current buffer of cin and save it so it will be possible to restore later 
     std::streambuf* originalBuffer = std::cin.rdbuf();
+    std::cin.rdbuf(inputBuffer.rdbuf());
     // Get the vector of commands(the command name and args)
     std::vector<std::string> returnedVal = console.nextCommand();
     // Restore the original buffer, so that the next inputs will go there
