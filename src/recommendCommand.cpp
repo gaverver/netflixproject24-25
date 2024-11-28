@@ -58,7 +58,6 @@ private:
         y = temp;
     }
 
-    // TODO - fix this function
     // a helper private function to help sorting the movies by their rate
     // this function will sort by rate and return the top 10 elements (by selectionSort algorithm)
     std::vector<int> sortUntilTen(const std::map<int, int>& rate) {

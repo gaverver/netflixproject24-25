@@ -44,6 +44,14 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     output = captureOutput([&]() { recommend.execute({"1", "12x"}); });
     EXPECT_EQ(output, "");
 
+    // check what if user id is negative (should print nothing)
+    output = captureOutput([&]() { recommend.execute({"-1", "104"}); });
+    EXPECT_EQ(output, "");
+
+    // check what if movie id is negative (should print nothing)
+    output = captureOutput([&]() { recommend.execute({"1", "-104"}); });
+    EXPECT_EQ(output, "");
+
     // check what if only 1 argument (no movie id) (should print nothing)
     output = captureOutput([&]() { recommend.execute({"4"}); });
     EXPECT_EQ(output, "");
