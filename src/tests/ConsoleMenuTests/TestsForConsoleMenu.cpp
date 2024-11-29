@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../../ConsoleMenu.h"
+#include "../../IMenu.h"
 #include <sstream>
 #include <iostream>
 #include <vector>
