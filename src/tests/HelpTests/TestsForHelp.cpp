@@ -26,7 +26,8 @@ std::string captureOutput(ICommand* Runner) {
 // Test that checks that the return value of the description function is as it should be 
 TEST(HelpTesting, DescriptionTest) {
     std::vector<ICommand*> commands;
-    helpCommand* h = new helpCommand(commands);
+    IMenu* menu = new ConsoleMenu();
+    helpCommand* h = new helpCommand(commands, menu);
     // checks if the return value of the function is equal to "help" - as it should because it describes the command
     EXPECT_EQ(h->description(), "help");
 }
