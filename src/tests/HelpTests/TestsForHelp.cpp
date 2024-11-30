@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../help.h"
+#include "../../helpCommand.h"
 #include "../../ICommand.h"
 #include "../../IMenu.h"
 #include "../../ConsoleMenu.h"
@@ -15,7 +15,8 @@ std::string captureOutput(ICommand* Runner) {
     // Redirect cout to a stringstream so we could get to the output easily
     std::cout.rdbuf(outputBuffer.rdbuf()); 
     // Call the function execute - it prints to the screen the commands that the user can use. 
-    Runner -> execute(); 
+    std::vector<std::string> args;
+    Runner -> execute(args); 
     // Restore the original buffer, so that the next outputs will go there
     std::cout.rdbuf(originalBuffer);
     // Return the output of the function
@@ -24,7 +25,8 @@ std::string captureOutput(ICommand* Runner) {
 
 // Test that checks that the return value of the description function is as it should be 
 TEST(HelpTesting, DescriptionTest) {
-    Help* h = new helpCommand();
+    std::vector<ICommand*> commands;
+    helpCommand* h = new helpCommand(commands);
     // checks if the return value of the function is equal to "help" - as it should because it describes the command
     EXPECT_EQ(h->description(), "help");
 }
