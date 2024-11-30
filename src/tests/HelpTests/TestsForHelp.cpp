@@ -37,14 +37,14 @@ TEST(HelpTesting, ExecuteTest1) {
     std::vector<ICommand*> commands;
     std::vector<std::string> args;
     // create instances of helpCommand class
-    ICommand* help = new helpCommand(commands);
-    ICommand* help1 = new helpCommand(commands);
-    ICommand* help2 = new helpCommand(commands);
+    ICommand* help = new helpCommand(commands, menu);
+    ICommand* help1 = new helpCommand(commands, menu);
+    ICommand* help2 = new helpCommand(commands, menu);
     // push them into the vector of available commands
     commands.push_back(help);
     commands.push_back(help1);
     commands.push_back(help2);
-    ICommand* helpRunner = new helpCommand(commands);
+    ICommand* helpRunner = new helpCommand(commands, menu);
     // run the execute function and capture it's output 
     std::string output = captureOutput(helpRunner);
     // the expected output is the description of each command that is in the vector
@@ -59,10 +59,10 @@ TEST(HelpTesting, ExecuteTest2) {
     std::vector<ICommand*> commands;
     std::vector<std::string> args;
     // create instances of helpCommand class
-    ICommand* help = new helpCommand(commands);
-    ICommand* help1 = new helpCommand(commands);
-    ICommand* help2 = new helpCommand(commands);
-    ICommand* help3 = new helpCommand(commands);
+    ICommand* help = new helpCommand(commands, menu);
+    ICommand* help1 = new helpCommand(commands, menu);
+    ICommand* help2 = new helpCommand(commands, menu);
+    ICommand* help3 = new helpCommand(commands, menu);
     // push them into the vector of available commands
     commands.push_back(help);
     commands.push_back(help1);
@@ -83,9 +83,9 @@ TEST(HelpTesting, ExecuteFromVector) {
     std::vector<ICommand*> commands;
     std::vector<std::string> args;
     // create instances of helpCommand class
-    ICommand* help = new helpCommand(commands);
-    ICommand* help1 = new helpCommand(commands);
-    ICommand* help2 = new helpCommand(commands);
+    ICommand* help = new helpCommand(commands, menu);
+    ICommand* help1 = new helpCommand(commands, menu);
+    ICommand* help2 = new helpCommand(commands, menu);
     // push them into the vector of available commands
     commands.push_back(help);
     commands.push_back(help1);
