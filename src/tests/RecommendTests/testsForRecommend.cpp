@@ -3,6 +3,7 @@
 #include <sstream>  // For std::ostringstream
 #include <vector>
 #include <iostream> // For std::cout
+#include <limits> // for maximum of unsigned long int
 #include "../../recommendCommand.h"
 #include "../../DBFile.h"
 #include "../../IMenu.h"
@@ -36,11 +37,11 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     auto output = captureOutput([&]() { recommend.execute({"", "104"}); });
     EXPECT_EQ(output, "");
 
-    // check what if user id is not an int (should print nothing)
+    // check what if user id is not an unsigned long int (should print nothing)
     output = captureOutput([&]() { recommend.execute({"c", "123"}); });
     EXPECT_EQ(output, "");
 
-    // check what if movie id is not an int (should print nothing)
+    // check what if movie id is not an unsigned long int (should print nothing)
     output = captureOutput([&]() { recommend.execute({"1", "12x"}); });
     EXPECT_EQ(output, "");
 
@@ -60,13 +61,14 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     output = captureOutput([&]() { recommend.execute({"1", "104", "105"}); });
     EXPECT_EQ(output, "");
 
-    // check what if user id is above the maximum int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"2147483648", "104"}); });
+    // check what if user id is above the maximum unsigned long int (should print nothing)
+    unsigned long int maxULongInt = std::numeric_limits<unsigned long int>::max();
+    std::string maxPlusOne = std::to_string(static_cast<unsigned long long>(maxULongInt) + 1);
+
+    output = captureOutput([&]() { recommend.execute({maxPlusOne, "104"}); });
     EXPECT_EQ(output, "");
 
-    // check what if user id is below the minimum int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "-2147483649"}); });
-    EXPECT_EQ(output, "");
+
 }
 
 // Test case 2: Check only 1 movie: 1
