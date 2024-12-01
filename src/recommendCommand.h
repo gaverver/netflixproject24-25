@@ -3,9 +3,9 @@
 
 #include <string>
 #include <vector>
-#include "../../ICommand.h"
-#include "../../IDataBase.h"
-#include "../../IMenu.h"
+#include "ICommand.h"
+#include "IDataBase.h"
+#include "IMenu.h"
 
 class recommendCommand : public ICommand {
 private:
