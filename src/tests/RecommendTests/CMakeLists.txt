@@ -14,7 +14,8 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(runRecommendTests testsForRecommend.cpp ../../recommendCommand.cpp ../../DBFile.cpp)
+add_executable(runRecommendTests testsForRecommend.cpp ../../recommendCommand.cpp ../../DBFile.cpp 
+../../ConsoleMenu.cpp )
 
 # Specify where to find the header files
 target_include_directories(runRecommendTests PRIVATE
