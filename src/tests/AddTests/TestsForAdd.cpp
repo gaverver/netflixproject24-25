@@ -12,7 +12,9 @@
 
 // Test that checks that the return value of the description function is as it should be 
 TEST(AddTesting, DescriptionTest) {
-    ICommand* h = new ICommand();
+    DBFile dbFile("../../../data")
+    IDataBase& test = dbFile;
+    ICommand* h = new addCommand(test);
     // checks if the return value of the function is equal to "add [userid] [movieid1] [movieid2] ..." - as it should because it describes the command
     EXPECT_EQ(h->description(), "add [userid] [movieid1] [movieid2] ...");
 }
