@@ -9,18 +9,18 @@
 
 class recommendCommand : public ICommand {
 private:
-    // Reference to the database
+    // reference to the database, to use the data
     IdataBase& db;
-    // Reference to the menu
+    // reference to the menu, to print via IMenu in the execute function
     IMenu& menu;
     // helper function for casting from string to int
     int castStringToInt(std::string str, bool& isValid);
 
 public:
-    // Constructor
-    recommendCommand(IdataBase& db2, IMenu& menu2);
+    // constructor
+    recommendCommand(IdataBase& db, IMenu& menu);
 
-    // Methods
+    // methods inherited from Command class
     void execute(const std::vector<std::string>& args) override;
     std::string description() const override;
 };

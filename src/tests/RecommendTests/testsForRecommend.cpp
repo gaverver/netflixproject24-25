@@ -1,13 +1,14 @@
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>  // For std::ostringstream
+#include <sstream>
 #include <vector>
-#include <iostream> // For std::cout
-#include <limits> // for maximum of unsigned long int
+#include <iostream>
+#include <limits>
 #include "../../recommendCommand.h"
 #include "../../DBFile.h"
 #include "../../IMenu.h"
-#include "ConsoleMenu.h"
+#include "../../IDataBase.h"
+#include "../../ConsoleMenu.h"
 
 // Helper function to capture the string that execute prints via IMenu
 std::string captureOutput(const std::function<void()>& func) {
@@ -24,13 +25,78 @@ std::string captureOutput(const std::function<void()>& func) {
     return captured.str();
 }
 
-// Test case 1: Check invalid input
+// Helper function to setup the data before testing test2
+void setup_for_test_2(const DBFile &db) {
+    // clean up the data in db if there is
+    db.clean();
+
+    // update all users
+    db.updateUser(1, {1});
+    db.updateUser(2, {1});
+
+    // update all movies
+    db.updateMovie(1, {1, 2});
+}
+
+// Helper function to setup the data before testing test3
+void setup_for_test_3(const DBFile &db) {
+    // clean up the data in db if there is
+    db.clean();
+
+    // update all users
+    db.updateUser(1, {1});
+    db.updateUser(2, {1, 3});
+    db.updateUser(3, {2});
+
+    // update all movies
+    db.updateMovie(1, {1, 2});
+    db.updateMovie(2, {3});
+    db.updateMovie(3, {2});
+}
+
+// Helper function to setup the data before testing test1, test4, test5
+void setup_for_tests_1_4_5(const DBFile &db) {
+    // clean up the data in db if there is
+    db.clean();
+
+    // update all users
+    db.updateUser(1, {100, 101, 102, 103});
+    db.updateUser(2, {101, 102, 104, 105, 106});
+    db.updateUser(3, {100, 104, 105, 107, 108});
+    db.updateUser(4, {101, 105, 106, 107, 109, 110});
+    db.updateUser(5, {100, 102, 103, 105, 108, 111});
+    db.updateUser(6, {100, 103, 104, 110, 111, 112, 113});
+    db.updateUser(7, {102, 105, 106, 107, 108, 109, 110});
+    db.updateUser(8, {101, 104, 105, 106, 109, 111, 114});
+    db.updateUser(9, {100, 103, 105, 107, 112, 113, 115});
+    db.updateUser(10, {100, 102, 105, 106, 107, 109, 110, 116});
+
+    // update all movies
+    db.updateMovie(100, {1, 3, 5, 6, 9, 10});
+    db.updateMovie(101, {1, 2, 4, 8});
+    db.updateMovie(102, {1, 2, 5, 7, 10});
+    db.updateMovie(103, {1, 5, 6, 9});
+    db.updateMovie(104, {2, 3, 6, 8});
+    db.updateMovie(105, {2, 3, 4, 5, 7, 8, 9, 10});
+    db.updateMovie(106, {2, 4, 7, 8, 10});
+    db.updateMovie(107, {3, 4, 7, 9, 10});
+    db.updateMovie(108, {3, 5, 7});
+    db.updateMovie(109, {4, 7, 8, 10});
+    db.updateMovie(110, {4, 6, 7, 10});
+    db.updateMovie(111, {5, 6, 8});
+    db.updateMovie(112, {6, 9});
+    db.updateMovie(113, {6, 9});
+    db.updateMovie(114, {8});
+    db.updateMovie(115, {9});
+    db.updateMovie(116, {10});
+}
+
+// Test case 1: Check invalid input in execute function
 TEST(RecommendTest, ExecuteInvalidInput) {
-    // create DBFile's instance (using the File System data base)
-    IDataBase db = new DBFile("/usr/src/Netflix/data");
-    // create ConsoleMenu's instance (print through screen)
+    // create the instances, and make sure the data directory contains the right data
+    IDataBase db = new DBFile("../../../data");
+    setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
-    // create recommandCommand's instance
     recommendCommand recommend(db, menu);
 
     // check what if user id is empty (should print nothing)
@@ -68,13 +134,24 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     output = captureOutput([&]() { recommend.execute({maxPlusOne, "104"}); });
     EXPECT_EQ(output, "");
 
+    // check what if movie id is above the maximum unsigned long int (should print nothing)
+    output = captureOutput([&]() { recommend.execute({"1", maxPlusOne}); });
+    EXPECT_EQ(output, "");
 
+    // check what if user don't exist (should print nothing)
+    output = captureOutput([&]() { recommend.execute({"11", "104"}); });
+    EXPECT_EQ(output, "");
+
+    // check what if movie don't exist (should print nothing)
+    output = captureOutput([&]() { recommend.execute({"1", "99"}); });
+    EXPECT_EQ(output, "");
 }
 
-// Test case 2: Check only 1 movie: 1
+// Test case 2: Check only 1 movie: 1, in execute function
 TEST(RecommendTest, Execute_1_Movie) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("/usr/src/Netflix/data");
+    IDataBase db = new DBFile("../../../data");
+    setup_for_test_2(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
 
@@ -83,10 +160,11 @@ TEST(RecommendTest, Execute_1_Movie) {
     EXPECT_EQ(output, "");  // Adjust expected output
 }
 
-// Test case 3: Check only 3 movies: 1, 2, 3
+// Test case 3: Check only 3 movies: 1, 2, 3, in execute function
 TEST(RecommendTest, Execute_3_Movies) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("/usr/src/Netflix/data");
+    IDataBase db = new DBFile("../../../data");
+    setup_for_test_3(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
 
@@ -96,17 +174,18 @@ TEST(RecommendTest, Execute_3_Movies) {
 
     // check the result
     output = captureOutput([&]() { recommend.execute({"1", "2"}); });
-    EXPECT_EQ(output, "1 3");
+    EXPECT_EQ(output, "3");
 
     // check the result
     output = captureOutput([&]() { recommend.execute({"1", "3"}); });
-    EXPECT_EQ(output, "1 2");
+    EXPECT_EQ(output, "2");
 }
 
-// Test case 4: Check regular case
+// Test case 4: Check regular case in execute function
 TEST(RecommendTest, ExecuteRegularCase) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("/usr/src/Netflix/data");
+    IDataBase db = new DBFile("../../../data");
+    setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
 
@@ -117,10 +196,12 @@ TEST(RecommendTest, ExecuteRegularCase) {
 
 // Test case 5: Check description function
 TEST(RecommendTest, DescriptionFunction) {
-    // create the instances (should not depend on the data)
-    IDataBase db = new DBFile("/usr/src/Netflix/data");
+    // create the instances, and make sure the data directory contains the right data
+    IDataBase db = new DBFile("../../../data");
+    setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
+
     // check the result
     EXPECT_EQ(recommend.description(), "recommend [userid] [movieid]");
 }

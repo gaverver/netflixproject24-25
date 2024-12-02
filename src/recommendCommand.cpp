@@ -35,11 +35,14 @@ unsigned long int recommendCommand::castStringToULI(const std::string& str, bool
 // constructor
 recommendCommand::recommendCommand(IDataBase& db, IMenu& menu) : db(db), menu(menu) {}
 
+// execute, inherited from Command class
 void recommendCommand::execute(const std::vector<std::string>& args) override {
+    // suppose to be only user id and movie id which are unsigned long int
     if (args.size() != 2) {
         return;
     }
 
+    // casting from string to unsigned long int, and returns if there was a problem doing so
     bool isValid = true;
     unsigned long int uid = castStringToULI(args[0], isValid);
     unsigned long int mid = castStringToULI(args[1], isValid);
@@ -47,63 +50,77 @@ void recommendCommand::execute(const std::vector<std::string>& args) override {
         return;
     }
 
-    // Users who watched the movie `mid`
+    // TODO - check if user and movie exist
+
+    // users who watched the movie 'mid'
     std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
-    // Movies already watched by `uid`
+    // movies already watched by 'uid'
     std::vector<unsigned long int> alreadyWatched = db.findUser(uid);
-    // Movies and their ratings
+    // movies and their ratings according to the algorithm (rate = relevance)
     std::map<unsigned long int, int> rate;
 
-    // Get all movies in the database
+    // get all movies in the database
     std::vector<unsigned long int> allMovies = db.getAllMovies();
 
-    // Initialize the rate map for all eligible movies
+    // initialize the rate map for all eligible movies
     for (unsigned long int movie : allMovies) {
+        // the movies that we are not supposed to recommend on is the mid and the movies uid already watched
         if (movie != mid && std::find(alreadyWatched.begin(), alreadyWatched.end(), movie) == alreadyWatched.end()) {
             rate[movie] = 0; // Initialize with 0
         }
     }
 
+    // go through all the users that watched the movie mid
     for (unsigned long int usr : alikeUsers) {
+        // skip uid
         if (usr == uid) continue;
 
-        // Calculate similarity
+        // calculate similarity of that user to uid according to the algorithm
         int similarity = db.getCommonMovies(usr, uid).size();
-        // Movies watched by `usr`
+        // movies watched by current user - 'usr'
         std::vector<unsigned long int> moviesOfAlikeUser = db.findUser(usr);
 
+        // go therough all the movies current 'usr' watched
         for (unsigned long int movie : moviesOfAlikeUser) {
+            // again, those are the movies that we are not supposed to recommend on
             if (movie == mid || std::find(alreadyWatched.begin(), alreadyWatched.end(), movie) != alreadyWatched.end()) {
                 continue;
             }
+            // adding to the rate of that movie, according to the algorithm
             rate[movie] += similarity;
         }
     }
 
-    // Sort movies by rating and ID
+    // sortedMovies will contain the 10 best movies we will recommend on
     std::vector<unsigned long int> sortedMovies;
+    // at first, sortedMovies will have all the movies that have a rate
     for (const auto& pair : rate) {
         sortedMovies.push_back(pair.first);
     }
 
-    std::sort(sortedMovies.begin(), sortedMovies.end(), [&rate](unsigned long int a,  b) {
+    // sort movies by rating and ID, (cmp function here is according to the algorithm)
+    std::sort(sortedMovies.begin(), sortedMovies.end(), [&rate](unsigned long int a, unsigned long int b) {
         return rate[a] > rate[b] || (rate[a] == rate[b] && a < b);
     });
 
-    // take the top 10 movies
+    // take the top 10 (or less if there are less than 10 movies that have a rate) movies
     sortedMovies.resize(std::min<int>(10, sortedMovies.size()));
 
-    // Build recommendation string
+    // build recommendation string that we will print via IMenu
     std::ostringstream recommendation;
+    // go through all the movies for recommendation, and chain them to 1 string
     for (size_t i = 0; i < sortedMovies.size(); ++i) {
         if (i > 0) recommendation << " ";
         recommendation << sortedMovies[i];
     }
 
+    // finally, prints the recommendation via IMenu field
     menu.print(recommendation.str());
 }
 
+// description, inherited from Command class
 std::string recommendCommand::description() const override {
+    // simply returns the description of recommend
     return "recommend [userid] [movieid]";
 }
 
