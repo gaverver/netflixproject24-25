@@ -16,17 +16,17 @@ std::string first_word(std::string s) {
 
 //helper function to remove duplicates from sorted unsigned long int vector
 void removeDupSortVec(std::vector<unsigned long int>& vec) {
+    //if it's empty there's nothing to remove
     if (vec.empty()) return;
-
     std::vector<unsigned long int> result;
     result.push_back(vec[0]);
-
+    //put only non-duplicate items
     for (size_t i = 1; i < vec.size(); ++i) {
         if (vec[i] != vec[i - 1]) {
             result.push_back(vec[i]);
         }
     }
-
+    //move the result to the vec
     vec = std::move(result);
 }
 
@@ -65,6 +65,7 @@ std::string mergeIds(const std::string& line, std::vector<unsigned long int>& id
             stream >> lineId;
         }
     }
+    //add what's left to the merged line
     if (i >= ids.size()) {
         while (!stream.eof()) {
             mergedLine += std::to_string(lineId) + " ";
@@ -96,7 +97,6 @@ void modifyFileLine(const std::string& filePath, unsigned long int lineNumber, c
     lines[lineNumber - 1] = newLine;
     //write all the lines to the file
     std::ofstream outputFile(filePath);
-
     for (std::string mLine : lines) {
         outputFile << mLine << "\n";
     }
@@ -110,16 +110,19 @@ DBFile::DBFile(std::string path) : path(path) {
     this->usersP = path + "/users.txt";
     this->moviesP = path + "/movies.txt";
 }
-
+//generic function to update a file with primary id and a list of secondary ids
 void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& ids, std::string path) {
     //create a copy of mids because it's a const
     std::vector<unsigned long int> idsCopy;
     idsCopy = std::move(ids);
     //sort the mids first
     std::sort(idsCopy.begin(), idsCopy.end());
+    //input file to read
     std::ifstream inFile(path);
     std::string line = "garbage";
+    //counter for the line
     unsigned long int k=0;
+    //represents if we found the wanted line
     bool found = false;
     while (std::getline(inFile, line)) {
         k++;
@@ -130,39 +133,48 @@ void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& i
     }
     inFile.close();
     if (!found) {
+        //write the new line in the end of the file
         std::ofstream outFile(path, std::ios::app);
         outFile << id << " ";
         for (unsigned long int i: idsCopy) {
             outFile << i << " ";
         }
+        //add \n to end the line
+        outFile << std::endl;
         outFile.close();
     } else {
+        //modify the line
         std::string modifiedLine = mergeIds(line, idsCopy);
         modifyFileLine(path, k, modifiedLine);
     }
 }
-
+//implementing updateUser
 void DBFile::updateUser(unsigned long int uid, const std::vector<unsigned long int>& mids) {
+    //update users.txt
     genericUpdate(uid, mids, usersP);
     std::vector<unsigned long int> uidVec = {uid};
+    //for each movie update accordingly movies.txt
     for (unsigned long int mid: mids) {
         genericUpdate(mid, uidVec, moviesP);
     }
 }
-
+//implementing updateMovie
 void DBFile::updateMovie(unsigned long int mid, const std::vector<unsigned long int>& uids) {
+    //update movies.txt
     genericUpdate(mid, uids, moviesP);
+    //for each user update users.txt
     std::vector<unsigned long int> midVec = {mid};
     for (unsigned long int uid: uids) {
         genericUpdate(uid, midVec, usersP);
     }
 }
-
+//generic function to find lists of ids according to id and a file
 std::vector<unsigned long int> genericFind(unsigned long int id, std::string path) {
     std::vector<unsigned long int> ids = {};
     std::ifstream inFile(path);
     std::string line = "garbage";
     bool found = false;
+    //find the line
     while (std::getline(inFile, line)) {
         if (first_word(line) == std::to_string(id)) {
             found = true;
@@ -180,6 +192,7 @@ std::vector<unsigned long int> genericFind(unsigned long int id, std::string pat
         }
         return ids;
     } else {
+        //return empty vector
         return ids;
     }
 }
@@ -200,9 +213,12 @@ std::vector<unsigned long int> DBFile::getAllMovies() {
     std::string line;
     std::istringstream stream;
     unsigned long int mid;
+    //read the lines
     while (std::getline(moviesInFile, line)) {
         stream.str(line);
+        //read first word of the line
         stream >> mid;
+        //push the id to the line
         mids.push_back(mid);
     }
     return mids;
@@ -210,6 +226,7 @@ std::vector<unsigned long int> DBFile::getAllMovies() {
 
 //clean the files in data
 void DBFile::cleanUp() {
+    //open with trunc the delete all the files content
     std::ofstream users(usersP, std::ios::trunc);
     users.close();
     std::ofstream movies(moviesP, std::ios::trunc);
