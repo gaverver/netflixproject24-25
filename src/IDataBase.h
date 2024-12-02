@@ -4,7 +4,7 @@
 #include <vector>
 
 
-class IdataBase { 
+class IDataBase { 
     public:
         //pure virtual method to find movies that user watched
         virtual std::vector<int> findUser(int uid) = 0;
@@ -19,7 +19,7 @@ class IdataBase {
         //pure virtual method to find all the movie ids of watched movies
         virtual std::vector<int> getAllMovies() = 0;
         //virtual destructor to ensure proper cleanup in derived classes
-        virtual ~IdataBase() = default;
+        virtual ~IDataBase() = default;
 
 };
 
