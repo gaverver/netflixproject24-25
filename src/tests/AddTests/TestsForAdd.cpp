@@ -53,6 +53,7 @@ TEST(AddTesting, SimpleExecuteTest) {
     setup();
 }
 
+// test for execute function -  test that checks adding of a user and multiple movie
 TEST(AddTesting, MultipleMoviesOneUserTest) {
     IDataBase* test = new DBFile("../../../data");
     addCommand* add = new addCommand(test);
@@ -87,6 +88,7 @@ TEST(AddTesting, MultipleMoviesOneUserTest) {
     setup();
 }
 
+// test for execute function -  test that checks adding of multiple users and multiple movie
 TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
     IDataBase* test = new DBFile("../../../data");
     addCommand* add = new addCommand(test);
@@ -155,6 +157,7 @@ TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
     setup();
 }
 
+// test for execute function -  test that checks invalid input options to the DB
 TEST(AddTesting, InvalidInputTest) {
     IDataBase* test = new DBFile("../../../data");
     addCommand* add = new addCommand(test);
