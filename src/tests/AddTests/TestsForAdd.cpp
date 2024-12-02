@@ -26,7 +26,7 @@ TEST(AddTesting, SimpleExecuteTest) {
     IDataBase& test = dbFile;
     // clear the files before testing
     test.cleanUp();
-    ICommand* add = new ICommand(test);
+    ICommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 101 102
     args.push_back("101");
@@ -54,7 +54,7 @@ TEST(AddTesting, SimpleExecuteTest) {
 TEST(AddTesting, MultipleMoviesOneUserTest) {
     DBFile dbFile("../../../data")
     IDataBase& test = dbFile;
-    ICommand* add = new ICommand(test);
+    ICommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 2 3 4
     args.push_back("2");
@@ -90,7 +90,7 @@ TEST(AddTesting, MultipleMoviesOneUserTest) {
 TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
     DBFile dbFile("../../../data")
     IDataBase& test = dbFile;
-    ICommand* add = new ICommand(test);
+    ICommand* add = new addCommand(test);
 
     std::vector<std::string> args1;
     // execute the command add 2 3 4
@@ -160,7 +160,7 @@ TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
 TEST(AddTesting, InvalidInputTest) {
     DBFile dbFile("../../../data")
     IDataBase& test = dbFile;    
-    ICommand* add = new ICommand(test);
+    ICommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 5 6
     args.push_back("5");
