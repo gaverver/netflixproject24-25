@@ -94,17 +94,17 @@ TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
 
     std::vector<std::string> args1;
     // execute the command add 2 3 4
-    args.push_back("2");
-    args.push_back("3");
-    args.push_back("4");
+    args1.push_back("2");
+    args1.push_back("3");
+    args1.push_back("4");
     // execute the add command that should update the databse and add the user/movie
     add -> execute(args1);
 
     std::vector<std::string> args2;
     // execute the command add 3 4 5
-    args.push_back("3");
-    args.push_back("4");
-    args.push_back("5");
+    args2.push_back("3");
+    args2.push_back("4");
+    args2.push_back("5");
     // execute the add command that should update the databse and add the user/movie
     add -> execute(args2);
 
