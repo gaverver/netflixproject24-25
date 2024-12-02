@@ -28,7 +28,8 @@ TEST(AddTesting, DescriptionTest) {
 TEST(AddTesting, SimpleExecuteTest) {
     // clear the files before testing
     setup();
-    IDataBase* test = new DBFile("../../../data");
+    DBFile dbFile("../../../data")
+    IDataBase& test = dbFile;
     addCommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 101 102
@@ -55,7 +56,8 @@ TEST(AddTesting, SimpleExecuteTest) {
 
 // test for execute function -  test that checks adding of a user and multiple movie
 TEST(AddTesting, MultipleMoviesOneUserTest) {
-    IDataBase* test = new DBFile("../../../data");
+    DBFile dbFile("../../../data")
+    IDataBase& test = dbFile;
     addCommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 2 3 4
@@ -90,7 +92,8 @@ TEST(AddTesting, MultipleMoviesOneUserTest) {
 
 // test for execute function -  test that checks adding of multiple users and multiple movie
 TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
-    IDataBase* test = new DBFile("../../../data");
+    DBFile dbFile("../../../data")
+    IDataBase& test = dbFile;
     addCommand* add = new addCommand(test);
 
     std::vector<std::string> args1;
@@ -159,7 +162,8 @@ TEST(AddTesting, MultipleMoviesMultipleUsersTest) {
 
 // test for execute function -  test that checks invalid input options to the DB
 TEST(AddTesting, InvalidInputTest) {
-    IDataBase* test = new DBFile("../../../data");
+    DBFile dbFile("../../../data")
+    IDataBase& test = dbFile;    
     addCommand* add = new addCommand(test);
     std::vector<std::string> args;
     // execute the command add 5 6
