@@ -28,38 +28,30 @@ std::string captureOutput(const std::function<void()>& func) {
 // Helper function to setup the data before testing test2
 void setup_for_test_2(const DBFile &db) {
     // clean up the data in db if there is
-    db.clean();
+    db.cleanUp();
 
-    // update all users
+    // update all data
     db.updateUser(1, {1});
     db.updateUser(2, {1});
-
-    // update all movies
-    db.updateMovie(1, {1, 2});
 }
 
 // Helper function to setup the data before testing test3
 void setup_for_test_3(const DBFile &db) {
     // clean up the data in db if there is
-    db.clean();
+    db.cleanUp();
 
-    // update all users
+    // update all data
     db.updateUser(1, {1});
     db.updateUser(2, {1, 3});
     db.updateUser(3, {2});
-
-    // update all movies
-    db.updateMovie(1, {1, 2});
-    db.updateMovie(2, {3});
-    db.updateMovie(3, {2});
 }
 
 // Helper function to setup the data before testing test1, test4, test5
 void setup_for_tests_1_4_5(const DBFile &db) {
     // clean up the data in db if there is
-    db.clean();
+    db.cleanUp();
 
-    // update all users
+    // update all data
     db.updateUser(1, {100, 101, 102, 103});
     db.updateUser(2, {101, 102, 104, 105, 106});
     db.updateUser(3, {100, 104, 105, 107, 108});
@@ -70,31 +62,14 @@ void setup_for_tests_1_4_5(const DBFile &db) {
     db.updateUser(8, {101, 104, 105, 106, 109, 111, 114});
     db.updateUser(9, {100, 103, 105, 107, 112, 113, 115});
     db.updateUser(10, {100, 102, 105, 106, 107, 109, 110, 116});
-
-    // update all movies
-    db.updateMovie(100, {1, 3, 5, 6, 9, 10});
-    db.updateMovie(101, {1, 2, 4, 8});
-    db.updateMovie(102, {1, 2, 5, 7, 10});
-    db.updateMovie(103, {1, 5, 6, 9});
-    db.updateMovie(104, {2, 3, 6, 8});
-    db.updateMovie(105, {2, 3, 4, 5, 7, 8, 9, 10});
-    db.updateMovie(106, {2, 4, 7, 8, 10});
-    db.updateMovie(107, {3, 4, 7, 9, 10});
-    db.updateMovie(108, {3, 5, 7});
-    db.updateMovie(109, {4, 7, 8, 10});
-    db.updateMovie(110, {4, 6, 7, 10});
-    db.updateMovie(111, {5, 6, 8});
-    db.updateMovie(112, {6, 9});
-    db.updateMovie(113, {6, 9});
-    db.updateMovie(114, {8});
-    db.updateMovie(115, {9});
-    db.updateMovie(116, {10});
 }
 
 // Test case 1: Check invalid input in execute function
 TEST(RecommendTest, ExecuteInvalidInput) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("../../../data");
+    DBFile dbFile("../../../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
@@ -150,7 +125,9 @@ TEST(RecommendTest, ExecuteInvalidInput) {
 // Test case 2: Check only 1 movie: 1, in execute function
 TEST(RecommendTest, Execute_1_Movie) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("../../../data");
+    DBFile dbFile("../../../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
     setup_for_test_2(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
@@ -163,7 +140,9 @@ TEST(RecommendTest, Execute_1_Movie) {
 // Test case 3: Check only 3 movies: 1, 2, 3, in execute function
 TEST(RecommendTest, Execute_3_Movies) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("../../../data");
+    DBFile dbFile("../../../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
     setup_for_test_3(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
@@ -184,7 +163,9 @@ TEST(RecommendTest, Execute_3_Movies) {
 // Test case 4: Check regular case in execute function
 TEST(RecommendTest, ExecuteRegularCase) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("../../../data");
+    DBFile dbFile("../../../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
@@ -197,7 +178,9 @@ TEST(RecommendTest, ExecuteRegularCase) {
 // Test case 5: Check description function
 TEST(RecommendTest, DescriptionFunction) {
     // create the instances, and make sure the data directory contains the right data
-    IDataBase db = new DBFile("../../../data");
+    DBFile dbFile("../../../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
     IMenu menu = new ConsoleMenu();
     recommendCommand recommend(db, menu);
