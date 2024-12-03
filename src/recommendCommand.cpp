@@ -92,7 +92,7 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
     if (!isExist) {
         return;
     }
-    
+
     // movies and their ratings according to the algorithm (rate = relevance)
     std::map<unsigned long int, int> rate;
 

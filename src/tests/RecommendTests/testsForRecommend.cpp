@@ -105,9 +105,6 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     EXPECT_EQ(output, "");
 
     // check what if user id is above the maximum unsigned long int (should print nothing)
-    unsigned long int maxULongInt = std::numeric_limits<unsigned long int>::max();
-    std::string maxPlusOne = std::to_string(static_cast<unsigned long long>(maxULongInt) + 1);
-
     output = captureOutput([&]() { recommend.execute({"18446744073709551616", "104"}); });
     EXPECT_EQ(output, "");
 
