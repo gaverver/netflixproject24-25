@@ -239,6 +239,34 @@ void DBFile::cleanUp() {
     movies.close();
 }
 
+// this function gets 2 user ids, and return there common movies in a vector
 std::vector<unsigned long int> DBFile::getCommonMovies(unsigned long int uid1, unsigned long int uid2) {
-    return {};
+    // get the movies of user 1
+    std::vector<unsigned long int> mvs1 = this->findUser(uid1);
+    // get the movies of user 2
+    std::vector<unsigned long int> mvs2 = this->findUser(uid2);
+    // this will keep all the common movies of user 1 and user 2
+    std::vector<unsigned long int> commonMovies;
+    // initialize 2 indices to go through both vectors of movies
+    int m1, m2 = 0;
+    // this algorithm works because both vectors: mvs1, mvs2 are sorted by the ids number in ascending order
+    while (m1 < mvs1.size() && m2 < mvs2.size()) {
+        // found a match, push the common movie to commonMovies and move ahead to the next movie in both vectors
+        if (mvs1[m1] == mvs2[m2]) {
+            m1++;
+            m2++;
+            commonMovies.push_back(mvs1[m1]);
+        }
+        // current movie in mvs1 has smaller id than current movie in mvs2
+        // so move ahead to the next movie in mvs1, but stay in mvs2 on the current movie
+        else if (mvs1[m1] < mvs2[m2]) {
+            m1++;
+        }
+        // same, but the oppisite (now current movie in mvs1 has bigger id than current movie in mvs2)
+        else {
+            m2++;
+        }
+    }
+    // after finishing with the while, we went through all the movies and found all the common movies
+    return commonMovies;
 }
