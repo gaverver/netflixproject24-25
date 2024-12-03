@@ -224,6 +224,9 @@ std::vector<unsigned long int> DBFile::getAllMovies() {
         //push the id to the line
         mids.push_back(mid);
     }
+    //
+    std::sort(mids.begin(), mids.end());
+    removeDupSortVec(mids);
     return mids;
 }
 

@@ -74,27 +74,12 @@ std::vector<std::string> LastNWordsUsers(unsigned long int uid, int N) {
 
 }
 
-//setup before every test, to ensure that the files are empty
-void setup() {
-    //clean the users.txt
-    std::ofstream users("../data/users.txt", std::ios::trunc);
-    users.close();
-    std::ofstream movies("../data/movies.txt", std::ios::trunc);
-    movies.close();
-}
-
-
-
-
-
-
-
 //testing updating user with list of watched movies (check users.txt)
 TEST(DBFileTesting, UpdateUsr1) {
-    //clean the files;
-    setup();
     //creaing instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //adding some movies to 3 different users
     for (unsigned long int i=1; i<4; ++i) {
         std::vector<unsigned long int> mids = {100+i,101+i,102+i};
@@ -119,15 +104,15 @@ TEST(DBFileTesting, UpdateUsr1) {
     std::vector<std::string> mids4 = {"103","200"};
     EXPECT_EQ(mids3,mids4);
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing updating user with list of watched movies (checking movies.txt)
 TEST(DBFileTesting, UpdateUsr2) {
-    //clean the files;
-    setup();
     //creaing instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //adding some movies to 3 different users
     for (int i=1; i<4; ++i) {
         std::vector<unsigned long int> mids = {101,102,103};
@@ -158,14 +143,14 @@ TEST(DBFileTesting, UpdateUsr2) {
     EXPECT_EQ(uids,uidString);
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 //testing updating movie with list of users (checking movies.txt)
 TEST(DBFileTesting, UpdateMovie1) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //adding some users to 3 different movies
     for (unsigned long int i=1; i<4; ++i) {
         std::vector<unsigned long int> uids = {100+i,101+i,102+i};
@@ -190,15 +175,15 @@ TEST(DBFileTesting, UpdateMovie1) {
     std::vector<std::string> uids4 = {"103","200"};
     EXPECT_EQ(uids3,uids4);
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing updating movie with list of users (checking user.txt)
 TEST(DBFileTesting, UpdateMovie2) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //adding some user to 3 different movies
     for (int i=1; i<4; ++i) {
         std::vector<unsigned long int> uids = {101,102,103};
@@ -229,15 +214,15 @@ TEST(DBFileTesting, UpdateMovie2) {
     EXPECT_EQ(mids,midString);
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing findUser method
 TEST(DBFileTesting, FindUser) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //check for non-existing user
     std::vector<unsigned long int> emptyMids = {};
     std::vector<unsigned long int> midsCheck0 = dbf.findUser(1);
@@ -268,15 +253,14 @@ TEST(DBFileTesting, FindUser) {
 
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 //testing findMovie method
 TEST(DBFileTesting, FindMovie) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
-    
+    //clean the files;
+    dbf.cleanUp();
     //check for non-existing movie
     std::vector<unsigned long int> emptyUids = {};
     std::vector<unsigned long int> uidsCheck0 = dbf.findMovie(1);
@@ -306,15 +290,15 @@ TEST(DBFileTesting, FindMovie) {
     EXPECT_EQ(uidsCheck2,expectedUids);
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing getCommonMovies method (no intersection)
 TEST(DBFileTesting, GetCommonMovies1) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //all the intersections should be empty
     std::vector<unsigned long int> empty = {};
     //list of movies from users 1,2
@@ -335,15 +319,15 @@ TEST(DBFileTesting, GetCommonMovies1) {
     EXPECT_EQ(empty,dbf.getCommonMovies(3,4));
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing getCommonMovies method (half intersection)
 TEST(DBFileTesting, GetCommonMovies2) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //first intersection result
     std::vector<unsigned long int> intersection1 = {100};
     //list of movies from users 1,2
@@ -375,15 +359,15 @@ TEST(DBFileTesting, GetCommonMovies2) {
     //check intersection
     EXPECT_EQ(intersection3,dbf.getCommonMovies(5,6));
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing getCommonMovies method (full intersection)
 TEST(DBFileTesting, GetCommonMovies3) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
     //first intersection result
     std::vector<unsigned long int> intersection1 = {100};
     //list of movies from users 1,2
@@ -406,16 +390,15 @@ TEST(DBFileTesting, GetCommonMovies3) {
     //check intersection
     EXPECT_EQ(intersection2,dbf.getCommonMovies(3,4));
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 //testing getAllMovies method
 TEST(DBFileTesting, GetAllMovies) {
-    //clean the files;
-    setup();
     //creating instance of the DBFile initializing it with the data path
     DBFile dbf("../data");
-    
+    //clean the files;
+    dbf.cleanUp();
     //expected first output
     std::vector<unsigned long int> movies1ex = {};
     //first output
@@ -443,8 +426,8 @@ TEST(DBFileTesting, GetAllMovies) {
     //check movie list equality
     EXPECT_EQ(movies3ex,movies3out);
 
-    //add some movies to the same user
-    std::vector<unsigned long int> mids3 = {700, 800, 100};
+    //add some movies to different user
+    std::vector<unsigned long int> mids3 = {800, 700, 100};
     dbf.updateUser(2, mids3);
     //expected fourth output
     std::vector<unsigned long int> movies4ex = {100, 200, 300, 400, 500, 600, 700, 800};
@@ -455,7 +438,7 @@ TEST(DBFileTesting, GetAllMovies) {
 
 
     //clean
-    setup();
+    dbf.cleanUp();
 }
 
 // Main function for running tests

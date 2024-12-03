@@ -24,7 +24,7 @@ class DBFile : public IDataBase {
         //pure virtual method to find all the movie ids of watched movies
         virtual std::vector<unsigned long int> getAllMovies() override;
         //method to clean the data from the files
-        void cleanUp();
+        virtual void cleanUp() override;
 };
 
 #endif

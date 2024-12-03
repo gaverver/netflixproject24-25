@@ -20,6 +20,8 @@ class IDataBase {
         virtual std::vector<unsigned long int> getAllMovies() = 0;
         //virtual destructor to ensure proper cleanup in derived classes
         virtual ~IDataBase() = default;
+        //pure virtual method to cleans all data
+        virtual void cleanUp() = 0;
 
 };
 
