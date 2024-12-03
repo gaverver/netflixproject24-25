@@ -5,13 +5,13 @@
 #include <sstream>
 #include <algorithm>
 //helper function to get the first word of a string
-std::string first_word(std::string s) {
+unsigned long int first_number(std::string s) {
     //creating a stream to read from the string
     std::istringstream stream(s);
-    std::string firstWord;
+    unsigned long int firstNum;
     //reading the first word to a string
-    stream >> firstWord;
-    return firstWord;
+    stream >> firstNum;
+    return firstNum;
 }
 
 //helper function to remove duplicates from sorted unsigned long int vector
@@ -39,6 +39,8 @@ std::string mergeIds(const std::string& line, std::vector<unsigned long int>& id
     std::string mergedLine;
     //reading the first word to the merged line (primary key)
     stream >> mergedLine;
+    //add the space after the first word
+    mergedLine += " ";
     //reading the other numbers in the line
     unsigned long int lineId;
     stream >> lineId;
@@ -109,16 +111,17 @@ DBFile::DBFile(std::string path) : path(path) {
     //userP is path to users.txt and moviesP is path to movies.txt
     this->usersP = path + "/users.txt";
     this->moviesP = path + "/movies.txt";
+    cleanUp();
 }
 //generic function to update a file with primary id and a list of secondary ids
-void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& ids, std::string path) {
+void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& ids, std::string path1) {
     //create a copy of mids because it's a const
     std::vector<unsigned long int> idsCopy;
     idsCopy = std::move(ids);
     //sort the mids first
     std::sort(idsCopy.begin(), idsCopy.end());
     //input file to read
-    std::ifstream inFile(path);
+    std::ifstream inFile(path1);
     std::string line = "garbage";
     //counter for the line
     unsigned long int k=0;
@@ -126,7 +129,7 @@ void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& i
     bool found = false;
     while (std::getline(inFile, line)) {
         k++;
-        if (first_word(line) == std::to_string(id)) {
+        if (first_number(line) == id) {
             found = true;
             break;
         }
@@ -134,7 +137,7 @@ void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& i
     inFile.close();
     if (!found) {
         //write the new line in the end of the file
-        std::ofstream outFile(path, std::ios::app);
+        std::ofstream outFile(path1, std::ios::app);
         outFile << id << " ";
         for (unsigned long int i: idsCopy) {
             outFile << i << " ";
@@ -145,7 +148,7 @@ void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& i
     } else {
         //modify the line
         std::string modifiedLine = mergeIds(line, idsCopy);
-        modifyFileLine(path, k, modifiedLine);
+        modifyFileLine(path1, k, modifiedLine);
     }
 }
 //implementing updateUser
@@ -176,7 +179,7 @@ std::vector<unsigned long int> genericFind(unsigned long int id, std::string pat
     bool found = false;
     //find the line
     while (std::getline(inFile, line)) {
-        if (first_word(line) == std::to_string(id)) {
+        if (first_number(line) == id) {
             found = true;
             break;
         }
@@ -231,4 +234,8 @@ void DBFile::cleanUp() {
     users.close();
     std::ofstream movies(moviesP, std::ios::trunc);
     movies.close();
+}
+
+std::vector<unsigned long int> DBFile::getCommonMovies(unsigned long int uid1, unsigned long int uid2) {
+    return {};
 }
