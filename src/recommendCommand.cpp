@@ -5,38 +5,57 @@
 #include <map>
 #include <iostream>
 #include <algorithm>
+#include <cctype>
+#include <limits>
 #include "recommendCommand.h"
 #include "IDataBase.h"
 #include "IMenu.h"
 
 // a helper private function to help casting from string to unsigned long int
 unsigned long int recommendCommand::castStringToULI(const std::string& str, bool& isValid) {
-    try {
-        // tracks the position after the last parsed character
-        std::size_t pos;
-        // casting...
-        unsigned long int num = std::stoul(str, &pos);
-        // check if the whole string was parsed
-        if (pos != str.length()) {
-            // if not, str is not convertable
+    isValid = true;
+
+    // Check for empty string
+    if (str.empty()) {
+        isValid = false;
+        return 0;
+    }
+
+    // ensure all characters are digits
+    for (char ch : str) {
+        if (!std::isdigit(ch)) {
             isValid = false;
             return 0;
         }
-        // casting completed successfully 
-        isValid = true;
-        return num;
-    // if catching anything, it's just not convertable
+    }
+    
+    // another check to know if num is out_of_range(above the maximum unsigned long int)
+    try {
+        // casting...
+        unsigned long int num2 = std::stoul(str);
+    // catching out_of_range exception
     } catch (...) {
         isValid = false;
         return 0;
     }
+
+    // convert the string to an unsigned long int
+    // use a larger type temporarily to know if we are out of range
+    unsigned long long num = 0;
+    for (char ch : str) {
+        // get the number from the string by an easy algorithm
+        num = num * 10 + (ch - '0');
+    }
+
+    // returns the number in unsigned long int
+    return static_cast<unsigned long int>(num);
 }
 
 // constructor
 recommendCommand::recommendCommand(IDataBase& db, IMenu& menu) : db(db), menu(menu) {}
 
 // execute, inherited from Command class
-void recommendCommand::execute(const std::vector<std::string>& args) override {
+void recommendCommand::execute(const std::vector<std::string>& args) {
     // suppose to be only user id and movie id which are unsigned long int
     if (args.size() != 2) {
         return;
@@ -44,18 +63,36 @@ void recommendCommand::execute(const std::vector<std::string>& args) override {
 
     // casting from string to unsigned long int, and returns if there was a problem doing so
     bool isValid = true;
+
+    // casting the first argument from string to unsigned long int
     unsigned long int uid = castStringToULI(args[0], isValid);
-    unsigned long int mid = castStringToULI(args[1], isValid);
+    // if the casting has failed, execute of recommend should prints nothing
     if (!isValid) {
         return;
     }
 
-    // TODO - check if user and movie exist
+    // casting the second argument from string to unsigned long int
+    unsigned long int mid = castStringToULI(args[1], isValid);
+    // if the casting has failed, execute of recommend should prints nothing
+    if (!isValid) {
+        return;
+    }
 
+    bool isExist = true;
     // users who watched the movie 'mid'
-    std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
+    std::vector<unsigned long int> alikeUsers = db.findMovie(mid, isExist);
+    // if the movie does not exist, execute of recommend should prints nothing
+    if (!isExist) {
+        return;
+    }
+
     // movies already watched by 'uid'
-    std::vector<unsigned long int> alreadyWatched = db.findUser(uid);
+    std::vector<unsigned long int> alreadyWatched = db.findUser(uid, isExist);
+    // if the user does not exist, execute of recommend should prints nothing
+    if (!isExist) {
+        return;
+    }
+    
     // movies and their ratings according to the algorithm (rate = relevance)
     std::map<unsigned long int, int> rate;
 
@@ -119,7 +156,7 @@ void recommendCommand::execute(const std::vector<std::string>& args) override {
 }
 
 // description, inherited from Command class
-std::string recommendCommand::description() const override {
+std::string recommendCommand::description() const {
     // simply returns the description of recommend
     return "recommend [userid] [movieid]";
 }

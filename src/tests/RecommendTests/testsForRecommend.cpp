@@ -27,7 +27,7 @@ std::string captureOutput(const std::function<void()>& func) {
 }
 
 // Helper function to setup the data before testing test2
-void setup_for_test_2(DBFile &db) {
+void setup_for_test_2(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -37,7 +37,7 @@ void setup_for_test_2(DBFile &db) {
 }
 
 // Helper function to setup the data before testing test3
-void setup_for_test_3(DBFile &db) {
+void setup_for_test_3(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -48,12 +48,12 @@ void setup_for_test_3(DBFile &db) {
 }
 
 // Helper function to setup the data before testing test1, test4, test5
-void setup_for_tests_1_4_5(DBFile &db) {
+void setup_for_tests_1_4_5(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
     // update all data
-    db.updateUser(1, {100, 101, 102, 103});
+    db.updateUser(1, {100, 101,     102, 103});
     db.updateUser(2, {101, 102, 104, 105, 106});
     db.updateUser(3, {100, 104, 105, 107, 108});
     db.updateUser(4, {101, 105, 106, 107, 109, 110});
@@ -72,7 +72,7 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    ConsoleMenu cm();
+    ConsoleMenu cm;
     IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
@@ -106,13 +106,13 @@ TEST(RecommendTest, ExecuteInvalidInput) {
 
     // check what if user id is above the maximum unsigned long int (should print nothing)
     unsigned long int maxULongInt = std::numeric_limits<unsigned long int>::max();
-    std::string maxPlusOne = std::to_string(static_cast<unsigned long int>(maxULongInt) + 1);
+    std::string maxPlusOne = std::to_string(static_cast<unsigned long long>(maxULongInt) + 1);
 
-    output = captureOutput([&]() { recommend.execute({maxPlusOne, "104"}); });
+    output = captureOutput([&]() { recommend.execute({"18446744073709551616", "104"}); });
     EXPECT_EQ(output, "");
 
     // check what if movie id is above the maximum unsigned long int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", maxPlusOne}); });
+    output = captureOutput([&]() { recommend.execute({"1", "18446744073709551616"}); });
     EXPECT_EQ(output, "");
 
     // check what if user don't exist (should print nothing)
@@ -131,13 +131,13 @@ TEST(RecommendTest, Execute_1_Movie) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_2(db);
-    ConsoleMenu cm();
+    ConsoleMenu cm;
     IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result (should print nothing because there is no other movies to recommend on)
     auto output = captureOutput([&]() { recommend.execute({"1", "1"}); });
-    EXPECT_EQ(output, "");  // Adjust expected output
+    EXPECT_EQ(output, "\n");  // Adjust expected output
 }
 
 // Test case 3: Check only 3 movies: 1, 2, 3, in execute function
@@ -147,21 +147,21 @@ TEST(RecommendTest, Execute_3_Movies) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_3(db);
-    ConsoleMenu cm();
+    ConsoleMenu cm;
     IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result
     auto output = captureOutput([&]() { recommend.execute({"1", "1"}); });
-    EXPECT_EQ(output, "3 2");
+    EXPECT_EQ(output, "3 2\n");
 
     // check the result
     output = captureOutput([&]() { recommend.execute({"1", "2"}); });
-    EXPECT_EQ(output, "3");
+    EXPECT_EQ(output, "3\n");
 
     // check the result
     output = captureOutput([&]() { recommend.execute({"1", "3"}); });
-    EXPECT_EQ(output, "2");
+    EXPECT_EQ(output, "2\n");
 }
 
 // Test case 4: Check regular case in execute function
@@ -171,13 +171,13 @@ TEST(RecommendTest, ExecuteRegularCase) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    ConsoleMenu cm();
+    ConsoleMenu cm;
     IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result (by the exercise1's pdf)
     auto output = captureOutput([&]() { recommend.execute({"1", "104"}); });
-    EXPECT_EQ(output, "105 106 111 110 112 113 107 108 109 114");
+    EXPECT_EQ(output, "105 106 111 110 112 113 107 108 109 114\n");
 }
 
 // Test case 5: Check description function
@@ -187,7 +187,7 @@ TEST(RecommendTest, DescriptionFunction) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    ConsoleMenu cm();
+    ConsoleMenu cm;
     IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 

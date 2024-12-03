@@ -13,8 +13,8 @@ private:
     IDataBase& db;
     // reference to the menu, to print via IMenu in the execute function
     IMenu& menu;
-    // helper function for casting from string to int
-    int castStringToInt(std::string str, bool& isValid);
+    // helper function for casting from string to unsigned long int
+    unsigned long int castStringToULI(const std::string& str, bool& isValid);
 
 public:
     // constructor
