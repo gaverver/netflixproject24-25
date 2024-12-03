@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <limits>
+#include <functional>
 #include "../../recommendCommand.h"
 #include "../../DBFile.h"
 #include "../../IMenu.h"
@@ -67,7 +68,7 @@ void setup_for_tests_1_4_5(const DBFile &db) {
 // Test case 1: Check invalid input in execute function
 TEST(RecommendTest, ExecuteInvalidInput) {
     // create the instances, and make sure the data directory contains the right data
-    DBFile dbFile("../../../data");
+    DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
@@ -125,7 +126,7 @@ TEST(RecommendTest, ExecuteInvalidInput) {
 // Test case 2: Check only 1 movie: 1, in execute function
 TEST(RecommendTest, Execute_1_Movie) {
     // create the instances, and make sure the data directory contains the right data
-    DBFile dbFile("../../../data");
+    DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_2(db);
@@ -140,7 +141,7 @@ TEST(RecommendTest, Execute_1_Movie) {
 // Test case 3: Check only 3 movies: 1, 2, 3, in execute function
 TEST(RecommendTest, Execute_3_Movies) {
     // create the instances, and make sure the data directory contains the right data
-    DBFile dbFile("../../../data");
+    DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_3(db);
@@ -163,7 +164,7 @@ TEST(RecommendTest, Execute_3_Movies) {
 // Test case 4: Check regular case in execute function
 TEST(RecommendTest, ExecuteRegularCase) {
     // create the instances, and make sure the data directory contains the right data
-    DBFile dbFile("../../../data");
+    DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
@@ -178,7 +179,7 @@ TEST(RecommendTest, ExecuteRegularCase) {
 // Test case 5: Check description function
 TEST(RecommendTest, DescriptionFunction) {
     // create the instances, and make sure the data directory contains the right data
-    DBFile dbFile("../../../data");
+    DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
