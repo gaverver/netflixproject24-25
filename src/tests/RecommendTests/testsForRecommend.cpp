@@ -27,7 +27,7 @@ std::string captureOutput(const std::function<void()>& func) {
 }
 
 // Helper function to setup the data before testing test2
-void setup_for_test_2(const DBFile &db) {
+void setup_for_test_2(DBFile &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -37,7 +37,7 @@ void setup_for_test_2(const DBFile &db) {
 }
 
 // Helper function to setup the data before testing test3
-void setup_for_test_3(const DBFile &db) {
+void setup_for_test_3(DBFile &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -48,7 +48,7 @@ void setup_for_test_3(const DBFile &db) {
 }
 
 // Helper function to setup the data before testing test1, test4, test5
-void setup_for_tests_1_4_5(const DBFile &db) {
+void setup_for_tests_1_4_5(DBFile &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -72,7 +72,8 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    IMenu menu = new ConsoleMenu();
+    ConsoleMenu cm();
+    IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check what if user id is empty (should print nothing)
@@ -105,7 +106,7 @@ TEST(RecommendTest, ExecuteInvalidInput) {
 
     // check what if user id is above the maximum unsigned long int (should print nothing)
     unsigned long int maxULongInt = std::numeric_limits<unsigned long int>::max();
-    std::string maxPlusOne = std::to_string(static_cast<unsigned long long>(maxULongInt) + 1);
+    std::string maxPlusOne = std::to_string(static_cast<unsigned long int>(maxULongInt) + 1);
 
     output = captureOutput([&]() { recommend.execute({maxPlusOne, "104"}); });
     EXPECT_EQ(output, "");
@@ -130,7 +131,8 @@ TEST(RecommendTest, Execute_1_Movie) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_2(db);
-    IMenu menu = new ConsoleMenu();
+    ConsoleMenu cm();
+    IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result (should print nothing because there is no other movies to recommend on)
@@ -145,7 +147,8 @@ TEST(RecommendTest, Execute_3_Movies) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_test_3(db);
-    IMenu menu = new ConsoleMenu();
+    ConsoleMenu cm();
+    IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result
@@ -168,7 +171,8 @@ TEST(RecommendTest, ExecuteRegularCase) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    IMenu menu = new ConsoleMenu();
+    ConsoleMenu cm();
+    IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result (by the exercise1's pdf)
@@ -183,7 +187,8 @@ TEST(RecommendTest, DescriptionFunction) {
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
     setup_for_tests_1_4_5(db);
-    IMenu menu = new ConsoleMenu();
+    ConsoleMenu cm();
+    IMenu& menu = cm;
     recommendCommand recommend(db, menu);
 
     // check the result
