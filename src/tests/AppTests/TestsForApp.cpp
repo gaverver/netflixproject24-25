@@ -14,6 +14,11 @@
 #include <iostream>
 #include <sstream>
 
+IDataBase& getDB() {
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
+    return data;
+}
 
 // helper function to build App class
 AppTester build() {
@@ -33,7 +38,7 @@ AppTester build() {
     commands["add"] = add;
     commands["help"] = help;
     commands["recommend"] = recommend;
-    AppTester app(commands, data, menu);
+    AppTester app(commands, menu);
     return app;
 }
 
@@ -84,7 +89,7 @@ TEST(AppTests, HelpCommandTest) {
 TEST(AppTests, AddAndRecommendTest1) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // run the example from class about the add and recommend command.
     std::vector<std::string> commands = {"add 1 100 101 102 103", "add 2 101 102 104 105 106", "add 3 100 104 105 107 108", "add 4 101 105 106 107 109 110", "add 5 100 102 103 105 108 111", "add 6 100 103 104 110 111 112 113", "add 7 102 105 106 107 108 109 110", "add 8 101 104 105 106 109 111 114", "add 9 100 103 105 107 112 113 115", "add 10 100 102 105 106 107 109 110 116", "recommend 1 104"};
@@ -100,7 +105,7 @@ TEST(AppTests, AddAndRecommendTest1) {
 TEST(AppTests, AddAndHelpTest) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     std::vector<std::string> commands = {"add 1 100 101 102 103", "add 2 101 102 104 105 106", "add 3 100 104 105 107 108", "add 4 101 105 106", "add 4 107 109 110", "help", "add 5 100 102 103 105 108 111", "add 6 100 103 104 110 111 112 113", "add 7 102 105 106 107 108 109 110", "add 8 101 104 105 106 109 111 114"};
     // capture the output from the cout
@@ -129,7 +134,7 @@ TEST(AppTests, NonVolatileDataTest) {
     // check that the output is as it should be - meaning that the data was saved succefully inside the database
     std::string expectedOutput = "105 106 111 110 112 113 107 108 109 114\n";
     EXPECT_EQ(expectedOutput, printedOutput);
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     // clear the data for next usages
     data.cleanUp();
 }
@@ -137,7 +142,7 @@ TEST(AppTests, NonVolatileDataTest) {
 TEST(AppTests, MultipleSpacesTest) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // run commands with multiple spaces between words - this is the same example from the exercise.
     std::vector<std::string> commands = {"add 1 100     101 102    103", "add   2 101   102   104 105 106", "add 3 100 104 105   107 108", "add 4 101 105   106 107 109 110", "add 5   100 102   103 105 108 111", "add 6 100 103 104 110 111    112 113", "add 7 102 105 106 107 108   109 110", "add 8 101 104 105   106 109 111 114", "add 9 100 103   105 107 112 113   115", "add 10 100 102 105 106   107 109 110   116", "recommend 1    104"};
@@ -152,7 +157,7 @@ TEST(AppTests, MultipleSpacesTest) {
 TEST(AppTests, AddAndRecommendTest2) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // enter some add commands and recommend command to simulate possible input.
     std::vector<std::string> commands = {"add 1 1", "add 2 1 3", "add 3 2", "recommend 1 2"};
@@ -167,7 +172,7 @@ TEST(AppTests, AddAndRecommendTest2) {
 TEST(AppTests, DuplicateMoviesTest) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // this is the example from the exercise but we add duplicte movies to users in the add command - we want to check that it doesn't affect the recommendation and the saving in the db
     std::vector<std::string> commands = {"add 1 100 101 102 103", "add 2 101 102 104 104 104 104 105 106 105", "add 3 100 104 105 105 107 108", "add 4 101 105 106 107 107 109 110", "add 5 100 102 103 105 108 111", "add 6 100 103 104 110 111 112 112 112 113", "add 7 102 105 106 106 106 107 108 109 110", "add 8 101 104 105 106 109 111 114", "add 9 100 103 103 103 105 107 112 113 115", "add 10 100 102 105 106 107 109 110 116 116 116 116", "recommend 1 104"};
@@ -186,7 +191,7 @@ TEST(AppTests, DuplicateMoviesTest) {
 TEST(AppTests, InvalidInputTest1) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // enter some illegal commands and add and recommend commands
     std::vector<std::string> commands = {"add 1 1", "add 2 1 3", "add 3 2", "add 1 2 3 5 4 c", "add 2 p 3 c", "add f 1 1 1 2 2 2 3 3 3", "recommend 1 2", "recommend 1 c"};
@@ -210,7 +215,7 @@ TEST(AppTests, InvalidInputTest1) {
 TEST(AppTests, InvalidInputTest2) {
     // clear the databse before usage so there will not be data that is not needed there.
     AppTester app = build();
-    IDatabase& data = app.getDB();
+    IDatabase& data = getDB();
     data.cleanUp();
     // enter some commands that doesn't exist and add and help command 
     std::vector<std::string> commands = {"foo", "bar", "help", "add 1  2", "itzik", "recommend 1 2 3"};
