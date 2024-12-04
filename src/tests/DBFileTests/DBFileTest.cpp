@@ -255,6 +255,7 @@ TEST(DBFileTesting, FindUser) {
     //clean
     dbf.cleanUp();
 }
+
 //testing findMovie method
 TEST(DBFileTesting, FindMovie) {
     //creating instance of the DBFile initializing it with the data path
@@ -436,6 +437,50 @@ TEST(DBFileTesting, GetAllMovies) {
     //check movie list equality
     EXPECT_EQ(movies4ex,movies4out);
 
+
+    //clean
+    dbf.cleanUp();
+}
+
+//testing isUserExists method
+TEST(DBFileTesting, isUserExists) {
+    //creating instance of the DBFile initializing it with the data path
+    DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
+    //1 user: 1, watched 1 movie: 1
+    std::vector<unsigned long int> movies = {1};
+    dbf.updateMovie(1,movies);
+
+    //check if user 1 exists (supposed to get true)
+    bool isExist = dbf.isUserExists(1);
+    EXPECT_EQ(true,isExist);
+
+    //check if user 2 exists (supposed to get false)
+    isExist = dbf.isUserExists(2);
+    EXPECT_EQ(false,isExist);
+
+    //clean
+    dbf.cleanUp();
+}
+
+//testing isMovieExists method
+TEST(DBFileTesting, isMovieExists) {
+    //creating instance of the DBFile initializing it with the data path
+    DBFile dbf("../data");
+    //clean the files;
+    dbf.cleanUp();
+    //1 user: 1, watched 1 movie: 1
+    std::vector<unsigned long int> movies = {1};
+    dbf.updateMovie(1,movies);
+
+    //check if movie 1 exists (supposed to get true)
+    bool isExist = dbf.isMovieExists(1);
+    EXPECT_EQ(true,isExist);
+
+    //check if movie 2 exists (supposed to get false)
+    isExist = dbf.isMovieExists(2);
+    EXPECT_EQ(false,isExist);
 
     //clean
     dbf.cleanUp();

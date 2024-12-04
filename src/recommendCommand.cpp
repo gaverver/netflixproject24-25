@@ -78,19 +78,21 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
         return;
     }
 
-    // users who watched the movie 'mid'
-    std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
     // if the movie does not exist, execute of recommend should prints nothing
-    if () {
+    if (!db.isMovieExists(mid)) {
         return;
     }
 
-    // movies already watched by 'uid'
-    std::vector<unsigned long int> alreadyWatched = db.findUser(uid, isExist);
     // if the user does not exist, execute of recommend should prints nothing
-    if (!isExist) {
+    if (!db.isUserExists(uid)) {
         return;
     }
+
+    // users who watched the movie 'mid'
+    std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
+
+    // movies already watched by 'uid'
+    std::vector<unsigned long int> alreadyWatched = db.findUser(uid, isExist);
 
     // movies and their ratings according to the algorithm (rate = relevance)
     std::map<unsigned long int, int> rate;
