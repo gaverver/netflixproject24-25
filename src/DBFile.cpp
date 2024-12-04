@@ -239,6 +239,56 @@ void DBFile::cleanUp() {
     movies.close();
 }
 
+// this function gets 2 user ids, and return there common movies in a vector
 std::vector<unsigned long int> DBFile::getCommonMovies(unsigned long int uid1, unsigned long int uid2) {
-    return {};
+    // get the movies of user 1
+    std::vector<unsigned long int> mvs1 = this->findUser(uid1);
+    // get the movies of user 2
+    std::vector<unsigned long int> mvs2 = this->findUser(uid2);
+    // this will keep all the common movies of user 1 and user 2
+    std::vector<unsigned long int> commonMovies;
+    // initialize indices to traverse both vectors
+    int m1 = 0, m2 = 0;
+    
+    // since both vectors are sorted, we can use two pointers to find common elements
+    while (m1 < mvs1.size() && m2 < mvs2.size()) {
+        if (mvs1[m1] == mvs2[m2]) {
+            // add to commonMovies, then increment both pointers
+            commonMovies.push_back(mvs1[m1]);
+            m1++;
+            m2++;
+        }
+        else if (mvs1[m1] < mvs2[m2]) {
+            // increment m1 if the movie in mvs1 is smaller
+            m1++;
+        }
+        else {
+            // increment m2 if the movie in mvs2 is smaller
+            m2++;
+        }
+    }
+    return commonMovies;
+}
+//generic function to check if a user exists
+bool genericExists(unsigned long int id, std::string path) {
+    std::vector<unsigned long int> ids = {};
+    std::ifstream inFile(path);
+    std::string line = "garbage";
+    bool found = false;
+    //find the line
+    while (std::getline(inFile, line)) {
+        if (first_number(line) == id) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+//checks if a user exists
+bool DBFile::isUserExists(unsigned long int uid) {
+    return genericExists(uid, usersP);
+}
+//checks if a movie exists
+bool DBFile::isMovieExists(unsigned long int mid) {
+    return genericExists(mid, moviesP);
 }
