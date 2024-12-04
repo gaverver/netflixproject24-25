@@ -78,11 +78,10 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
         return;
     }
 
-    bool isExist = true;
     // users who watched the movie 'mid'
-    std::vector<unsigned long int> alikeUsers = db.findMovie(mid, isExist);
+    std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
     // if the movie does not exist, execute of recommend should prints nothing
-    if (!isExist) {
+    if () {
         return;
     }
 
