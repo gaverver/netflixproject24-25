@@ -11,7 +11,7 @@ std::string addCommand::description() const {
 // helper fuction that checks if the string is constructed from digits.
 bool isBuiltDigits(std::string str) {
     for (int i = 0; i < str.size(); i++) {
-        if (!('0' <= str[i] <= '9')) {
+        if (!(str[i] >= '0' && str[i] <= '9')) { 
             return false;
         }
     }
