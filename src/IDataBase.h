@@ -22,6 +22,10 @@ class IDataBase {
         virtual ~IDataBase() = default;
         //pure virtual method to cleans all data
         virtual void cleanUp() = 0;
+        //pure virtual method to check if a user exists
+        virtual bool isUserExists(unsigned long int uid) = 0;
+        //pure virtual method to check if a movie exists
+        virtual bool isMovieExists(unsigned long int mid) = 0;
 
 };
 
