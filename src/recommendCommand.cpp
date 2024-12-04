@@ -92,7 +92,7 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
     std::vector<unsigned long int> alikeUsers = db.findMovie(mid);
 
     // movies already watched by 'uid'
-    std::vector<unsigned long int> alreadyWatched = db.findUser(uid, isExist);
+    std::vector<unsigned long int> alreadyWatched = db.findUser(uid);
 
     // movies and their ratings according to the algorithm (rate = relevance)
     std::map<unsigned long int, int> rate;
