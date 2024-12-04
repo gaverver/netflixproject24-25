@@ -25,6 +25,10 @@ class DBFile : public IDataBase {
         virtual std::vector<unsigned long int> getAllMovies() override;
         //method to clean the data from the files
         virtual void cleanUp() override;
+        //pure virtual method to check if a user exists
+        virtual bool isUserExists(unsigned long int uid) override;
+        //pure virtual method to check if a movie exists
+        virtual bool isMovieExists(unsigned long int mid) override;
 };
 
 #endif

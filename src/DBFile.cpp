@@ -269,3 +269,26 @@ std::vector<unsigned long int> DBFile::getCommonMovies(unsigned long int uid1, u
     }
     return commonMovies;
 }
+//generic function to check if a user exists
+bool genericExists(unsigned long int id, std::string path) {
+    std::vector<unsigned long int> ids = {};
+    std::ifstream inFile(path);
+    std::string line = "garbage";
+    bool found = false;
+    //find the line
+    while (std::getline(inFile, line)) {
+        if (first_number(line) == id) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+//checks if a user exists
+bool DBFile::isUserExists(unsigned long int uid) {
+    return genericExists(uid, usersP);
+}
+//checks if a movie exists
+bool DBFile::isMovieExists(unsigned long int mid) {
+    return genericExists(mid, moviesP);
+}
