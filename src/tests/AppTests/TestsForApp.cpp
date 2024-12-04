@@ -33,7 +33,7 @@ AppTester build() {
     commands["add"] = add;
     commands["help"] = help;
     commands["recommend"] = recommend;
-    AppTester app(commands, help, menu);
+    AppTester app(commands, data, menu);
     return app;
 }
 
