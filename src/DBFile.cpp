@@ -112,9 +112,9 @@ DBFile::DBFile(std::string path) : path(path) {
     this->usersP = path + "/users.txt";
     this->moviesP = path + "/movies.txt";
     //create the files if they're not exists
-    std::ofstream users(usersP, std::ios::trunc);
+    std::ofstream users(usersP, std::ios::app);
     users.close();
-    std::ofstream movies(moviesP, std::ios::trunc);
+    std::ofstream movies(moviesP, std::ios::app);
     movies.close();
 }
 //generic function to update a file with primary id and a list of secondary ids
