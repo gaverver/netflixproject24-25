@@ -14,4 +14,5 @@ The application is about recommending movies to user based on data about all the
 ### spaces doesn't matter
 ![image](https://github.com/user-attachments/assets/ef6c8d10-78ce-4454-bc9c-e01ea096ba40)
 ### rcommendation test
-![image](https://github.com/user-attachments/assets/5d82a291-4443-4dfe-ae2b-28e989613fbb)
+![image](https://github.com/user-attachments/assets/78c3e14b-9ceb-4a28-9c38-bfe0d0b894d3)
+
