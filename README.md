@@ -1,4 +1,4 @@
-# Program Execution
+## Program Execution
 
 In order to run the application using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
@@ -13,7 +13,7 @@ Then, when you are all set up and have an image and a container, you need to run
    - **Run the container:**  
      `docker exec -it netflixcontainer ./netflix`  
 
-# Test Execution
+## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
