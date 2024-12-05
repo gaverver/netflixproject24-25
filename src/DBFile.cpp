@@ -111,7 +111,11 @@ DBFile::DBFile(std::string path) : path(path) {
     //userP is path to users.txt and moviesP is path to movies.txt
     this->usersP = path + "/users.txt";
     this->moviesP = path + "/movies.txt";
-    cleanUp();
+    //create the files if they're not exists
+    std::ofstream users(usersP, std::ios::trunc);
+    users.close();
+    std::ofstream movies(moviesP, std::ios::trunc);
+    movies.close();
 }
 //generic function to update a file with primary id and a list of secondary ids
 void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& ids, std::string path1) {
