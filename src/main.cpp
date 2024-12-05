@@ -17,11 +17,10 @@ int main(int argc, char** argv) {
     IDataBase& data = dbfile;
     ConsoleMenu cmenu;
     IMenu& menu = cmenu;
-    IMenu* helpMenu = new ConsoleMenu();
     // set up the command instances that will execute the commands
     ICommand* add = new addCommand(data);
     ICommand* recommend = new recommendCommand(data, menu);
-    ICommand* help = new helpCommand(helpCommands, helpMenu);
+    ICommand* help = new helpCommand(helpCommands, &menu);
     // add the command to the vector of help commands that help command will use
     helpCommands.push_back(add);
     helpCommands.push_back(recommend);
