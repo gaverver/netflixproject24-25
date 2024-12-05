@@ -10,11 +10,33 @@ The application designed to recommend movies to users. The recommendations are b
      return for a user a list of 10 recommended movies releted to a movie
 3. help  
      helps the end-user to learn about how to use the functionalities of the application
+## Program Execution
+
+In order to run the application using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+
+   1. **Create a new image:**  
+      `docker build -t netflix .`  
+
+   2. **Create a new container:**  
+      `docker run -d --name netflixcontainer netflix`  
+
+Then, when you are all set up and have an image and a container, you need to run the same container in order for the data to be saved between executions. Now, you **only** need to do this step to execute the program:  
+
+   - **Run the container:**  
+     `docker exec -it netflixcontainer ./netflix`  
+## Test Execution
+
+In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+
+   1. **Create a new image:**  
+      `docker build -f Dockerfile.tst -t netflix-tests .`  
+
+   2. **Create a new container:**  
+      `docker run netflix-tests`
+## data management
+The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of recommendation command, and saves space.
 ## running examples
 ### spaces doesn't matter & restart doesn't matter
 ![image](https://github.com/user-attachments/assets/ef6c8d10-78ce-4454-bc9c-e01ea096ba40)
 ### rcommendation test
 ![image](https://github.com/user-attachments/assets/78c3e14b-9ceb-4a28-9c38-bfe0d0b894d3)
-
-## data management
-The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of recommendation command, and saves space.
