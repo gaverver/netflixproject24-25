@@ -1,4 +1,4 @@
-# netflixproject24-25
+# recommendation system - excercise 1
 
 ## App Information
 ### what is the application about
