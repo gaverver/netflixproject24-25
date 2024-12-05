@@ -120,6 +120,8 @@ void genericUpdate(unsigned long int id, const std::vector<unsigned long int>& i
     idsCopy = std::move(ids);
     //sort the mids first
     std::sort(idsCopy.begin(), idsCopy.end());
+    //remove duplicates
+    removeDupSortVec(idsCopy);
     //input file to read
     std::ifstream inFile(path1);
     std::string line = "garbage";
