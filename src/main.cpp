@@ -6,6 +6,7 @@
 #include "App.h"
 #include "ConsoleMenu.h"
 #include "DBFile.h"
+#include "IDataBase.h"
 
 int main(int argc, char** argv) {
     // construct the app to be able to run it.
