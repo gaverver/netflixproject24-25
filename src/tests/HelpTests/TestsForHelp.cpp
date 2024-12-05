@@ -69,7 +69,7 @@ TEST(HelpTesting, ExecuteTest2) {
     commands.push_back(help1);
     commands.push_back(help2);
     commands.push_back(help3);
-    ICommand* helpRunner = new helpCommand(commands);
+    ICommand* helpRunner = new helpCommand(commands, menu);
     // run the execute function and capture it's output 
     std::string output = captureOutput(helpRunner);
     // the expected output is the description of each command that is in the vector

@@ -11,6 +11,10 @@ std::string helpCommand::description() const {
 
 
 void helpCommand::execute(const std::vector<std::string>& args) {
+    // invalid usage of help command - don't exec it
+    if (args.size() != 0) {
+        return;
+    }
     // iterates over all the commands inside the vector of commands and prints their description
     for (ICommand* command : commands) { 
         // checks if it is not null(so there will not be errors)
