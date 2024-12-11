@@ -13,6 +13,9 @@ public:
     // Pure virtual function to provide a description of the command
     virtual std::string description() const = 0;
 
+    // Pure virtual function to provide information: if th command is reader/writer/none.
+    virtual std::string rw_status() const = 0;
+    
     // Virtual destructor to ensure proper cleanup in derived classes
     virtual ~ICommand() = default;
 };
