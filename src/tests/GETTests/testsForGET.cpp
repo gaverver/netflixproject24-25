@@ -5,7 +5,7 @@
 #include <iostream>
 #include <limits>
 #include <functional>
-#include "../../recommendCommand.h"
+#include "../../GETCommand.h"
 #include "../../DBFile.h"
 #include "../../IMenu.h"
 #include "../../IDataBase.h"
@@ -66,7 +66,7 @@ void setup_for_tests_1_4_5(IDataBase &db) {
 }
 
 // Test case 1: Check invalid input in execute function
-TEST(RecommendTest, ExecuteInvalidInput) {
+TEST(GETTest, ExecuteInvalidInput) {
     // create the instances, and make sure the data directory contains the right data
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
@@ -74,55 +74,55 @@ TEST(RecommendTest, ExecuteInvalidInput) {
     setup_for_tests_1_4_5(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
-    recommendCommand recommend(db, menu);
+    GETCommand GET(db, menu);
 
     // check what if user id is empty (should print nothing)
-    auto output = captureOutput([&]() { recommend.execute({"", "104"}); });
+    auto output = captureOutput([&]() { GET.execute({"", "104"}); });
     EXPECT_EQ(output, "");
 
     // check what if user id is not an unsigned long int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"c", "123"}); });
+    output = captureOutput([&]() { GET.execute({"c", "123"}); });
     EXPECT_EQ(output, "");
 
     // check what if movie id is not an unsigned long int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "12x"}); });
+    output = captureOutput([&]() { GET.execute({"1", "12x"}); });
     EXPECT_EQ(output, "");
 
     // check what if user id is negative (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"-1", "104"}); });
+    output = captureOutput([&]() { GET.execute({"-1", "104"}); });
     EXPECT_EQ(output, "");
 
     // check what if movie id is negative (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "-104"}); });
+    output = captureOutput([&]() { GET.execute({"1", "-104"}); });
     EXPECT_EQ(output, "");
 
     // check what if only 1 argument (no movie id) (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"4"}); });
+    output = captureOutput([&]() { GET.execute({"4"}); });
     EXPECT_EQ(output, "");
 
     // check what if 3 arguments (too match) (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "104", "105"}); });
+    output = captureOutput([&]() { GET.execute({"1", "104", "105"}); });
     EXPECT_EQ(output, "");
 
     // check what if user id is above the maximum unsigned long int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"18446744073709551616", "104"}); });
+    output = captureOutput([&]() { GET.execute({"18446744073709551616", "104"}); });
     EXPECT_EQ(output, "");
 
     // check what if movie id is above the maximum unsigned long int (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "18446744073709551616"}); });
+    output = captureOutput([&]() { GET.execute({"1", "18446744073709551616"}); });
     EXPECT_EQ(output, "");
 
     // check what if user don't exist (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"11", "104"}); });
+    output = captureOutput([&]() { GET.execute({"11", "104"}); });
     EXPECT_EQ(output, "");
 
     // check what if movie don't exist (should print nothing)
-    output = captureOutput([&]() { recommend.execute({"1", "99"}); });
+    output = captureOutput([&]() { GET.execute({"1", "99"}); });
     EXPECT_EQ(output, "");
 }
 
 // Test case 2: Check only 1 movie: 1, in execute function
-TEST(RecommendTest, Execute_1_Movie) {
+TEST(GETTest, Execute_1_Movie) {
     // create the instances, and make sure the data directory contains the right data
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
@@ -130,15 +130,15 @@ TEST(RecommendTest, Execute_1_Movie) {
     setup_for_test_2(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
-    recommendCommand recommend(db, menu);
+    GETCommand GET(db, menu);
 
-    // check the result (should print nothing because there is no other movies to recommend on)
-    auto output = captureOutput([&]() { recommend.execute({"1", "1"}); });
+    // check the result (should print nothing because there is no other movies to GET)
+    auto output = captureOutput([&]() { GET.execute({"1", "1"}); });
     EXPECT_EQ(output, "\n");  // Adjust expected output
 }
 
 // Test case 3: Check only 3 movies: 1, 2, 3, in execute function
-TEST(RecommendTest, Execute_3_Movies) {
+TEST(GETTest, Execute_3_Movies) {
     // create the instances, and make sure the data directory contains the right data
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
@@ -146,23 +146,23 @@ TEST(RecommendTest, Execute_3_Movies) {
     setup_for_test_3(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
-    recommendCommand recommend(db, menu);
+    GETCommand GET(db, menu);
 
     // check the result
-    auto output = captureOutput([&]() { recommend.execute({"1", "1"}); });
+    auto output = captureOutput([&]() { GET.execute({"1", "1"}); });
     EXPECT_EQ(output, "3 2\n");
 
     // check the result
-    output = captureOutput([&]() { recommend.execute({"1", "2"}); });
+    output = captureOutput([&]() { GET.execute({"1", "2"}); });
     EXPECT_EQ(output, "3\n");
 
     // check the result
-    output = captureOutput([&]() { recommend.execute({"1", "3"}); });
+    output = captureOutput([&]() { GET.execute({"1", "3"}); });
     EXPECT_EQ(output, "2\n");
 }
 
 // Test case 4: Check regular case in execute function
-TEST(RecommendTest, ExecuteRegularCase) {
+TEST(GETTest, ExecuteRegularCase) {
     // create the instances, and make sure the data directory contains the right data
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
@@ -170,15 +170,15 @@ TEST(RecommendTest, ExecuteRegularCase) {
     setup_for_tests_1_4_5(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
-    recommendCommand recommend(db, menu);
+    GETCommand GET(db, menu);
 
     // check the result (by the exercise1's pdf)
-    auto output = captureOutput([&]() { recommend.execute({"1", "104"}); });
+    auto output = captureOutput([&]() { GET.execute({"1", "104"}); });
     EXPECT_EQ(output, "105 106 111 110 112 113 107 108 109 114\n");
 }
 
 // Test case 5: Check description function
-TEST(RecommendTest, DescriptionFunction) {
+TEST(GETTest, DescriptionFunction) {
     // create the instances, and make sure the data directory contains the right data
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
@@ -186,10 +186,10 @@ TEST(RecommendTest, DescriptionFunction) {
     setup_for_tests_1_4_5(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
-    recommendCommand recommend(db, menu);
+    GETCommand GET(db, menu);
 
     // check the result
-    EXPECT_EQ(recommend.description(), "recommend [userid] [movieid]");
+    EXPECT_EQ(GET.description(), "GET [userid] [movieid]");
 }
 
 

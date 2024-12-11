@@ -6,16 +6,16 @@
 #include <algorithm>
 #include <cctype>
 #include <limits>
-#include "recommendCommand.h"
+#include "GETCommand.h"
 #include "IDataBase.h"
 #include "IMenu.h"
 #include "PublicFunctions.h"
 
 // constructor
-recommendCommand::recommendCommand(IDataBase& db, IMenu& menu) : db(db), menu(menu) {}
+GETCommand::GETCommand(IDataBase& db, IMenu& menu) : db(db), menu(menu) {}
 
 // execute, inherited from Command class
-void recommendCommand::execute(const std::vector<std::string>& args) {
+void GETCommand::execute(const std::vector<std::string>& args) {
     // suppose to be only user id and movie id which are unsigned long int
     if (args.size() != 2) {
         return;
@@ -26,24 +26,24 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
 
     // casting the first argument from string to unsigned long int
     unsigned long int uid = fromStringToULI(args[0], isValid);
-    // if the casting has failed, execute of recommend should prints nothing
+    // if the casting has failed, execute of GET should prints nothing
     if (!isValid) {
         return;
     }
 
     // casting the second argument from string to unsigned long int
     unsigned long int mid = fromStringToULI(args[1], isValid);
-    // if the casting has failed, execute of recommend should prints nothing
+    // if the casting has failed, execute of GET should prints nothing
     if (!isValid) {
         return;
     }
 
-    // if the movie does not exist, execute of recommend should prints nothing
+    // if the movie does not exist, execute of GET should prints nothing
     if (!db.isMovieExists(mid)) {
         return;
     }
 
-    // if the user does not exist, execute of recommend should prints nothing
+    // if the user does not exist, execute of GET should prints nothing
     if (!db.isUserExists(uid)) {
         return;
     }
@@ -117,8 +117,8 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
 }
 
 // description, inherited from Command class
-std::string recommendCommand::description() const {
-    // simply returns the description of recommend
+std::string GETCommand::description() const {
+    // simply returns the description of GET
     return "recommend [userid] [movieid]";
 }
 

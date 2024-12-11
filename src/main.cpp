@@ -2,7 +2,7 @@
 #include "ICommand.h"
 #include "addCommand.h"
 #include "helpCommand.h"
-#include "recommendCommand.h"
+#include "GETCommand.h"
 #include "App.h"
 #include "ConsoleMenu.h"
 #include "DBFile.h"
@@ -19,16 +19,16 @@ int main(int argc, char** argv) {
     IMenu& menu = cmenu;
     // set up the command instances that will execute the commands
     ICommand* add = new addCommand(data);
-    ICommand* recommend = new recommendCommand(data, menu);
+    ICommand* GET = new GETCommand(data, menu);
     ICommand* help = new helpCommand(helpCommands, &menu);
     // add the command to the vector of help commands that help command will use
     helpCommands.push_back(add);
-    helpCommands.push_back(recommend);
+    helpCommands.push_back(GET);
     helpCommands.push_back(help);
     // map the commands to the appropriate instances of commands
     commands["add"] = add;
     commands["help"] = help;
-    commands["recommend"] = recommend;
+    commands["GET"] = GET;
     // create App object
     App app(commands, menu);
     // Call the run function - this will run the app
