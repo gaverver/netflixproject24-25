@@ -522,6 +522,9 @@ TEST(DBFileTesting, DeleteMovies) {
     //delete everything + things that doesn't exists
     dbf.deleteMovies(1,{109,107,103,104,105,102,106,101});
     EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{});
+    //deleting non existing user
+    dbf.deleteMovies(2,{1,2,3});
+    EXPECT_EQ(dbf.findUser(2), std::vector<unsigned long int>{});
     //clean
     dbf.cleanUp();
 }
@@ -563,6 +566,9 @@ TEST(DBFileTesting, DeleteUsers) {
     //delete everything + things that doesn't exists
     dbf.deleteUsers(1,{109,107,103,104,105,102,106,101});
     EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{});
+    //deleting non existing movie
+    dbf.deleteUsers(2,{1,2,3});
+    EXPECT_EQ(dbf.findMovie(2), std::vector<unsigned long int>{});
     //clean
     dbf.cleanUp();
 }
