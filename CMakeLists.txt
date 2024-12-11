@@ -31,6 +31,6 @@ file(GLOB TESTS
 )
 
 #Correct paths relative to /usr/src/myapp when CMake is run from the build directory
-add_executable(runTests ${SOURCES_AND_HEADERS} ./src/tests/DBFileTests/DBFileTest.cpp)
+add_executable(runTests ${SOURCES_AND_HEADERS} ${TESTS})
 
 target_link_libraries(runTests gtest_main)
