@@ -1,5 +1,5 @@
-#ifndef RECOMMENDCOMMAND_H
-#define RECOMMENDCOMMAND_H
+#ifndef GETCOMMAND_H
+#define GETCOMMAND_H
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 #include "IDataBase.h"
 #include "IMenu.h"
 
-class recommendCommand : public ICommand {
+class GETCommand : public ICommand {
 private:
     // reference to the database, to use the data
     IDataBase& db;
@@ -16,7 +16,7 @@ private:
     
 public:
     // constructor
-    recommendCommand(IDataBase& db, IMenu& menu);
+    GETCommand(IDataBase& db, IMenu& menu);
 
     // methods inherited from Command class
     void execute(const std::vector<std::string>& args) override;
