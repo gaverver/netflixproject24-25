@@ -2,7 +2,7 @@
 #include <cctype>
 #include "PublicFunctions.h"
 
-unsigned long int PublicFunctions::fromStringToULI(const std::string& str, bool& isValid) {
+unsigned long int fromStringToULI(const std::string& str, bool& isValid) {
     isValid = true;
 
     // Check for empty string

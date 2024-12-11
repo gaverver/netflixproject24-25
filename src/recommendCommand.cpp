@@ -25,14 +25,14 @@ void recommendCommand::execute(const std::vector<std::string>& args) {
     bool isValid = true;
 
     // casting the first argument from string to unsigned long int
-    unsigned long int uid = PublicFunctions::fromStringToULI(args[0], isValid);
+    unsigned long int uid = fromStringToULI(args[0], isValid);
     // if the casting has failed, execute of recommend should prints nothing
     if (!isValid) {
         return;
     }
 
     // casting the second argument from string to unsigned long int
-    unsigned long int mid = PublicFunctions::fromStringToULI(args[1], isValid);
+    unsigned long int mid = fromStringToULI(args[1], isValid);
     // if the casting has failed, execute of recommend should prints nothing
     if (!isValid) {
         return;
