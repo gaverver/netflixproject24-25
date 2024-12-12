@@ -77,7 +77,7 @@ void sendToServer(const std::string& data) {
     }
 }
 
-int readFromServer((char *) &buffer, int data_len) {
+int readFromServer(char *buffer, int data_len) {
     int read_bytes = recv(server_socket, buffer, data_len, 0);
     buffer[read_bytes] = '\0';
     return read_bytes;
