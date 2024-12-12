@@ -57,7 +57,7 @@ TEST(HelpTesting, ExecuteTest1) {
     // run the execute function and capture it's output 
     std::string output = captureOutput(helpRunner, args);
     // the expected output is the description of each command that is in the vector
-    std::string expected = "200 OK\n\nhelp\nhelp\nhelp\n";
+    std::string expected = "200 Ok\n\nhelp\nhelp\nhelp\n";
     // compare between the outputs - we check if the output is as it should be
     EXPECT_EQ(output, expected);
 }
@@ -81,7 +81,7 @@ TEST(HelpTesting, ExecuteTest2) {
     // run the execute function and capture it's output 
     std::string output = captureOutput(helpRunner, args);
     // the expected output is the description of each command that is in the vector
-    std::string expected = "200 OK\n\nhelp\nhelp\nhelp\nhelp\n";
+    std::string expected = "200 Ok\n\nhelp\nhelp\nhelp\nhelp\n";
     // compare between the outputs - we check if the output is as it should be
     EXPECT_EQ(output, expected);
 }
@@ -102,7 +102,7 @@ TEST(HelpTesting, ExecuteFromVector) {
     // run the execute function with an instance of help that is already in the vector and capture it's output 
     std::string output = captureOutput(help, args);
     // the expected output is the description of each command that is in the vector
-    std::string expected = "200 OK\n\nhelp\nhelp\nhelp\n";
+    std::string expected = "200 Ok\n\nhelp\nhelp\nhelp\n";
     // compare between the outputs - we check if the output is as it should be
     EXPECT_EQ(output, expected);
 }
