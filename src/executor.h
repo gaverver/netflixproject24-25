@@ -6,7 +6,7 @@
 class executor {
 public:
     // pure virtual function: execute - executes the given runnable
-    virtual void execute(Runnable r) = 0;
+    virtual void execute(Runnable& r) = 0;
 };
 
 #endif
