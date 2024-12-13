@@ -6,13 +6,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "socketMenu.h"
-//constructor for the socketMenu
-socketMenu::socketMenu(int client_socket) : client_socket(client_socket) {
+#include "SocketMenu.h"
+//constructor for the SocketMenu
+SocketMenu::SocketMenu(int client_socket) : client_socket(client_socket) {
     bufferSize = sizeof(buffer);
 }
 
-std::string socketMenu::scan() {
+std::string SocketMenu::scan() {
     int read_bytes =  recv(client_socket, buffer, bufferSize,0);
     //connection never closed so read_bytes=0 dosen't close it
     if (read_bytes < 0) {
@@ -26,6 +26,6 @@ std::string socketMenu::scan() {
     return s;
 }
 
-void socketMenu::print(std::string output) {
+void SocketMenu::print(std::string output) {
     send(client_socket, output.data(), output.size(), 0);
 }

@@ -12,6 +12,6 @@ public:
     // method to get an input from the user from the console.
     std::string scan() override;
     // method to get the command that the user enters.
-    std::vector<std::string> nextCommand() override;
+    std::vector<std::string> nextCommand();
 };
 #endif
