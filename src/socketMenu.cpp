@@ -27,5 +27,6 @@ std::string SocketMenu::scan() {
 }
 
 void SocketMenu::print(std::string output) {
+    output += '\n';
     send(client_socket, output.data(), output.size(), 0);
 }
