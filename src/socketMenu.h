@@ -8,6 +8,8 @@
 class socketMenu : public IMenu {
     private:
         int client_socket;
+        char buffer[4096];
+        int bufferSize;
     public:
         //constructor for the class
         socketMenu(int client_socket);
