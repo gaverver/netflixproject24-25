@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
-
+#include "../../SocketMenu.h"
 
 const int server_port = 5555;
 int client_socket;
