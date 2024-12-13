@@ -17,7 +17,5 @@ class SocketMenu : public IMenu {
         void print(std::string output) override;
         // method to scan user command line from the socket.
         std::string scan();
-        // method to get the command that the user entered.
-        std::vector<std::string>nextCommand () override;
     };
 #endif

@@ -13,4 +13,3 @@ std::string ConsoleMenu::scan() {
     // return the scanned input
     return input;
 }
-
