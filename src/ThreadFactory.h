@@ -4,7 +4,7 @@
 
 #include "executor.h"
 
-// ThreadFactory interface
+// ThreadFactory class
 class ThreadFactory : public executor {
 public:
     // function to execute the runnable object.
