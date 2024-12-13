@@ -496,35 +496,35 @@ TEST(DBFileTesting, DeleteMovies) {
     dbf.updateUser(1, {101,102,103,104,105,106,107,108,109,110});
     //remove last two
     dbf.deleteMovies(1,{110,109});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{101,102,103,104,105,106,107,108});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{101,102,103,104,105,106,107,108}));
     //remove first three
     dbf.deleteMovies(1,{101,103,102});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{104,105,106,107,108});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{104,105,106,107,108}));
     //remove middle three
     dbf.deleteMovies(1,{106,107,105});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{104,108});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{104,108}));
     //add some ids
     dbf.updateUser(1,{100,106,105,101,109,110});
     //remove the ones in odd index
     dbf.deleteMovies(1,{100,104,106,109});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete nothing
     dbf.deleteMovies(1,{});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete something that doesn't exists
     dbf.deleteMovies(1,{100,103,102});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete everything
     dbf.deleteMovies(1,{101,105,108,110});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{}));
     //add some ids
     dbf.updateUser(1, {101,102,103,104});
     //delete everything + things that doesn't exists
     dbf.deleteMovies(1,{109,107,103,104,105,102,106,101});
-    EXPECT_EQ(dbf.findUser(1), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{}));
     //deleting non existing user
     dbf.deleteMovies(2,{1,2,3});
-    EXPECT_EQ(dbf.findUser(2), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findUser(2), (std::vector<unsigned long int>{}));
     //clean
     dbf.cleanUp();
 }
@@ -540,35 +540,35 @@ TEST(DBFileTesting, DeleteUsers) {
     dbf.updateMovie(1, {101,102,103,104,105,106,107,108,109,110});
     //remove last two
     dbf.deleteUsers(1,{110,109});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{101,102,103,104,105,106,107,108});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{101,102,103,104,105,106,107,108}));
     //remove first three
     dbf.deleteUsers(1,{101,103,102});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{104,105,106,107,108});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{104,105,106,107,108}));
     //remove middle three
     dbf.deleteUsers(1,{106,107,105});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{104,108});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{104,108}));
     //add some ids
     dbf.updateMovie(1,{100,106,105,101,109,110});
     //remove the ones in odd index
     dbf.deleteUsers(1,{100,104,106,109});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete nothing
     dbf.deleteUsers(1,{});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete something that doesn't exists
     dbf.deleteUsers(1,{100,103,102});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{101,105,108,110});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{101,105,108,110}));
     //delete everything
     dbf.deleteUsers(1,{101,105,108,110});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{}));
     //add some ids
     dbf.updateMovie(1, {101,102,103,104});
     //delete everything + things that doesn't exists
     dbf.deleteUsers(1,{109,107,103,104,105,102,106,101});
-    EXPECT_EQ(dbf.findMovie(1), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findMovie(1), (std::vector<unsigned long int>{}));
     //deleting non existing movie
     dbf.deleteUsers(2,{1,2,3});
-    EXPECT_EQ(dbf.findMovie(2), std::vector<unsigned long int>{});
+    EXPECT_EQ(dbf.findMovie(2), (std::vector<unsigned long int>{}));
     //clean
     dbf.cleanUp();
 }

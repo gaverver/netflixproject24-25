@@ -26,6 +26,10 @@ class IDataBase {
         virtual bool isUserExists(unsigned long int uid) = 0;
         //pure virtual method to check if a movie exists
         virtual bool isMovieExists(unsigned long int mid) = 0;
+        //pure virtual method to delete users from a movie
+        virtual void deleteUsers(unsigned long int mid, const std::vector<unsigned long int>& uids) = 0;
+        //pure virtual method to delete movies from a user
+        virtual void deleteMovies(unsigned long int uid, const std::vector<unsigned long int>& mids) = 0;
 
 };
 

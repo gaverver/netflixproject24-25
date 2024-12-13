@@ -298,3 +298,97 @@ bool DBFile::isUserExists(unsigned long int uid) {
 bool DBFile::isMovieExists(unsigned long int mid) {
     return genericExists(mid, moviesP);
 }
+
+std::string deleteIds(const std::string& line, std::vector<unsigned long int>& ids) {
+    //remove duplicates from ids
+    removeDupSortVec(ids);
+    //define a stream for reading from the line
+    std::istringstream stream(line);
+    std::string deletedLine;
+    //reading the first word to the merged line (primary key)
+    stream >> deletedLine;
+    //add the space after the first word
+    deletedLine += " ";
+    //reading the other numbers in the line
+    unsigned long int lineId;
+    stream >> lineId;
+    //i is index for iterating over ids
+    size_t i=0;
+    //id is ids[i]
+    unsigned long int id;
+    //merging the ids
+    while (!stream.eof() && i<ids.size()) {
+        id = ids[i];
+        if (id < lineId) {
+            //id won't be in the line
+            i++;
+        } else if (id > lineId) {
+            //add the smaller id to the file
+            deletedLine += std::to_string(lineId) + " ";
+            stream >> lineId;
+        } else {
+            //there are no duplicates in line and in ids, so just increment the indexes by 1
+            i++;
+            stream >> lineId;
+        }
+    }
+    //add what's left to the merged line
+    if (i >= ids.size()) {
+        while (!stream.eof()) {
+            deletedLine += std::to_string(lineId) + " ";
+            stream >> lineId;
+        }
+    }
+    return deletedLine;
+}
+
+void genericDelete(unsigned long int id, const std::vector<unsigned long int>& ids, std::string path1) {
+    //create a copy of mids because it's a const
+    std::vector<unsigned long int> idsCopy;
+    idsCopy = std::move(ids);
+    //sort the mids first
+    std::sort(idsCopy.begin(), idsCopy.end());
+    //remove duplicates
+    removeDupSortVec(idsCopy);
+    //input file to read
+    std::ifstream inFile(path1);
+    std::string line = "garbage";
+    //counter for the line
+    unsigned long int k=0;
+    //represents if we found the wanted line
+    bool found = false;
+    while (std::getline(inFile, line)) {
+        k++;
+        if (first_number(line) == id) {
+            found = true;
+            break;
+        }
+    }
+    inFile.close();
+    if (found) {
+        //modify the line
+        std::string modifiedLine = deleteIds(line, idsCopy);
+        modifyFileLine(path1, k, modifiedLine);
+    }
+}
+//deletes movies from a given user
+void DBFile::deleteMovies(unsigned long int uid, const std::vector<unsigned long int>& mids) {
+    //delete the movies from users.txt
+    genericDelete(uid, mids, usersP);
+    std::vector<unsigned long int> uidVec = {uid};
+    //for each movie delete the user in movies.txt
+    for (unsigned long int mid: mids) {
+        genericDelete(mid, uidVec, moviesP);
+    }
+}
+
+//deletes users from a given movie
+void DBFile::deleteUsers(unsigned long int mid, const std::vector<unsigned long int>& uids) {
+    //delete the users from movies.txt
+    genericDelete(mid, uids, moviesP);
+    std::vector<unsigned long int> midVec = {mid};
+    //for each user delete the movie in users.txt
+    for (unsigned long int uid: uids) {
+        genericDelete(uid, midVec, usersP);
+    }
+}
