@@ -19,8 +19,8 @@ std::string SocketMenu::scan() {
         //continue the program
         return "";
     }
-    //add \0 so the string knows where to stop
-    buffer[read_bytes] = '\0';
+    //add \0 to override \n so the string knows where to stop
+    buffer[read_bytes-1] = '\0';
     std::string s(buffer);
     //return the string
     return s;
