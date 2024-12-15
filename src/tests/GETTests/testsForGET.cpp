@@ -27,7 +27,7 @@ std::string captureOutput(const std::function<void()>& func) {
 }
 
 // Helper function to setup the data before testing test2
-void setup_for_test_2(IDataBase &db) {
+void setup_pos1(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -37,7 +37,7 @@ void setup_for_test_2(IDataBase &db) {
 }
 
 // Helper function to setup the data before testing test3
-void setup_for_test_3(IDataBase &db) {
+void setup_pos2(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -48,7 +48,7 @@ void setup_for_test_3(IDataBase &db) {
 }
 
 // Helper function to setup the data before testing test1, test4, test5
-void setup_for_tests_1_4_5(IDataBase &db) {
+void setup_pos3(IDataBase &db) {
     // clean up the data in db if there is
     db.cleanUp();
 
@@ -71,54 +71,54 @@ TEST(GETTest, ExecuteInvalidInput) {
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
-    setup_for_tests_1_4_5(db);
+    setup_pos3(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
     // check what if user id is empty (should print nothing)
     auto output = captureOutput([&]() { GET.execute({"", "104"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if user id is not an unsigned long int (should print nothing)
     output = captureOutput([&]() { GET.execute({"c", "123"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if movie id is not an unsigned long int (should print nothing)
     output = captureOutput([&]() { GET.execute({"1", "12x"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if user id is negative (should print nothing)
     output = captureOutput([&]() { GET.execute({"-1", "104"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if movie id is negative (should print nothing)
     output = captureOutput([&]() { GET.execute({"1", "-104"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if only 1 argument (no movie id) (should print nothing)
     output = captureOutput([&]() { GET.execute({"4"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if 3 arguments (too match) (should print nothing)
     output = captureOutput([&]() { GET.execute({"1", "104", "105"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if user id is above the maximum unsigned long int (should print nothing)
     output = captureOutput([&]() { GET.execute({"18446744073709551616", "104"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if movie id is above the maximum unsigned long int (should print nothing)
     output = captureOutput([&]() { GET.execute({"1", "18446744073709551616"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if user don't exist (should print nothing)
     output = captureOutput([&]() { GET.execute({"11", "104"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "404 Not Found\n");
 
     // check what if movie don't exist (should print nothing)
     output = captureOutput([&]() { GET.execute({"1", "99"}); });
-    EXPECT_EQ(output, "");
+    EXPECT_EQ(output, "404 Not Found\n");
 }
 
 // Test case 2: Check only 1 movie: 1, in execute function
@@ -127,14 +127,14 @@ TEST(GETTest, Execute_1_Movie) {
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
-    setup_for_test_2(db);
+    setup_pos1(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
     // check the result (should print nothing because there is no other movies to GET)
     auto output = captureOutput([&]() { GET.execute({"1", "1"}); });
-    EXPECT_EQ(output, "\n");  // Adjust expected output
+    EXPECT_EQ(output, "200 Ok\n\n\n");  // Adjust expected output
 }
 
 // Test case 3: Check only 3 movies: 1, 2, 3, in execute function
@@ -143,22 +143,22 @@ TEST(GETTest, Execute_3_Movies) {
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
-    setup_for_test_3(db);
+    setup_pos2(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
     // check the result
     auto output = captureOutput([&]() { GET.execute({"1", "1"}); });
-    EXPECT_EQ(output, "3 2\n");
+    EXPECT_EQ(output, "200 Ok\n\n3 2\n");
 
     // check the result
     output = captureOutput([&]() { GET.execute({"1", "2"}); });
-    EXPECT_EQ(output, "3\n");
+    EXPECT_EQ(output, "200 Ok\n\n3\n");
 
     // check the result
     output = captureOutput([&]() { GET.execute({"1", "3"}); });
-    EXPECT_EQ(output, "2\n");
+    EXPECT_EQ(output, "200 Ok\n\n2\n");
 }
 
 // Test case 4: Check regular case in execute function
@@ -167,14 +167,14 @@ TEST(GETTest, ExecuteRegularCase) {
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
-    setup_for_tests_1_4_5(db);
+    setup_pos3(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
     // check the result (by the exercise1's pdf)
     auto output = captureOutput([&]() { GET.execute({"1", "104"}); });
-    EXPECT_EQ(output, "105 106 111 110 112 113 107 108 109 114\n");
+    EXPECT_EQ(output, "200 Ok\n\n105 106 111 110 112 113 107 108 109 114\n");
 }
 
 // Test case 5: Check description function
@@ -183,13 +183,28 @@ TEST(GETTest, DescriptionFunction) {
     DBFile dbFile("../data");
     IDataBase& db = dbFile;
     // you could see the data in the setup function fitted to this test
-    setup_for_tests_1_4_5(db);
+    setup_pos3(db);
     ConsoleMenu cm;
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
     // check the result
-    EXPECT_EQ(GET.description(), "GET [userid] [movieid]");
+    EXPECT_EQ(GET.description(), "GET, arguments: [userid] [movieid]");
+}
+
+// Test case 6: Check rw_status function
+TEST(GETTest, rw_statusFunction) {
+    // create the instances, and make sure the data directory contains the right data
+    DBFile dbFile("../data");
+    IDataBase& db = dbFile;
+    // you could see the data in the setup function fitted to this test
+    setup_pos3(db);
+    ConsoleMenu cm;
+    IMenu& menu = cm;
+    GETCommand GET(db, menu);
+
+    // check the result
+    EXPECT_EQ(GET.rw_status(), "reader");
 }
 
 
