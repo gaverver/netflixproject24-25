@@ -46,10 +46,9 @@ std::string captureOutput(std::vector<std::string> commands) {
     std::vector<ICommand*> helpCommands;
     ConsoleMenu cmenu;
     IMenu& menu = cmenu;
-    IMenu* helpMenu = new ConsoleMenu();
     ICommand* add = new addCommand(data);
     ICommand* GET = new GETCommand(data, menu);
-    ICommand* help = new helpCommand(helpCommands, helpMenu);
+    ICommand* help = new helpCommand(helpCommands, menu);
     helpCommands.push_back(add);
     helpCommands.push_back(GET);
     helpCommands.push_back(help);

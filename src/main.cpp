@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     // set up the command instances that will execute the commands
     ICommand* add = new addCommand(data);
     ICommand* GET = new GETCommand(data, menu);
-    ICommand* help = new helpCommand(helpCommands, &menu);
+    ICommand* help = new helpCommand(helpCommands, menu);
     // add the command to the vector of help commands that help command will use
     helpCommands.push_back(add);
     helpCommands.push_back(GET);
