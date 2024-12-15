@@ -16,6 +16,6 @@ class SocketMenu : public IMenu {
         // method to send a given input to the client through the socket.
         void print(std::string output) override;
         // method to scan user command line from the socket.
-        std::string scan();
+        std::string scan() override;
     };
 #endif

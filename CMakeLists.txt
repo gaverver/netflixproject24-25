@@ -23,7 +23,7 @@ file(GLOB SOURCES_AND_HEADERS
 # Explicitly remove app.cpp and app.h
 list(REMOVE_ITEM SOURCES_AND_HEADERS
     "${CMAKE_SOURCE_DIR}/src/main.cpp"
-)
+) 
 
 file(GLOB TESTS 
     ${CMAKE_SOURCE_DIR}/src/tests/*/*.cpp
