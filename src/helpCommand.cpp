@@ -32,8 +32,8 @@ void helpCommand::execute(const std::vector<std::string>& args) {
 }
 
 std::string helpCommand::rw_status() const {
-    // the function returns "None" as help command isn't a reader or writer 
-    return "None";
+    // the function returns "none" as help command isn't a reader or writer 
+    return "none";
 }
 
 
