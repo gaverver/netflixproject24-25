@@ -25,7 +25,8 @@ std::string captureOutput(ICommand* Runner, const std::vector<std::string>& args
 // Test that checks that the return value of the description function is as it should be 
 TEST(HelpTesting, DescriptionTest) {
     std::vector<ICommand*> commands;
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     helpCommand* h = new helpCommand(commands, menu);
     // checks if the return value of the function is equal to "help" - as it should because it describes the command
     EXPECT_EQ(h->description(), "help");
@@ -34,7 +35,8 @@ TEST(HelpTesting, DescriptionTest) {
 // Test that checks that the return value of the rw_status function
 TEST(HelpTesting, rw_statusTest) {
     std::vector<ICommand*> commands;
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     helpCommand* h = new helpCommand(commands, menu);
     // checks if the return value of the function is equal to "None" - as it should because help doesn't read/write
     EXPECT_EQ(h->rw_status(), "None");
@@ -43,7 +45,8 @@ TEST(HelpTesting, rw_statusTest) {
 // test for execute function
 TEST(HelpTesting, ExecuteTest1) {
     std::vector<std::string> args;
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     std::vector<ICommand*> commands;
     // create instances of helpCommand class
     ICommand* help = new helpCommand(commands, menu);
@@ -65,7 +68,8 @@ TEST(HelpTesting, ExecuteTest1) {
 // test for execute function
 TEST(HelpTesting, ExecuteTest2) {
     std::vector<std::string> args;
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     std::vector<ICommand*> commands;
     // create instances of helpCommand class
     ICommand* help = new helpCommand(commands, menu);
@@ -89,7 +93,8 @@ TEST(HelpTesting, ExecuteTest2) {
 // test for execute function
 TEST(HelpTesting, ExecuteFromVector) {
     std::vector<std::string> args;
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     std::vector<ICommand*> commands;
     // create instances of helpCommand class
     ICommand* help = new helpCommand(commands, menu);
@@ -111,7 +116,8 @@ TEST(HelpTesting, ExecuteFromVector) {
 TEST(HelpTesting, InvalidInputTest) {
     std::vector<std::string> args;
     args.push_back("x");
-    IMenu* menu = new ConsoleMenu();
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
     std::vector<ICommand*> commands;
     // create instances of helpCommand class
     ICommand* help = new helpCommand(commands, menu);
