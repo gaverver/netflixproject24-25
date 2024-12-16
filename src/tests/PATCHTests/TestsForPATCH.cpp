@@ -307,6 +307,8 @@ TEST(PATCHTesting, InvalidInputTest404) {
     std::string output = captureOutput(patch, args);
     // check if the correct string was printed - the user doesn't exist so it is logically incorrect usage.
     EXPECT_EQ(output, "404 Not Found\n");
+    // check that the user wasn't added to the db.
+    EXPECT_EQ(db.isUserExists(5), false);
 
     // clear the files after the test
     test.cleanUp();
