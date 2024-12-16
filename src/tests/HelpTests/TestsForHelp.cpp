@@ -38,8 +38,8 @@ TEST(HelpTesting, rw_statusTest) {
     ConsoleMenu cmenu;
     IMenu& menu = cmenu;
     helpCommand* h = new helpCommand(commands, menu);
-    // checks if the return value of the function is equal to "None" - as it should because help doesn't read/write
-    EXPECT_EQ(h->rw_status(), "None");
+    // checks if the return value of the function is equal to "none" - as it should because help doesn't read/write
+    EXPECT_EQ(h->rw_status(), "none");
 }
 
 // test for execute function
