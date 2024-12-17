@@ -3,6 +3,8 @@
 #include "../../IDataBase.h"
 #include "../../DBFile.h"
 #include "../../POSTCommand.h"
+#include "../../IMenu.h"
+#include "../../ConsoleMenu.h"
 
 #include <fstream>
 #include <vector>
@@ -28,7 +30,9 @@ std::string captureOutput(ICommand* Runner, const std::vector<std::string>& args
 TEST(POSTTesting, DescriptionTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     // checks if the return value of the function is equal to "POST [userid] [movieid1] [movieid2] ..." - as it should because it describes the command
     EXPECT_EQ(post->description(), "POST, arguments: [userid] [movieid1] [movieid2] ...");
 }
@@ -37,7 +41,9 @@ TEST(POSTTesting, DescriptionTest) {
 TEST(POSTTesting, rwStatusTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     // checks if the return value of the function is equal to "writer" - as the commands writes to the DB.
     EXPECT_EQ(post->rw_status(), "writer");
 }
@@ -49,7 +55,9 @@ TEST(POSTTesting, SimpleExecuteTest) {
     IDataBase& test = dbFile;
     // clear the files before testing
     test.cleanUp();
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     std::vector<std::string> args;
     // execute the command POST 101 102
     args.push_back("101");
@@ -79,7 +87,9 @@ TEST(POSTTesting, SimpleExecuteTest) {
 TEST(POSTTesting, MultipleMoviesOneUserTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     std::vector<std::string> args;
     // execute the command POST 2 3 4
     args.push_back("2");
@@ -117,7 +127,9 @@ TEST(POSTTesting, MultipleMoviesOneUserTest) {
 TEST(POSTTesting, MultipleMoviesMultipleUsersTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
 
     std::vector<std::string> args1;
     // execute the command POST 2 3 4
@@ -191,7 +203,9 @@ TEST(POSTTesting, MultipleMoviesMultipleUsersTest) {
 TEST(POSTTesting, InvalidInputTest400) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;    
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     std::vector<std::string> args;
     // execute the command POST 5 6
     args.push_back("5");
@@ -264,7 +278,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(post, args);
+    output = captureOutput(post, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -284,7 +298,9 @@ TEST(POSTTesting, InvalidInputTest400) {
 TEST(POSTTesting, InvalidInputTest404) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;    
-    ICommand* post = new POSTCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* post = new POSTCommand(test, menu);
     std::vector<std::string> args;
     // execute the command POST 5 6
     args.push_back("5");
