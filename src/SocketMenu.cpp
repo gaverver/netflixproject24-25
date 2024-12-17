@@ -47,6 +47,7 @@ bool SocketMenu::isConnected() {
     int read_bytes = recv(client_socket, buffer1, sizeof(buffer1), MSG_PEEK);
     if (read_bytes == 0) {
         //connection closed
+        close(client_socket);
         return false;
     } else if (read_bytes < 0) {
         if (errno == EAGAIN || errno == EWOULDBLOCK) {
@@ -54,6 +55,7 @@ bool SocketMenu::isConnected() {
             return true;
         } else {
             //other errors occurred
+            close(client_socket);
             return false;
         }
     }
