@@ -278,7 +278,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(post, args);
+    output = captureOutput(post, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
