@@ -25,21 +25,25 @@ void PATCHCommand::execute(const std::vector<std::string>& args) {
     bool isValid = true;
     for (size_t i = 0; i < args.size(); i++) {
         unsigned long int convertedNum = fromStringToULI(args[i], isValid);
+        // if one of the arguments is invalid so it prints an appropriate message that the arguments aren't good(400 Bad Request)
         if (!isValid) {
             menu.print("400 Bad Request");
             return;
         }
+        // the first argument(i=0) is the userID and the other arguments are the moviesID
         if (i == 0) {
             userVector.push_back(convertedNum);
         } else {
             passedMovies.push_back(convertedNum);
         }
     }
+    // if the user doesn't exist it is not a legal use of the command - prints an appropriate message
     if (!UMManager.isUserExists(userVector[0])) {
         menu.print("404 Not Found");
         return;
     }
     // update the user and movies inside the database
     UMManager.updateUser(userVector[0], passedMovies);
+    // print a message that the data has benn updated
     menu.print("204 No Content");
 }

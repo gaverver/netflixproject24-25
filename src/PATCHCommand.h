@@ -21,6 +21,7 @@ public:
 private:
     // the database that the users and movies details are stored in
     IDataBase& UMManager;
+    // menu that writes the output of the command
     IMenu& menu;
 };
 
