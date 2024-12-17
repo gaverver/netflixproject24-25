@@ -85,6 +85,7 @@ TEST(PATCHTesting, SimpleExecuteTest) {
 TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
+    test.cleanUp();
     ICommand* patch = new PATCHCommand(test);
     std::vector<std::string> args;
     // first add manually the user 2 to the databse so patch will work.
@@ -207,7 +208,8 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
 // test for execute function -  test that checks invalid input options to the DB
 TEST(PATCHTesting, InvalidInputTest400) {
     DBFile dbFile("../data");
-    IDataBase& test = dbFile;    
+    IDataBase& test = dbFile;
+    test.cleanUp();
     ICommand* patch = new PATCHCommand(test);
     std::vector<std::string> args;
     // first add manually the users to the databse so patch will work.
@@ -272,7 +274,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     users = test.findMovie(6);
     // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedUsers, users);
-
+    args.resize(1);
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
@@ -297,7 +299,8 @@ TEST(PATCHTesting, InvalidInputTest400) {
 
 TEST(PATCHTesting, InvalidInputTest404) {
     DBFile dbFile("../data");
-    IDataBase& test = dbFile;    
+    IDataBase& test = dbFile;
+    test.cleanUp();
     ICommand* patch = new PATCHCommand(test);
     std::vector<std::string> args;
     // execute the command PATCH 5 6
