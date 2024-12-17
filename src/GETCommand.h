@@ -21,6 +21,7 @@ public:
     // methods inherited from Command class
     void execute(const std::vector<std::string>& args) override;
     std::string description() const override;
+    std::string rw_status() const override;
 };
 
 #endif
