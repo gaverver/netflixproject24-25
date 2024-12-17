@@ -3,13 +3,14 @@
 
 #include "ICommand.h"
 #include "IDataBase.h"
+#include "IMenu.h"
 #include <vector>
 #include <string>
 
 class POSTCommand : public ICommand {
 public:
     //  contructor of help command function
-    POSTCommand(IDataBase& UMManager);
+    POSTCommand(IDataBase& UMManager, IMenu& menu);
     // function to execute the help command - needs to print all commands description.
     void execute(const std::vector<std::string>& args) override;
     // returns the description of the function
@@ -20,6 +21,7 @@ public:
 private:
     // the database that the users and movies details are stored in
     IDataBase& UMManager;
+    IMenu& menu;
 };
 
 #endif
