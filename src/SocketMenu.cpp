@@ -13,17 +13,28 @@ SocketMenu::SocketMenu(int client_socket) : client_socket(client_socket) {
 }
 
 std::string SocketMenu::scan() {
-    int read_bytes =  recv(client_socket, buffer, bufferSize,0);
-    //connection never closed so read_bytes=0 dosen't close it
-    if (read_bytes < 0) {
-        //continue the program
-        return "";
+    std::string s = "";
+    while (true) {
+        int read_bytes =  recv(client_socket, buffer, bufferSize, 0);
+
+        if (read_bytes <= 0) {
+            //continue the program
+            return "";
+        }
+        //add the buffer to the final string
+        s.append(buffer, read_bytes);
+        //assuming the message ends with \n
+        if (read_bytes < bufferSize) {
+            //removing \n at the end
+            s.pop_back();
+            return s;
+        }
+        if (read_bytes == bufferSize && s.back() == '\n') {
+            s.pop_back();
+            return s;
+        }
+
     }
-    //add \0 to override \n so the string knows where to stop
-    buffer[read_bytes-1] = '\0';
-    std::string s(buffer);
-    //return the string
-    return s;
 }
 
 void SocketMenu::print(std::string output) {

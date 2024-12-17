@@ -116,6 +116,35 @@ TEST(SocketMenuTesting, Scan) {
     //scan using socketmenu
     output = sm.scan();
     EXPECT_EQ(expected, output);
+    
+    //send single char
+    expected = "t";
+    //send to the server
+    sendToServer(expected + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(expected, output);
+    
+    //send a message larger than 4096 bytes
+    std::string str(5000, 'a');
+    sendToServer(str + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str, output);
+    
+    //send a message of 4096 +- 1 bytes
+    std::string str1(4094, 'a');
+    sendToServer(str1 + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str1, output);
+
+    std::string str2(4095, 'a');
+    sendToServer(str2 + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str2, output);
+
     //send an empty message
     expected = "";
     //send to the server
