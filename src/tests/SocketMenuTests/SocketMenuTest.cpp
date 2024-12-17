@@ -249,3 +249,31 @@ TEST(SocketMenuTesting, Print) {
     //close the server
     closeAll();
 }
+
+TEST(SocketMenuTesting, IsConnected) {
+    //initialize server and establish connection with the client
+    std::thread serverThread(serverFunction);
+    std::thread clientThread(connectToServer);
+
+    serverThread.join();
+    clientThread.join();
+
+
+    //initializing socket menu for the server
+    SocketMenu sm(client_socket);
+    //send a sign of life to the server
+    sendToServer("sign of life");
+    EXPECT_EQ(sm.isConnected(), true);
+    //simulation proccessing of the message from the client
+    std::string str = sm.scan();
+    //disconnect
+    close(server_socket);
+    EXPECT_EQ(sm.isConnected(), false);
+    //close the server
+    close(sock);
+    //client socket should be closed from the second isConnected
+    const char* message = "test";
+    int x = send(client_socket, message, 4, 0);
+    //it shouldn't success on writing to a closed socket
+    EXPECT_EQ(x, -1);
+}
