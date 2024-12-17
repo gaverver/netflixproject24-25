@@ -3,7 +3,8 @@
 #include "../../IDataBase.h"
 #include "../../DBFile.h"
 #include "../../PATCHCommand.h"
-
+#include "../../IMenu.h"
+#include "../../ConsoleMenu.h"
 #include <fstream>
 #include <vector>
 #include <string>
@@ -28,7 +29,9 @@ std::string captureOutput(ICommand* Runner, const std::vector<std::string>& args
 TEST(PATCHTesting, DescriptionTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     // checks if the return value of the function is equal to "PATCH [userid] [movieid1] [movieid2] ..." - as it should because it describes the command
     EXPECT_EQ(patch->description(), "PATCH, arguments: [userid] [movieid1] [movieid2] ...");
     delete patch;
@@ -38,7 +41,9 @@ TEST(PATCHTesting, DescriptionTest) {
 TEST(PATCHTesting, rwSTtatusTests) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     // checks if the return value of the function is equal to "writer'" - as the commands writes to the DB.
     EXPECT_EQ(patch->rw_status(), "writer");
     delete patch;
@@ -51,7 +56,9 @@ TEST(PATCHTesting, SimpleExecuteTest) {
     IDataBase& test = dbFile;
     // clear the files before testing
     test.cleanUp();
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 101 to the databse so patch will work.
     test.update_user(101, {100});
@@ -86,7 +93,9 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
     test.cleanUp();
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 2 to the databse so patch will work.
     test.update_user(2, {1});
@@ -128,7 +137,9 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
 TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
 
     std::vector<std::string> args1;
 
@@ -210,7 +221,9 @@ TEST(PATCHTesting, InvalidInputTest400) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
     test.cleanUp();
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the users to the databse so patch will work.
     test.update_user(5, {6});
@@ -301,7 +314,9 @@ TEST(PATCHTesting, InvalidInputTest404) {
     DBFile dbFile("../data");
     IDataBase& test = dbFile;
     test.cleanUp();
-    ICommand* patch = new PATCHCommand(test);
+    ConsoleMenu cmenu;
+    IMenu& menu = cmenu;
+    ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // execute the command PATCH 5 6
     args.push_back("5");
