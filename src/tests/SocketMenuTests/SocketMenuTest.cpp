@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
-
+#include "../../SocketMenu.h"
 
 const int server_port = 5555;
 int client_socket;
@@ -16,7 +16,7 @@ int server_socket;
 int sock;
 //creates socket for the server
 void serverFunction() {
-    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    sock = socket(AF_INET, SOCK_STREAM, 0);
     // if (sock < 0) {
     //     perror("error creating socket");
     // }
@@ -26,18 +26,18 @@ void serverFunction() {
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(server_port);
     if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        // perror("error binding to socket");
+        perror("error binding to socket");
     }
     if (listen(sock,5)<0)
     {
-        // perror("error listening to a socket");
+        perror("error listening to a socket");
     }
     struct sockaddr_in client_sin;
     unsigned int addr_len = sizeof(client_sin);
     client_socket = accept(sock, (struct sockaddr*) &client_sin, &addr_len);
     if (client_socket < 0)
     {
-        // perror("error accepting client");
+        perror("error accepting client");
     }
 }
 
@@ -53,9 +53,9 @@ void connectToServer() {
 
     const char* ip_address = "127.0.0.1";
     //create socket for the client
-    server_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket < 0) {
-        // perror("error creating socket");
+        perror("error creating socket");
     }
     //information of the socket address (server)
     struct sockaddr_in sin;
@@ -64,7 +64,7 @@ void connectToServer() {
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(server_port);
     if (connect(server_socket, (struct sockaddr*) &sin, sizeof(sin)) < 0) {
-        // perror("error connecting to server");
+        perror("error connecting to server");
     }
 }
 
