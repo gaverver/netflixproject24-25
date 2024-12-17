@@ -18,6 +18,8 @@ GETCommand::GETCommand(IDataBase& db, IMenu& menu) : db(db), menu(menu) {}
 void GETCommand::execute(const std::vector<std::string>& args) {
     // suppose to be only user id and movie id which are unsigned long int
     if (args.size() != 2) {
+        // error number - 400 - invalid command
+        menu.print("400 Bad Request");
         return;
     }
 
@@ -26,25 +28,33 @@ void GETCommand::execute(const std::vector<std::string>& args) {
 
     // casting the first argument from string to unsigned long int
     unsigned long int uid = fromStringToULI(args[0], isValid);
-    // if the casting has failed, execute of GET should prints nothing
+    // if the casting has failed, execute of GET should prints error code
     if (!isValid) {
+        // error number - 400 - invalid command
+        menu.print("400 Bad Request");
         return;
     }
 
     // casting the second argument from string to unsigned long int
     unsigned long int mid = fromStringToULI(args[1], isValid);
-    // if the casting has failed, execute of GET should prints nothing
+    // if the casting has failed, execute of GET should prints error code
     if (!isValid) {
+        // error number - 400 - invalid command
+        menu.print("400 Bad Request");
         return;
     }
 
-    // if the movie does not exist, execute of GET should prints nothing
+    // if the movie does not exist, execute of GET should prints error code
     if (!db.isMovieExists(mid)) {
+        // error number - 404 - with the specific data base!!!, invalid command
+        menu.print("404 Not Found");
         return;
     }
 
-    // if the user does not exist, execute of GET should prints nothing
+    // if the user does not exist, execute of GET should prints error code
     if (!db.isUserExists(uid)) {
+        // error number - 404 - with the specific data base!!!, invalid command
+        menu.print("404 Not Found");
         return;
     }
 
@@ -106,6 +116,8 @@ void GETCommand::execute(const std::vector<std::string>& args) {
 
     // build recommendation string that we will print via IMenu
     std::ostringstream recommendation;
+    // success number - 200 - the command has been successfully answered
+    recommendation << "200 Ok\n\n";
     // go through all the movies for recommendation, and chain them to 1 string
     for (size_t i = 0; i < sortedMovies.size(); ++i) {
         if (i > 0) recommendation << " ";
@@ -119,6 +131,12 @@ void GETCommand::execute(const std::vector<std::string>& args) {
 // description, inherited from Command class
 std::string GETCommand::description() const {
     // simply returns the description of GET
-    return "recommend [userid] [movieid]";
+    return "GET, arguments: [userid] [movieid]";
+}
+
+// rw_status, inherited from Command class
+std::string GETCommand::rw_status() const {
+    // simply returns the status of GET (reader, writer or none)
+    return "reader";
 }
 
