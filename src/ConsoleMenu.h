@@ -11,7 +11,5 @@ public:
     void print(std::string output) override;
     // method to get an input from the user from the console.
     std::string scan() override;
-    // method to check if the user still connected
-    bool isConnected() override;
 };
 #endif
