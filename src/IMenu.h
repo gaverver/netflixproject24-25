@@ -36,7 +36,9 @@ class IMenu {
             }
             return commands;
         }
-        
+        // pure virtual function to check if the menu is connected to the source
+        virtual bool isConnected() = 0;
+
         // Virtual destructor to ensure proper cleanup in derived classes
         virtual ~IMenu() = default;
 };
