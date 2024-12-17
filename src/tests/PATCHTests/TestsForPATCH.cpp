@@ -61,7 +61,7 @@ TEST(PATCHTesting, SimpleExecuteTest) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 101 to the databse so patch will work.
-    test.update_user(101, {100});
+    test.updateUser(101, {100});
     // execute the command PATCH 101 102
     args.push_back("101");
     args.push_back("102");
@@ -98,7 +98,7 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 2 to the databse so patch will work.
-    test.update_user(2, {1});
+    test.updateUser(2, {1});
     // execute the command PATCH 2 3 4
     args.push_back("2");
     args.push_back("3");
@@ -144,8 +144,8 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     std::vector<std::string> args1;
 
     // first add manually the users to the databse so patch will work.
-    test.update_user(2, {1});
-    test.update_user(3, {1});
+    test.updateUser(2, {1});
+    test.updateUser(3, {1});
 
     // execute the command PATCH 2 3 4
     args1.push_back("2");
@@ -226,7 +226,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the users to the databse so patch will work.
-    test.update_user(5, {6});
+    test.updateUser(5, {6});
 
     // execute the command PATCH c 6
     args.push_back("c");
@@ -291,7 +291,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args);
+    output = captureOutput(patch, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -326,7 +326,7 @@ TEST(PATCHTesting, InvalidInputTest404) {
     // check if the correct string was printed - the user doesn't exist so it is logically incorrect usage.
     EXPECT_EQ(output, "404 Not Found\n");
     // check that the user wasn't added to the db.
-    EXPECT_EQ(db.isUserExists(5), false);
+    EXPECT_EQ(test.isUserExists(5), false);
 
     // clear the files after the test
     test.cleanUp();
