@@ -260,7 +260,23 @@ TEST(POSTTesting, InvalidInputTest400) {
     users = test.findMovie(6);
     // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedUsers, users);
+    args.resize(1);
+    // execute the command PATCH 1 - less then 2 arguments
+    args[0] = "1";
+    // execute the PATCH command that should update the databse and print an appropriate message
+    std::string output = captureOutput(patch, args);
+    // check if the correct string was printed - as we entered an invalid userID
+    EXPECT_EQ(output, "400 Bad Request\n");
 
+    // get the movies that were saved under the 5 userID in the databse(id 5)
+    movies = test.findUser(5);
+    // check if the correct movies were saved under the user(id 5) - we check this to see if the invalid input didn't effect this
+    EXPECT_EQ(expectedMovies, movies);
+
+    // find all the users that watched that movie(id 6)
+    users = test.findMovie(6);
+    // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
+    EXPECT_EQ(expectedUsers, users);
     // clear the files after the test
     test.cleanUp();
 }
