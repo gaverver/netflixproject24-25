@@ -17,5 +17,7 @@ class SocketMenu : public IMenu {
         void print(std::string output) override;
         // method to scan user command line from the socket.
         std::string scan() override;
+        // method to check if the menu is still connected to the client
+        bool isConnected() override;
     };
 #endif
