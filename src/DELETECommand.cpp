@@ -32,11 +32,15 @@ void DELETECommand::execute(const std::vector<std::string>& args) {
         return;
     }
 
+    // two bools to check the validity and the error number that should be printed
+    bool error_400 = false;
+    bool error_404 = false;
+
     // if the user does not exist, execute of DELETE should prints error code
     if (!db.isUserExists(uid)) {
         // error number - 404 - with the specific data base!!!, invalid command
-        menu.print("404 Not Found");
-        return;
+        // waiting to see if error number 400 will occur in the next iterations
+        error_404 = true;
     }
 
     // this will contain all the movies we want to delete from the user watched list
@@ -49,25 +53,38 @@ void DELETECommand::execute(const std::vector<std::string>& args) {
         unsigned long int mid = fromStringToULI(args[i], isValid);
         // if the casting has failed, execute of DELETE should prints error code
         if (!isValid) {
-            // error number - 400 - invalid command
-            menu.print("400 Bad Request");
-            return;
+            // error number - 400 - invalid command, that's the final error number
+            error_400 = true;
+            break;
         }
         // else, the casting succeed
         // if the current movie does not exist, execute of DELETE should prints error code
         if (!db.isMovieExists(mid)) {
             // error number - 404 - with the specific data base!!!, invalid command
-            menu.print("404 Not Found");
-            return;
+            // waiting to see if error number 400 will occur in the next iterations
+            error_404 = true;
+            continue;
         }
         // else, if the movie hasn't been watched by the user, execute of DELETE should prints error code
         if (std::find(watched_movies.begin(), watched_movies.end(), mid) == watched_movies.end()) {
             // error number - 404 - with the specific data base!!!, invalid command
-            menu.print("404 Not Found");
-            return;
+            // waiting to see if error number 400 will occur in the next iterations
+            error_404 = true;
+            continue;
         }
         // else, this movie is good to go, and we push him to the vector of movies_to_delete
         movies_to_delete.push_back(mid);
+    }
+
+    // check validity
+    if (error_400) {
+        menu.print("400 Bad Request");
+        return;
+    }
+    // else, if error 404 should be printed
+    if (error_404) {
+        menu.print("404 Not Found");
+        return;
     }
 
     // if we reached here, it means that everything is OK and we should execute the delete

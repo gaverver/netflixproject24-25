@@ -125,6 +125,9 @@ TEST(DELETETesting, ExecuteTest) {
     output = captureOutput(del, {"1", "101", "103d", "102"});
     EXPECT_EQ(output, s400);
     EXPECT_EQ(dbf.findUser(1), (std::vector<unsigned long int>{101,102,103,104}));
+    //400 error should return even after seeing 404 error occur
+    output = captureOutput(del, {"4", "c"});
+    EXPECT_EQ(output, s400);
 
     // clear the files after the test
     test.cleanUp();
