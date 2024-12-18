@@ -8,6 +8,10 @@ AppTester::AppTester(std::map<std::string, ICommand*> commands, IMenu& menu, std
 void AppTester::run(int numCommands) {
     // iterate numCommands times - because it is the number of commands that the user entered(in the tests) and we need to scan and execute them 
     for (int i = 0; i < numCommands; i++) {
+        // check if the user is still connected, if not stop running
+        if (!menu.isConnected()) {
+            break;
+        }
         // get the next command from the user
         std::vector<std::string> args = menu.nextCommand();
         // seperate the command as the first argument is the command name and the others are the arguments for the function 
