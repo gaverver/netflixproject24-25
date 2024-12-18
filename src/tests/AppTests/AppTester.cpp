@@ -31,25 +31,30 @@ void AppTester::run(int numCommands) {
         std::vector<std::string> realArgs(args.begin() + 1, args.end());
         std::string rw_type;
 
-        try {
+        if (commands.find(args[0]) != commands.end()) {
+            try {
             // try to get the type of the command (reader, writer or none)
             rw_type = commands[(args[0])]->rw_status();
-        } catch (...) {
-            // reached here if the command isn't a real command
+            } catch (...) {
+                // reached here if the command isn't a real command
+                menu.print("400 Bad Request");
+                continue;
+            }
+            
+            // check the type of the command, and lock appropriately
+            // only this three options are available
+            if (rw_type == "reader") {
+                std::shared_lock lock(rw_mutex);
+                commands[args[0]]->execute(realArgs);
+            } else if (rw_type == "writer") {
+                std::unique_lock lock(rw_mutex);
+                commands[args[0]]->execute(realArgs);
+            } else if (rw_type == "none") {
+                commands[args[0]]->execute(realArgs);
+            }
+        } else {
             menu.print("400 Bad Request");
-            continue;
-        }
-        
-        // check the type of the command, and lock appropriately
-        // only this three options are available
-        if (rw_type == "reader") {
-            std::shared_lock lock(rw_mutex);
-            commands[args[0]]->execute(realArgs);
-        } else if (rw_type == "writer") {
-            std::unique_lock lock(rw_mutex);
-            commands[args[0]]->execute(realArgs);
-        } else if (rw_type == "none") {
-            commands[args[0]]->execute(realArgs);
+            continue;;
         }
     }
 }

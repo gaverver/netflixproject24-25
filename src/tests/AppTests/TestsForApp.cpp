@@ -189,8 +189,8 @@ TEST(AppTests, InvalidInputTest2) {
     // clear the databse before usage so there will not be data that is not needed there.
     data.cleanUp();
     // enter some commands that doesn't exist and GET command 
-    std::vector<std::string> commands = {"foo", "bar", "GET 1 2", "itzik"};
-    std::string expectedOutput = "400 Bad Request\n400 Bad Request\n404 Not Found\n400 Bad Request\n";
+    std::vector<std::string> commands = {"POST 1 2", "foo", "bar", "GET 2 2", "itzik"};
+    std::string expectedOutput = "201 Created\n400 Bad Request\n400 Bad Request\n404 Not Found\n400 Bad Request\n";
     // capture the output from the cout
     std::string printedOutput = captureOutput(commands);
     EXPECT_EQ(expectedOutput, printedOutput);
