@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "DELETECommand.h"
 #include "IDataBase.h"
 #include "IMenu.h"
@@ -43,7 +44,7 @@ void DELETECommand::execute(const std::vector<std::string>& args) {
     // all the movies that user watched
     std::vector<unsigned long int> watched_movies = db.findUser(uid);
     // go through all the arguments (except the first one) to constract the movies
-    for (int i = 1; i < args.size; i++) {
+    for (int i = 1; i < args.size(); i++) {
         // casting the current argument from string to unsigned long int (a movie id)
         unsigned long int mid = fromStringToULI(args[i], isValid);
         // if the casting has failed, execute of DELETE should prints error code

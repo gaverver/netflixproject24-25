@@ -59,9 +59,9 @@ TEST(DELETETesting, ExecuteTest) {
     IMenu& menu = cmenu;
     ICommand* del = new DELETECommand(test, menu);
     std::string output;
-    std::string s204 = "204 No Content";
-    std::string s404 = "404 Not Found";
-    std::string s400 = "400 Bad Request";
+    std::string s204 = "204 No Content\n";
+    std::string s404 = "404 Not Found\n";
+    std::string s400 = "400 Bad Request\n";
     //initialize
     dbf.updateUser(1, {101,102,103,104,105,106,107,108,109,110});
     //remove last two
