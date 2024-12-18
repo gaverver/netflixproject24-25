@@ -20,7 +20,7 @@
 // global DB variable so that the data will clean up only in the beggining and everyone will know it.
 DBFile dbfile("../data");
 IDataBase& data = dbfile;
-std::shared_mutex rw_mutex;
+std::shared_mutex rw_mutex2;
 
 // helper function to simulate the user's output and capture the output from cout
 std::string captureOutput(std::vector<std::string> commands) {
@@ -52,7 +52,7 @@ std::string captureOutput(std::vector<std::string> commands) {
     ICommand* PATCH = new PATCHCommand(data, menu);
     ICommand* GET = new GETCommand(data, menu);
     ICommand* help = new helpCommand(helpCommands, menu);
-    ICommand* DELETE = new DELETECommand(data, menu)
+    ICommand* DELETE = new DELETECommand(data, menu);
     helpCommands.push_back(DELETE);
     helpCommands.push_back(GET);
     helpCommands.push_back(PATCH);
@@ -64,7 +64,7 @@ std::string captureOutput(std::vector<std::string> commands) {
     commands2["GET"] = GET;
     commands2["help"] = help;
     commands2["DELETE"] = DELETE;
-    AppTester app(commands2, menu, rw_mutex);
+    AppTester app(commands2, menu, rw_mutex2);
     // Call the function that runs the list of commands from the user
     app.run(commands.size());
 
@@ -107,11 +107,11 @@ TEST(AppTests, POSTAndGETTest1) {
 TEST(AppTests, POSTTest) {
     // clear the databse before usage so there will not be data that is not needed there.
     data.cleanUp();
-    std::vector<std::string> commands = {"POST 1 100 101 102 103", "POST 2 101 102 104 105 106", "POST 3 100 104 105 107 108", "POST 4 101 105 106", "POST 4 107 109 110", "POST 5 100 102 103 105 108 111", "POST 6 100 103 104 110 111 112 113", "POST 7 102 105 106 107 108 109 110", "POST 8 101 104 105 106 109 111 114"};
+    std::vector<std::string> commands = {"POST 1 100 101 102 103", "POST 2 101 102 104 105 106", "POST 3 100 104 105 107 108", "POST 4 101 105 106", "PATCH 4 107 109 110", "POST 5 100 102 103 105 108 111", "POST 6 100 103 104 110 111 112 113", "POST 7 102 105 106 107 108 109 110", "POST 8 101 104 105 106 109 111 114"};
     // capture the output from the cout
     std::string printedOutput = captureOutput(commands);
     // the only command that outputs something here is help - we check that it does it correctly
-    std::string expectedOutput = "201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n";
+    std::string expectedOutput = "201 Created\n201 Created\n201 Created\n201 Created\n204 No Content\n201 Created\n201 Created\n201 Created\n201 Created\n";
     EXPECT_EQ(expectedOutput, printedOutput);
     // get the movies from the database of user 4.
     std::vector<unsigned long int> movies4 = data.findUser(4);
@@ -168,7 +168,7 @@ TEST(AppTests, InvalidInputTest1) {
     data.cleanUp();
     // enter some illegal commands and POST and GET and DELETE commands
     std::vector<std::string> commands = {"DELETE 1 1", "POST 1 1", "POST 2 1 3", "POST 3 2", "PATCH 1 2 3 5 4 c", "PATCH 2 p 3 c", "POST f 1 1 1 2 2 2 3 3 3", "GET 1 2", "GET 1 c", "DELETE 1 1"};
-    std::string expectedOutput = "404 Not Found\n201 Created\n201 Created\n201 Created\n400 Bad Request\n400 Bad Request\n400 Bad Request\n200 Ok\n\n3\n400 Bad Request\n204 No Content";
+    std::string expectedOutput = "404 Not Found\n201 Created\n201 Created\n201 Created\n400 Bad Request\n400 Bad Request\n400 Bad Request\n200 Ok\n\n3\n400 Bad Request\n204 No Content\n";
     // capture the output from the cout
     std::string printedOutput = captureOutput(commands);
     EXPECT_EQ(expectedOutput, printedOutput);

@@ -12,7 +12,7 @@
 class AppTester {
 public:
     // constructor for app class that intiallizes the fields of AppTester
-    AppTester(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex rw_mutex);
+    AppTester(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex);
     // method to run the program using the user's input(and number of commands that he enters)
     void run(int numCommands);
 
