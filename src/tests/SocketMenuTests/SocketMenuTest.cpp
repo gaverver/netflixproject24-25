@@ -116,6 +116,35 @@ TEST(SocketMenuTesting, Scan) {
     //scan using socketmenu
     output = sm.scan();
     EXPECT_EQ(expected, output);
+    
+    //send single char
+    expected = "t";
+    //send to the server
+    sendToServer(expected + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(expected, output);
+    
+    //send a message larger than 4096 bytes
+    std::string str(5000, 'a');
+    sendToServer(str + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str, output);
+    
+    //send a message of 4096 +- 1 bytes
+    std::string str1(4094, 'a');
+    sendToServer(str1 + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str1, output);
+
+    std::string str2(4095, 'a');
+    sendToServer(str2 + "\n");
+    //scan using socketmenu
+    output = sm.scan();
+    EXPECT_EQ(str2, output);
+
     //send an empty message
     expected = "";
     //send to the server
@@ -219,4 +248,32 @@ TEST(SocketMenuTesting, Print) {
 
     //close the server
     closeAll();
+}
+
+TEST(SocketMenuTesting, IsConnected) {
+    //initialize server and establish connection with the client
+    std::thread serverThread(serverFunction);
+    std::thread clientThread(connectToServer);
+
+    serverThread.join();
+    clientThread.join();
+
+
+    //initializing socket menu for the server
+    SocketMenu sm(client_socket);
+    //send a sign of life to the server
+    sendToServer("sign of life");
+    EXPECT_EQ(sm.isConnected(), true);
+    //simulation proccessing of the message from the client
+    std::string str = sm.scan();
+    //disconnect
+    close(server_socket);
+    EXPECT_EQ(sm.isConnected(), false);
+    //close the server
+    close(sock);
+    //client socket should be closed from the second isConnected
+    const char* message = "test";
+    int x = send(client_socket, message, 4, 0);
+    //it shouldn't success on writing to a closed socket
+    EXPECT_EQ(x, -1);
 }
