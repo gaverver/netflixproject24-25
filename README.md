@@ -32,12 +32,7 @@ In order to run the server using Docker, you need to run the following commands 
       `docker build -f Dockerfile.server -t server .`  
 
    2. **Create a new container:**  
-      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want). 
-
-**only** if you terminate the server using ctrl+c or in other way, you need to run it again using this command:  
-
-   - **Run the container:**  
-     `docker exec -it server ./netflix 5000` (you can also switch 5000 with any legal port number you want).  
+      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).   
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
