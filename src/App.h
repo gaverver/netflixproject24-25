@@ -16,6 +16,8 @@ public:
     App(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex);
     // method to run the program using the user's input, implementing Runnable interface
     void run() override;
+    // destructor
+    ~App() override;
 
 private:
     // menu that helps to get the command from the user
