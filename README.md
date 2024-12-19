@@ -1,5 +1,14 @@
 # recommendation system - excercise 1
 
+## About Last Implementaion
+### does the fact that some commands changed their name made you change your code?
+
+### does the fact that some new commands added to the project made you change your code?
+
+### does the fact that the expected output of the commands have changed made you change your code?
+
+### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
+
 ## App Information
 ### what is the application about
 The application designed to recommend movies to users. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies.
