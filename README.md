@@ -6,7 +6,7 @@ No, because there is a pure virtual function called description in ICommand inte
 ### does the fact that some new commands added to the project made you change your code?
 No, because we created ICommand interface, such that it will be easy to add new commands, they just need to implement this interface.
 ### does the fact that the expected output of the commands have changed made you change your code?
-
+The changes in the command output cause us to update only the value of the strings that we need to print, but except for this we didn't touch a code that is closed for changes and open for extensions, and the change we made is needed.    
 ### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
 No, because we created IMenu interface, such that it will be easy to change the way we print and scan staff, we just need the new method to implement the interface.
 ## App Information
@@ -24,7 +24,17 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-## Program Execution
+
+## Server Execution
+In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+
+   1. **Create a new image:**  
+      `docker build -f Dockerfile.server -t server .`  
+
+   2. **Create a new container:**  
+      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).  
+
+## Client Execution
 In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **create a new image:**  
@@ -32,18 +42,8 @@ In order to run the client using Docker, you need to run the following commands 
    2. **create and run the container:**  
           `docker run -it --network=host client <server_ip> <server_port>`  
 
-In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
-   1. **Create a new image:**  
-      `docker build -t netflix .`  
-
-   2. **Create a new container:**  
-      `docker run -d --name netflixcontainer netflix`  
-
-Then, when you are all set up and have an image and a container, you need to run the same container in order for the data to be saved between executions. Now, you **only** need to do this step to execute the program:  
-
-   - **Run the container:**  
-     `docker exec -it netflixcontainer ./netflix`  
+ 
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
