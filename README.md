@@ -30,7 +30,7 @@ In order to run the client using Docker, you need to run the following commands 
    1. **create a new image:**  
           `docker build -f Dockerfile.client -t client .`  
    2. **create and run the container:**  
-          `docker run --rm client <server_ip> <server_port>`  
+          `docker run -it --network=host client <server_ip> <server_port>`  
 
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
