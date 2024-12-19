@@ -24,15 +24,26 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-## Server Execution
 
+## Server Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`  
 
    2. **Create a new container:**  
-      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).   
+      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).  
+
+## Client Execution
+In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+
+   1. **create a new image:**  
+          `docker build -f Dockerfile.client -t client .`  
+   2. **create and run the container:**  
+          `docker run -it --network=host client <server_ip> <server_port>`  
+
+
+ 
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
