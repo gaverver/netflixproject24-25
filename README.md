@@ -35,15 +35,12 @@ In order to run the client using Docker, you need to run the following commands 
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
-      `docker build -t netflix .`  
+      `docker build -f Dockerfile.server -t server .`
+   2. **Create network:**  
+      `docker network create  --subnet=192.168.1.0/24  netflix_network`  
+   3. **Create and run a new container:**  
+      `docker run -d --name serverContainer --network=netflix_network -p 5000:5000 server 5000`  
 
-   2. **Create a new container:**  
-      `docker run -d --name netflixcontainer netflix`  
-
-Then, when you are all set up and have an image and a container, you need to run the same container in order for the data to be saved between executions. Now, you **only** need to do this step to execute the program:  
-
-   - **Run the container:**  
-     `docker exec -it netflixcontainer ./netflix`  
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
