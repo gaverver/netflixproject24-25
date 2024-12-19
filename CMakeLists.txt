@@ -27,7 +27,7 @@ list(REMOVE_ITEM SOURCES_AND_HEADERS
 ) 
 
 file(GLOB TESTS 
-    ${CMAKE_SOURCE_DIR}/src/tests/ServerTests/TestsForServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/tests/*/*.cpp
     ${CMAKE_SOURCE_DIR}/src/tests/*/*.h    
 )
 
