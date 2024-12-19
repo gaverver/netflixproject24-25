@@ -16,8 +16,7 @@
 const int server_port = 5555;
 const char* ip_address = "0.0.0.0";
 bool passed = true;
-DBFile dbfile("../data");
-IDataBase& data = dbfile;
+
 
 void clientFunction(const std::vector<std::string>& messages, std::string& expectedOutput) {
     int clientSocket;
@@ -70,7 +69,8 @@ void clientFunction(const std::vector<std::string>& messages, std::string& expec
 
 // test a simple one client connection to server
 TEST(ServerTesting, OneClientExecutionTest) {
-    
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
     // clean up the data before testing
     data.cleanUp();
     // wait for server to start.
@@ -98,6 +98,8 @@ TEST(ServerTesting, OneClientExecutionTest) {
 
 // test a multiple clients connection to server
 TEST(ServerTesting, MultipleClientExecutionTest) {
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
     // clean up the data before testing
     data.cleanUp();
     passed = true;
@@ -129,6 +131,8 @@ TEST(ServerTesting, MultipleClientExecutionTest) {
 
 // test a multiple clients connection to server using the following commands: POST, PATCH, GET
 TEST(ServerTesting, POSTPATCHGETTest) {
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
     // clean up the data before testing
     data.cleanUp();
     // restore the global variable before running the tests.
@@ -173,6 +177,8 @@ TEST(ServerTesting, POSTPATCHGETTest) {
 
 // test a multiple clients connection to server using the following commands: POST, PATCH, DELETE
 TEST(ServerTesting, POSTPATCHDELETETest) {
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
     // clean up the data before testing
     data.cleanUp();
     // restore the global variable before running the tests.
@@ -226,6 +232,8 @@ TEST(ServerTesting, POSTPATCHDELETETest) {
 
 // test a multiple clients connection to server using invalid commands.
 TEST(ServerTesting, InvalidInputTest) {
+    DBFile dbfile("../data");
+    IDataBase& data = dbfile;
     // clean up the data before testing
     data.cleanUp();
     // restore the global variable before running the tests.
