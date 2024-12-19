@@ -1,17 +1,16 @@
 #include "App.h"
 #include <iostream>
-#include <shared_mutex>
 #include <mutex>
 #include <map>
 #include <vector>
 #include <string>
 
 // constructor
-App::App(std::map<std::string, ICommand*> commands, IMenu menu, std::shared_mutex& rw_mutex)
+App::App(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex)
     : commands(commands), menu(menu), rw_mutex(rw_mutex) {}
 
 // run function
-void App::run() override {
+void App::run() {
     // run indefinitely - the user can enter input anytime he wants since he starts running the program
     while (true) {
         // if the user isn't connected, stop running

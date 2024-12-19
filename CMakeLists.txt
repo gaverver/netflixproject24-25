@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MyExample)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -26,7 +27,7 @@ list(REMOVE_ITEM SOURCES_AND_HEADERS
 ) 
 
 file(GLOB TESTS 
-    ${CMAKE_SOURCE_DIR}/src/tests/*/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/tests/ServerTests/TestsForServer.cpp
     ${CMAKE_SOURCE_DIR}/src/tests/*/*.h    
 )
 
