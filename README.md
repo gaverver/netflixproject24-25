@@ -31,7 +31,7 @@ In order to run the client using Docker, you need to run the following commands 
      2. **create and run the container:**
           `docker run --rm client <server_ip> <server_port>`
 
-In order to run the application using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
       `docker build -t netflix .`  
