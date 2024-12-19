@@ -6,6 +6,7 @@ class Runnable {
 public:
     // pure virtual function: run
     virtual void run() = 0;
+    virtual ~Runnable() = default;
 };
 
 #endif
