@@ -8,7 +8,7 @@
 class ThreadFactory : public executor {
 public:
     // function to execute the runnable object.
-    void execute(Runnable& r) override;
+    void execute(Runnable* r, bool clean) override;
 };
 
 #endif
