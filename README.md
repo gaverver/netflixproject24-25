@@ -52,8 +52,8 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ## running examples
 ### spaces doesn't matter & restart doesn't matter
 ![image](https://github.com/user-attachments/assets/4fea1103-3798-4b8d-9ec0-4982a0f6603c)
-### rcommendation test
-![image](https://github.com/user-attachments/assets/78c3e14b-9ceb-4a28-9c38-bfe0d0b894d3)
+### GET and help and data is stored even after exiting and connecting again
+![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
 ### adding duplicated information doesn't matter
 ![image](https://github.com/user-attachments/assets/f276fc99-3d14-4ca3-b9fb-3ec0b144d6cb)
 
