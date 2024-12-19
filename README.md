@@ -6,7 +6,7 @@ No, because there is a pure virtual function called description in ICommand inte
 ### does the fact that some new commands added to the project made you change your code?
 No, because we created ICommand interface, such that it will be easy to add new commands, they just need to implement this interface.
 ### does the fact that the expected output of the commands have changed made you change your code?
-
+The changes in the command output cause us to update only the value of the strings that we need to print, but except for this we didn't touch a code that is closed for changes and open for extensions, and the change we made is needed.    
 ### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
 No, because we created IMenu interface, such that it will be easy to change the way we print and scan staff, we just need the new method to implement the interface.
 ## App Information
