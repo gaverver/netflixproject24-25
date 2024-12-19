@@ -13,11 +13,16 @@ No, because we created IMenu interface, such that it will be easy to change the 
 ### what is the application about
 The application designed to add users to the database, add/delete movies from user's watched list, recommend movies to users etc. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies. you can also delete movies from your watched list, or patch an existing user's watched list. we work with a server and each client has his own thread in the server ready to work just for him (for now, until we will implement threadpool). in that way manu users could connect to the server and use our app at the same time. 
 ### command that can be runned
-1. add \[userid] \[movieid1] \[movieid2] …  
-     adds user to the system (if it didn't exists) with movies that he watched. If the users was registered before, it adds the movies to the system.
-3. recommend \[userid] \[movieid]  
-     return for a user a list of 10 recommended movies releted to a movie
-3. help  
+1. POST, arguments: [userid] [movieid1] [movieid2] ...
+     adds user to the system if he didn't exist with movies that he watched. If the users was registered before, it will print an error.
+2. PATCH, arguments: [userid] [movieid1] [movieid2] ...
+     adds movies to the user's watched list if he was already exist, if he didn't exist before, prints error.
+3. DELETE, arguments: [userid] [movieid1] [movieid2] ...
+     deletes movies from the user's watched list only if he's already exist and watched all the movies inserted. (if not, prints an error)
+4. GET, arguments: [userid] [movieid]
+     recommend to a certain user on 10 (at most) movies where the movies cannot be the movie inserted or movies that the user already watched.
+     it will recommend according to the algorithm stated at the first exercise.
+5. help
      helps the end-user to learn about how to use the functionalities of the application
 ## Program Execution
 
@@ -43,7 +48,7 @@ In order to run the tests using Docker, you need to run the following commands w
    2. **Create a new container:**  
       `docker run netflix-tests`
 ## data management
-The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of recommendation command, and saves space.
+The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
 ### spaces doesn't matter & restart doesn't matter
 ![image](https://github.com/user-attachments/assets/4fea1103-3798-4b8d-9ec0-4982a0f6603c)
