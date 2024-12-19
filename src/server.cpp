@@ -48,6 +48,7 @@ void server::start() {
     if (listen(sock, 100) < 0) {
         return;
     }
+    ThreadFactory tf;
     while (true) {
         struct sockaddr_in client_sin;
         unsigned int addr_len = sizeof(client_sin);
@@ -59,17 +60,17 @@ void server::start() {
         
         IDataBase* data = new DBFile("../data");
         std::map<std::string, ICommand*> commands;
-        std::vector<ICommand*> helpCommands;
+        std::vector<ICommand*> *helpCommands = new std::vector<ICommand*>();
         ICommand* PATCH = new PATCHCommand(*data, *clientMenu);
         ICommand* POST = new POSTCommand(*data, *clientMenu);
         ICommand* DELETE = new DELETECommand(*data, *clientMenu);
         ICommand* GET = new GETCommand(*data, *clientMenu);
-        ICommand* help = new helpCommand(helpCommands, *clientMenu);
-        helpCommands.push_back(DELETE);
-        helpCommands.push_back(GET);
-        helpCommands.push_back(PATCH);
-        helpCommands.push_back(POST);
-        helpCommands.push_back(help);
+        ICommand* help = new helpCommand(*helpCommands, *clientMenu);
+        helpCommands->push_back(DELETE);
+        helpCommands->push_back(GET);
+        helpCommands->push_back(PATCH);
+        helpCommands->push_back(POST);
+        helpCommands->push_back(help);
         // map the commands to the appropriate instances of commands
         commands["PATCH"] = PATCH;
         commands["POST"] = POST;
@@ -77,9 +78,7 @@ void server::start() {
         commands["help"] = help;
         commands["GET"] = GET;
         Runnable* r = new App(commands, *clientMenu, rw_mutex);
-        ThreadFactory thread;
-        executor& exec = thread;
-        exec.execute(r, false);
+        tf.execute(r, false);
         
         
     }
