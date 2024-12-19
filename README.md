@@ -24,20 +24,20 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-## Program Execution
+## Server Execution
 
-In order to run the application using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
-      `docker build -t netflix .`  
+      `docker build -f Dockerfile.server -t server .`  
 
    2. **Create a new container:**  
-      `docker run -d --name netflixcontainer netflix`  
+      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want). 
 
-Then, when you are all set up and have an image and a container, you need to run the same container in order for the data to be saved between executions. Now, you **only** need to do this step to execute the program:  
+**only** if you terminate the server using ctrl+c or in other way, you need to run it again using this command:  
 
    - **Run the container:**  
-     `docker exec -it netflixcontainer ./netflix`  
+     `docker exec -it server ./netflix 5000` (you can also switch 5000 with any legal port number you want).  
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
