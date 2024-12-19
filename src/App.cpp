@@ -9,6 +9,14 @@
 App::App(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex)
     : commands(commands), menu(menu), rw_mutex(rw_mutex) {}
 
+/// destructor
+App::~App() {
+    for (auto& [key, command] : commands) {
+        delete command;
+    }
+    commands.clear();
+}
+
 // run function
 void App::run() {
     // run indefinitely - the user can enter input anytime he wants since he starts running the program
