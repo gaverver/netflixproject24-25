@@ -24,8 +24,8 @@
 #include "DBFile.h"
 
 
-
-server::server(int port) : port(port) {
+// constructor for server class
+server::server(int port, executor& exec) : port(port), exec(exec) {
 
 }
 
@@ -34,6 +34,7 @@ server::server(int port) : port(port) {
 void server::start() {
     std::shared_mutex rw_mutex;
     struct sockaddr_in sin;
+    // create a socket for communication
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         return;
@@ -42,13 +43,18 @@ void server::start() {
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(port);
+    // bind the server to the ip and port
     if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         return;
     }
+    // set the maximum clients in the queue to 100
     if (listen(sock, 100) < 0) {
         return;
     }
-    ThreadFactory tf;
+    
+    // create the used database
+    IDataBase* data = new DBFile("../data");
+    std::map<std::string, ICommand*> commands;
     while (true) {
         struct sockaddr_in client_sin;
         unsigned int addr_len = sizeof(client_sin);
@@ -56,10 +62,8 @@ void server::start() {
         if (client_sock < 0) {
             continue;
         }
+        // build the runnable that will handle client command
         IMenu* clientMenu = new SocketMenu(client_sock);
-        
-        IDataBase* data = new DBFile("../data");
-        std::map<std::string, ICommand*> commands;
         std::vector<ICommand*> *helpCommands = new std::vector<ICommand*>();
         ICommand* PATCH = new PATCHCommand(*data, *clientMenu);
         ICommand* POST = new POSTCommand(*data, *clientMenu);
@@ -78,7 +82,8 @@ void server::start() {
         commands["help"] = help;
         commands["GET"] = GET;
         Runnable* r = new App(commands, *clientMenu, rw_mutex);
-        tf.execute(r, false);
+        // using executor to execute the runnable that will handle client commands. the true is for deleting the runnable object afterwards.
+        exec.execute(r, true);
         
         
     }
