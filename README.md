@@ -50,8 +50,8 @@ In order to run the tests using Docker, you need to run the following commands w
 ## data management
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
-### spaces doesn't matter & restart doesn't matter
-![image](https://github.com/user-attachments/assets/4fea1103-3798-4b8d-9ec0-4982a0f6603c)
+### POST and PATCH and DELETE
+![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
 ### rcommendation test
 ![image](https://github.com/user-attachments/assets/78c3e14b-9ceb-4a28-9c38-bfe0d0b894d3)
 ### adding duplicated information doesn't matter
