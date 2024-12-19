@@ -42,7 +42,6 @@ void clientFunction(const std::vector<std::string>& messages, std::string& expec
     // Send each message in the vector and get a response from the server.
     for (const auto& message : messages) {
         int sent_data = send(clientSocket, message.c_str(), message.size(), 0);
-        std::cout << "im here!!!!!!!!!!!!!!!!! and here is your msg:" << Msg << std::endl;
         // checks if there was a failure in sending the data
         if (sent_data < 0) {
             close(clientSocket);
@@ -58,7 +57,7 @@ void clientFunction(const std::vector<std::string>& messages, std::string& expec
         buffer[read_bytes] = '\0';
         Msg += buffer;
     }
-    
+    std::cout << "im here!!!!!!!!!!!!!!!!! and here is your msg:" << Msg << std::endl;
     // if the output is not as it needs to be, set the global variable to false.
     if (expectedOutput != Msg) {
         passed = false;
@@ -75,6 +74,7 @@ TEST(ServerTesting, OneClientExecutionTest) {
     data.cleanUp();
     server test(server_port);
     std::thread serverThread(&server::start, &test);
+    serverThread.detach();
     // wait for server to start.
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::vector<std::string> inputMessages = {
