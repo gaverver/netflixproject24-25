@@ -7,7 +7,7 @@
 #include <string>
 
 // constructor
-AppTester::AppTester(std::map<std::string, ICommand*> commands, IMenu menu, std::shared_mutex& rw_mutex)
+AppTester::AppTester(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex)
     : commands(commands), menu(menu), rw_mutex(rw_mutex) {}
 
 // run function
