@@ -75,6 +75,7 @@ TEST(ServerTesting, OneClientExecutionTest) {
     data.cleanUp();
     server test(server_port);
     std::thread serverThread(&server::start, &test);
+    serverThread.detach()
     // wait for server to start.
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::vector<std::string> inputMessages = {
