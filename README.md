@@ -1,17 +1,17 @@
-# recommendation system - excercise 1
+# server and client - excercise 2
 
 ## About Last Implementaion
 ### does the fact that some commands changed their name made you change your code?
-
+No, because there is a pure virtual function called description in ICommand interface, such that every time a command change his name, we change his description and help's execution didn't changed his implementation. (of course we needed to change the name of the command, and so the name of a few files, and so the includes in each file, but we couldn't do it SOLID)
 ### does the fact that some new commands added to the project made you change your code?
-
+No, because we created ICommand interface, such that it will be easy to add new commands, they just need to implement this interface.
 ### does the fact that the expected output of the commands have changed made you change your code?
 
 ### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
-
+No, because we created IMenu interface, such that it will be easy to change the way we print and scan staff, we just need the new method to implement the interface.
 ## App Information
 ### what is the application about
-The application designed to recommend movies to users. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies.
+The application designed to add users to the database, add/delete movies from user's watched list, recommend movies to users etc. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies. you can also delete movies from your watched list, or patch an existing user's watched list. we work with a server and each client has his own thread in the server ready to work just for him (for now, until we will implement threadpool). in that way manu users could connect to the server and use our app at the same time. 
 ### command that can be runned
 1. add \[userid] \[movieid1] \[movieid2] …  
      adds user to the system (if it didn't exists) with movies that he watched. If the users was registered before, it adds the movies to the system.
