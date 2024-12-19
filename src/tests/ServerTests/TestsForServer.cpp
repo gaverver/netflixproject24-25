@@ -48,7 +48,7 @@ void clientFunction(const std::vector<std::string>& messages, std::string& expec
             return;
         }
         // checks if there was a failure in receiving the data
-        int read_bytes = recv(clientSocket, buffer, sent_data, 0);
+        int read_bytes = recv(clientSocket, buffer, 4096, 0);
         if (read_bytes < 0) {
             close(clientSocket);
             return;
@@ -57,7 +57,6 @@ void clientFunction(const std::vector<std::string>& messages, std::string& expec
         buffer[read_bytes] = '\0';
         Msg += buffer;
     }
-    std::cout << "im here!!!!!!!!!!!!!!!!! and here is your msg:" << Msg << std::endl;
     // if the output is not as it needs to be, set the global variable to false.
     if (expectedOutput != Msg) {
         passed = false;
@@ -72,9 +71,6 @@ TEST(ServerTesting, OneClientExecutionTest) {
     
     // clean up the data before testing
     data.cleanUp();
-    server test(server_port);
-    std::thread serverThread(&server::start, &test);
-    serverThread.detach();
     // wait for server to start.
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::vector<std::string> inputMessages = {
@@ -90,7 +86,7 @@ TEST(ServerTesting, OneClientExecutionTest) {
     "POST 10 100 102 105 106 107 109 110 116\n", 
     "GET 1 104\n"
     };
-    std::string expectedOutput = "201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n105 106 111 110 112 113 107 108 109 114\n";
+    std::string expectedOutput = "201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n201 Created\n200 Ok\n\n105 106 111 110 112 113 107 108 109 114\n";
     std::thread thread(clientFunction, inputMessages, std::ref(expectedOutput));
     // waits for the client to finish execution
     thread.join();
@@ -251,4 +247,11 @@ TEST(ServerTesting, InvalidInputTest) {
     // checks that the data was inserted correctly.
     std::vector<unsigned long int> movies1 = data.findUser(1);
     EXPECT_EQ(movies1, std::vector<unsigned long int>({2})); 
+}
+int main(int argc, char **argv) {
+    server test(server_port);
+    std::thread serverThread(&server::start, &test);
+    serverThread.detach();
+     ::testing::InitGoogleTest(&argc, argv);
+     return RUN_ALL_TESTS();
 }
