@@ -22,5 +22,5 @@ if __name__ == "__main__":
         # reciving the data back from the server, (the result to our request)
         data = clientSocket.recv(4096)
         # prints it to the console so that the client could see his answer
-        print(data.decode('utf-8'))
+        print(data.decode('utf-8'), end="")
     
