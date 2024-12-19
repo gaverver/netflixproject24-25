@@ -1,0 +1,10 @@
+FROM gcc:latest
+
+COPY . /usr/src/Netflix
+WORKDIR /usr/src/Netflix
+
+RUN mkdir build
+WORKDIR /usr/src/Netflix/build
+
+RUN g++ -pthread -o netflix ../src/*.cpp
+ENTRYPOINT ["./netflix"]
