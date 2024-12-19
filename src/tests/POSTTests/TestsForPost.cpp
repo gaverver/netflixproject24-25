@@ -5,26 +5,11 @@
 #include "../../POSTCommand.h"
 #include "../../IMenu.h"
 #include "../../ConsoleMenu.h"
-
+#include "../../PublicFunctions.h"
 #include <fstream>
 #include <vector>
 #include <string>
 
-// helper function to capture output from cout
-std::string captureOutput(ICommand* Runner, const std::vector<std::string>& args) {
-    ConsoleMenu console;
-    std::ostringstream outputBuffer;
-    // Get the current buffer of cout and save it so it will be possible to restore later 
-    std::streambuf* originalBuffer = std::cout.rdbuf();
-    // Redirect cout to a stringstream so we could get to the output easily
-    std::cout.rdbuf(outputBuffer.rdbuf()); 
-    // Call the function execute - it prints to the screen the commands that the user can use. 
-    Runner -> execute(args); 
-    // Restore the original buffer, so that the next outputs will go there
-    std::cout.rdbuf(originalBuffer);
-    // Return the output of the function
-    return outputBuffer.str();
-}
 
 // Test that checks that the return value of the description function is as it should be 
 TEST(POSTTesting, DescriptionTest) {
@@ -63,7 +48,7 @@ TEST(POSTTesting, SimpleExecuteTest) {
     args.push_back("101");
     args.push_back("102");
      // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    std::string output = captureOutput(post, args);
+    std::string output = captureCommandOutput(post, args);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
     // get the movies that were saved under the 101 userID in the databse
@@ -96,7 +81,7 @@ TEST(POSTTesting, MultipleMoviesOneUserTest) {
     args.push_back("3");
     args.push_back("4");
      // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    std::string output = captureOutput(post, args);
+    std::string output = captureCommandOutput(post, args);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
     // get the movies that were saved under the 2 userID in the databse
@@ -137,7 +122,7 @@ TEST(POSTTesting, MultipleMoviesMultipleUsersTest) {
     args1.push_back("3");
     args1.push_back("4");
      // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    std::string output = captureOutput(post, args1);
+    std::string output = captureCommandOutput(post, args1);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
 
@@ -147,7 +132,7 @@ TEST(POSTTesting, MultipleMoviesMultipleUsersTest) {
     args2.push_back("4");
     args2.push_back("5");
      // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    output = captureOutput(post, args2);
+    output = captureCommandOutput(post, args2);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
 
@@ -211,7 +196,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     args.push_back("5");
     args.push_back("6");
     // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    std::string output = captureOutput(post, args);
+    std::string output = captureCommandOutput(post, args);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
 
@@ -219,7 +204,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     args[0] = "c";
     args[1] = "6";
      // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    output = captureOutput(post, args);
+    output = captureCommandOutput(post, args);
     // it created a new user and should print "400 Bad Request" and a new line character as the userID isn't legal.
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -243,7 +228,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     args[0] = "5";
     args[1] = "-1";
     // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    output = captureOutput(post, args);
+    output = captureCommandOutput(post, args);
     // it created a new user and should print "400 Bad Request" and a new line character as the movieID isn't legal.
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -261,7 +246,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     args[0] = "28446744073709551615";
     args[1] = "6";
     // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    output = captureOutput(post, args);
+    output = captureCommandOutput(post, args);
     // it created a new user and should print "400 Bad Request" and a new line character as the userID isn't legal.
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -278,7 +263,7 @@ TEST(POSTTesting, InvalidInputTest400) {
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureOutput(post, args);
+    output = captureCommandOutput(post, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -306,7 +291,7 @@ TEST(POSTTesting, InvalidInputTest404) {
     args.push_back("5");
     args.push_back("6");
     // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    std::string output = captureOutput(post, args);
+    std::string output = captureCommandOutput(post, args);
     // it created a new user and should print "201 Created" and a new line character
     EXPECT_EQ(output, "201 Created\n");
 
@@ -314,7 +299,7 @@ TEST(POSTTesting, InvalidInputTest404) {
     args[0] = "5";
     args[1] = "7";
     // execute the PATCH command that should update the databse and print an appropriate message - we capture the output
-    output = captureOutput(post, args);
+    output = captureCommandOutput(post, args);
     // it tries to add a movie to a user that already exists - so it is "404 Not Found" as post only adds new users. 
     EXPECT_EQ(output, "404 Not Found\n");
 

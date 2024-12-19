@@ -25,8 +25,14 @@ The application designed to add users to the database, add/delete movies from us
 5. help
      helps the end-user to learn about how to use the functionalities of the application
 ## Program Execution
+In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
-In order to run the application using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+   1. **create a new image:**  
+          `docker build -f Dockerfile.client -t client .`  
+   2. **create and run the container:**  
+          `docker run -it --network=host client <server_ip> <server_port>`  
+
+In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
       `docker build -t netflix .`  
@@ -52,9 +58,7 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ## running examples
 ### POST and PATCH and DELETE
 ![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
-### rcommendation test
-![image](https://github.com/user-attachments/assets/78c3e14b-9ceb-4a28-9c38-bfe0d0b894d3)
-### adding duplicated information doesn't matter
-![image](https://github.com/user-attachments/assets/f276fc99-3d14-4ca3-b9fb-3ec0b144d6cb)
+### GET and help and data is stored even after exiting and connecting again
+![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
 
 

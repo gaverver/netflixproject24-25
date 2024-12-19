@@ -5,25 +5,10 @@
 #include "../../PATCHCommand.h"
 #include "../../IMenu.h"
 #include "../../ConsoleMenu.h"
+#include "../../PublicFunctions.h"
 #include <fstream>
 #include <vector>
 #include <string>
-
-// helper function to capture output from cout
-std::string captureOutput(ICommand* Runner, const std::vector<std::string>& args) {
-    ConsoleMenu console;
-    std::ostringstream outputBuffer;
-    // Get the current buffer of cout and save it so it will be possible to restore later 
-    std::streambuf* originalBuffer = std::cout.rdbuf();
-    // Redirect cout to a stringstream so we could get to the output easily
-    std::cout.rdbuf(outputBuffer.rdbuf()); 
-    // Call the function execute - it prints to the screen the commands that the user can use. 
-    Runner -> execute(args); 
-    // Restore the original buffer, so that the next outputs will go there
-    std::cout.rdbuf(originalBuffer);
-    // Return the output of the function
-    return outputBuffer.str();
-}
 
 // Test that checks that the return value of the description function is as it should be 
 TEST(PATCHTesting, DescriptionTest) {
@@ -66,7 +51,7 @@ TEST(PATCHTesting, SimpleExecuteTest) {
     args.push_back("101");
     args.push_back("102");
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args);
+    std::string output = captureCommandOutput(patch, args);
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
     // get the movies that were saved under the 101 userID in the databse
@@ -104,7 +89,7 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     args.push_back("3");
     args.push_back("4");
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args);
+    std::string output = captureCommandOutput(patch, args);
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
     // get the movies that were saved under the 2 userID in the databse
@@ -152,7 +137,7 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     args1.push_back("3");
     args1.push_back("4");
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args1);
+    std::string output = captureCommandOutput(patch, args1);
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
     std::vector<std::string> args2;
@@ -161,7 +146,7 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     args2.push_back("4");
     args2.push_back("5");
     // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureOutput(patch, args2);
+    output = captureCommandOutput(patch, args2);
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
 
@@ -232,7 +217,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     args.push_back("c");
     args.push_back("6");
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args);
+    std::string output = captureCommandOutput(patch, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -256,7 +241,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     args[0] = "5";
     args[1] = "-1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureOutput(patch, args);
+    output = captureCommandOutput(patch, args);
     // check if the correct string was printed - as we entered an invalid movieID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -274,7 +259,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     args[0] = "28446744073709551615";
     args[1] = "6";
     // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureOutput(patch, args);
+    output = captureCommandOutput(patch, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -291,7 +276,7 @@ TEST(PATCHTesting, InvalidInputTest400) {
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
     // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureOutput(patch, args);
+    output = captureCommandOutput(patch, args);
     // check if the correct string was printed - as we entered an invalid userID
     EXPECT_EQ(output, "400 Bad Request\n");
 
@@ -322,7 +307,7 @@ TEST(PATCHTesting, InvalidInputTest404) {
     args.push_back("5");
     args.push_back("6");
     // execute the PATCH command that should update the databse and print an appropriate message
-    std::string output = captureOutput(patch, args);
+    std::string output = captureCommandOutput(patch, args);
     // check if the correct string was printed - the user doesn't exist so it is logically incorrect usage.
     EXPECT_EQ(output, "404 Not Found\n");
     // check that the user wasn't added to the db.

@@ -8,17 +8,20 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <shared_mutex>
 
 class App : public Runnable{
 public:
     // constructor for app class that intiallizes the fields of App
-    App(std::map<std::string, ICommand*> commands, IMenu& menu);
+    App(std::map<std::string, ICommand*> commands, IMenu& menu, std::shared_mutex& rw_mutex);
     // method to run the program using the user's input, implementing Runnable interface
     void run() override;
+    // destructor
+    ~App() override;
 
 private:
     // menu that helps to get the command from the user
-    IMenu menu;
+    IMenu& menu;
     // map that fits every command to it's command object
     std::map<std::string, ICommand*> commands;
     // mutex to lock the database when using him for a command
