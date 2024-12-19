@@ -18,7 +18,7 @@ public:
 
 private:
     // menu that helps to get the command from the user
-    IMenu& menu;
+    IMenu menu;
     // map that fits every command to it's command object
     std::map<std::string, ICommand*> commands;
     // mutex to lock the database when using him for a command
