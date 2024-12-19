@@ -11,6 +11,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
+#include "../../executor.h"
+#include "../../ThreadFactory.h"
 const int server_port = 5555;
 const char* ip_address = "0.0.0.0";
 bool passed = true;
@@ -249,7 +251,9 @@ TEST(ServerTesting, InvalidInputTest) {
     EXPECT_EQ(movies1, std::vector<unsigned long int>({2})); 
 }
 int main(int argc, char **argv) {
-    server test(server_port);
+    ThreadFactory tf;
+    executor& exec = tf;
+    server test(server_port, exec);
     std::thread serverThread(&server::start, &test);
     serverThread.detach();
      ::testing::InitGoogleTest(&argc, argv);
