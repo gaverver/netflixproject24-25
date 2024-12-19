@@ -1,6 +1,12 @@
 #include <string>
 #include <cctype>
+#include <iostream>
 #include "PublicFunctions.h"
+#include "IMenu.h"
+#include "ConsoleMenu.h"
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 unsigned long int fromStringToULI(const std::string& str, bool& isValid) {
     isValid = true;
@@ -39,4 +45,20 @@ unsigned long int fromStringToULI(const std::string& str, bool& isValid) {
 
     // returns the number in unsigned long int
     return static_cast<unsigned long int>(num);
+}
+
+// helper function to capture output from cout
+std::string captureCommandOutput(ICommand* Runner, const std::vector<std::string>& args) {
+    ConsoleMenu console;
+    std::ostringstream outputBuffer;
+    // Get the current buffer of cout and save it so it will be possible to restore later 
+    std::streambuf* originalBuffer = std::cout.rdbuf();
+    // Redirect cout to a stringstream so we could get to the output easily
+    std::cout.rdbuf(outputBuffer.rdbuf()); 
+    // Call the function execute - it prints to the screen the commands that the user can use. 
+    Runner -> execute(args); 
+    // Restore the original buffer, so that the next outputs will go there
+    std::cout.rdbuf(originalBuffer);
+    // Return the output of the function
+    return outputBuffer.str();
 }
