@@ -65,5 +65,7 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
 ### GET and help and data is stored even after exiting and connecting again
 ![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
+### Running 2 clients simultaneously
+![image](https://github.com/user-attachments/assets/0777d62e-ed53-4402-9b2f-b3b3880b77b9)
 
 
