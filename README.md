@@ -6,7 +6,7 @@ No, because there is a pure virtual function called description in ICommand inte
 ### does the fact that some new commands added to the project made you change your code?
 No, because we created ICommand interface, such that it will be easy to add new commands, they just need to implement this interface.
 ### does the fact that the expected output of the commands have changed made you change your code?
-
+The changes in the command output cause us to update only the value of the strings that we need to print, but except for this we didn't touch a code that is closed for changes and open for extensions, and the change we made is needed.    
 ### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
 No, because we created IMenu interface, such that it will be easy to change the way we print and scan staff, we just need the new method to implement the interface.
 ## App Information
@@ -24,13 +24,7 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-## Client Execution
-In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
-   1. **create a new image:**  
-          `docker build -f Dockerfile.client -t client .`  
-   2. **create and run the container:**  
-          `docker run -it --network=host client <server_ip> <server_port>`  
 ## Server Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
@@ -47,6 +41,14 @@ If you want to access from remoted device also, run this:
    3. **Create and run a new container:**  
       `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
+## Client Execution
+In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+
+   1. **create a new image:**  
+          `docker build -f Dockerfile.client -t client .`  
+   2. **create and run the container:**  
+          `docker run -it --network=host client <server_ip> <server_port>`  
+
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
@@ -59,11 +61,9 @@ In order to run the tests using Docker, you need to run the following commands w
 ## data management
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
-### spaces doesn't matter & restart doesn't matter
-![image](https://github.com/user-attachments/assets/4fea1103-3798-4b8d-9ec0-4982a0f6603c)
+### POST and PATCH and DELETE
+![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
 ### GET and help and data is stored even after exiting and connecting again
 ![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
-### adding duplicated information doesn't matter
-![image](https://github.com/user-attachments/assets/f276fc99-3d14-4ca3-b9fb-3ec0b144d6cb)
 
 
