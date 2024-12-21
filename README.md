@@ -37,7 +37,7 @@ In order to run the server using Docker, you need to run the following commands 
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`
    2. **Create a new container:**
-      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).
+      `docker run -d --name myappcontainer --network=host server <server_port>`
 
 If you want to access from remoted device also, run this:
    1. **Create a new image:**  
