@@ -29,10 +29,17 @@ The application designed to add users to the database, add/delete movies from us
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
-      `docker build -f Dockerfile.server -t server .`  
+      `docker build -f Dockerfile.server -t server .`
+   2. **Create a new container:**
+      `docker run -d --name myappcontainer --network=host server <server_port>`
 
-   2. **Create a new container:**  
-      `docker run -d --name myappcontainer --network=host server 5000` (you can also switch 5000 with any legal port number you want).  
+If you want to access from remoted device also, run this:
+   1. **Create a new image:**  
+      `docker build -f Dockerfile.server -t server .`
+   2. **Create network:**  
+      `docker network create  --subnet=<host-ip>/24  netflix_network`  
+   3. **Create and run a new container:**  
+      `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
 ## Client Execution
 In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
@@ -42,8 +49,6 @@ In order to run the client using Docker, you need to run the following commands 
    2. **create and run the container:**  
           `docker run -it --network=host client <server_ip> <server_port>`  
 
-
- 
 ## Test Execution
 
 In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
