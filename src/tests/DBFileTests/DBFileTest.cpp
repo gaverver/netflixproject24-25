@@ -60,7 +60,7 @@ std::vector<std::string> LastNWordsUsers(std::string uid, int N) {
         std::string line;
         while (std::getline(moviesFile, line)) {
             // std::cout << std::endl << line << std::endl << first_word(line) << std::endl << std::endl;
-            if (first_word(line) == std::uid) {
+            if (first_word(line) == uid) {
                 // std::cout << "im here" << line << std::endl << first_word(line) << std::endl;
                 break;
             }
@@ -89,7 +89,7 @@ TEST(DBFileTesting, UpdateUsr1) {
         std::ifstream usersFile("../data/users.txt");
         EXPECT_TRUE(usersFile.is_open());
         //check if the movies added successfully
-        std::vector<std::string> mids2 = LastNWordsUsers(i, 3);
+        std::vector<std::string> mids2 = LastNWordsUsers(std::to_string(i), 3);
         std::vector<std::string> midString = {std::to_string(100+i),std::to_string(101+i),std::to_string(102+i)};
         EXPECT_EQ(mids2,midString);
 
@@ -99,7 +99,7 @@ TEST(DBFileTesting, UpdateUsr1) {
     std::vector<std::string> mids1 = {"101", "200"};
     dbf.updateUser("1",mids1);
     //last two movies in user 1
-    std::vector<std::string> mids3 = LastNWordsUsers(1,2);
+    std::vector<std::string> mids3 = LastNWordsUsers("1",2);
     //expected last two movies in user 1
     std::vector<std::string> mids4 = {"103","200"};
     EXPECT_EQ(mids3,mids4);
@@ -127,7 +127,7 @@ TEST(DBFileTesting, UpdateUsr2) {
     for (int i=101; i<104; i++) {
         //check if the users added successfully
         //last 3 users of movie i
-        std::vector<std::string> uids = LastNWordsMovies(i, 3);
+        std::vector<std::string> uids = LastNWordsMovies(std::to_string(i), 3);
         //expected last 3 users
         std::vector<std::string> uidString = {"1","2","3"};
         EXPECT_EQ(uids,uidString);
@@ -138,7 +138,7 @@ TEST(DBFileTesting, UpdateUsr2) {
     dbf.updateUser("2",mid1);
     dbf.updateUser("30",mid1);
     //check if the movies.txt is updated
-    std::vector<std::string> uids = LastNWordsMovies(101, 3);
+    std::vector<std::string> uids = LastNWordsMovies("101", 3);
     std::vector<std::string> uidString = {"2","3","30"};
     EXPECT_EQ(uids,uidString);
 
@@ -161,7 +161,7 @@ TEST(DBFileTesting, UpdateMovie1) {
         EXPECT_TRUE(MoviesFile.is_open());
         MoviesFile.close();
         //check if the users added successfully
-        std::vector<std::string> uids2 = LastNWordsMovies(i, 3);
+        std::vector<std::string> uids2 = LastNWordsMovies(std::to_string(i), 3);
         std::vector<std::string> uidString = {std::to_string(100+i),std::to_string(101+i),std::to_string(102+i)};
         EXPECT_EQ(uids2,uidString);
 
@@ -170,7 +170,7 @@ TEST(DBFileTesting, UpdateMovie1) {
     std::vector<std::string> uids1 = {"101", "200"};
     dbf.updateMovie("1",uids1);
     //last two users in movie 1
-    std::vector<std::string> uids3 = LastNWordsMovies(1,2);
+    std::vector<std::string> uids3 = LastNWordsMovies("1",2);
     //expected last two movies in user 1
     std::vector<std::string> uids4 = {"103","200"};
     EXPECT_EQ(uids3,uids4);
@@ -198,7 +198,7 @@ TEST(DBFileTesting, UpdateMovie2) {
     for (int i=101; i<104; i++) {
         //check if the movies added successfully
         //last 3 movies of user i
-        std::vector<std::string> mids = LastNWordsUsers(i, 3);
+        std::vector<std::string> mids = LastNWordsUsers(std::to_string(i), 3);
         //expected last 3 users
         std::vector<std::string> midString = {"1","2","3"};
         EXPECT_EQ(mids,midString);
@@ -209,7 +209,7 @@ TEST(DBFileTesting, UpdateMovie2) {
     dbf.updateMovie("2",uid1);
     dbf.updateMovie("30",uid1);
     //check if the movies.txt is updated
-    std::vector<std::string> mids = LastNWordsUsers(101, 3);
+    std::vector<std::string> mids = LastNWordsUsers("101", 3);
     std::vector<std::string> midString = {"2","3","30"};
     EXPECT_EQ(mids,midString);
 
@@ -228,7 +228,7 @@ TEST(DBFileTesting, FindUser) {
     std::vector<std::string> midsCheck0 = dbf.findUser("1");
     EXPECT_EQ(emptyMids,midsCheck0);
     //check if the user exists and the list is empty
-    dbf.updateUser(1,emptyMids);
+    dbf.updateUser("1",emptyMids);
     std::vector<std::string> midsCheck01 = dbf.findUser("1");
     EXPECT_EQ(emptyMids,midsCheck01);
 
@@ -523,7 +523,7 @@ TEST(DBFileTesting, DeleteMovies) {
     dbf.deleteMovies("1",{"109","107","103","104","105","102","106","101"});
     EXPECT_EQ(dbf.findUser("1"), (std::vector<std::string>{}));
     //deleting non existing user
-    dbf.deleteMovies(2,{"1","2","3"});
+    dbf.deleteMovies("2",{"1","2","3"});
     EXPECT_EQ(dbf.findUser("2"), (std::vector<std::string>{}));
     //clean
     dbf.cleanUp();
@@ -567,7 +567,7 @@ TEST(DBFileTesting, DeleteUsers) {
     dbf.deleteUsers("1",{"109","107","103","104","105","102","106","101"});
     EXPECT_EQ(dbf.findMovie("1"), (std::vector<std::string>{}));
     //deleting non existing movie
-    dbf.deleteUsers(2,{"1","2","3"});
+    dbf.deleteUsers("2",{"1","2","3"});
     EXPECT_EQ(dbf.findMovie("2"), (std::vector<std::string>{}));
     //clean
     dbf.cleanUp();

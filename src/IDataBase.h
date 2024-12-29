@@ -1,6 +1,6 @@
 #ifndef IDATABASE_H
 #define IDATABASE_H
-
+#include <string>
 #include <vector>
 
 
