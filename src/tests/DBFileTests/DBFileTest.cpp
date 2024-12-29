@@ -188,7 +188,7 @@ TEST(DBFileTesting, UpdateMovie2) {
     for (int i=1; i<4; ++i) {
         std::vector<std::string> uids = {"101","102","103"};
         //updating some movie with some users
-        dbf.updateMovie("i", uids);
+        dbf.updateMovie(std::to_string(i), uids);
     }
     //checking if the users.txt exists
     std::ifstream usersFile1("../data/users.txt");
