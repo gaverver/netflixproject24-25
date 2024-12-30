@@ -80,3 +80,24 @@ bool IsValidId(const std::string& str) {
 
     return true;
 }
+
+//helper functio to remove the zeros at the beginning
+std::string removeZeros(const std::string& num) {
+    size_t firstNonZero = num.find_first_not_of('0');
+    if (firstNonZero == std::string::npos) {
+        //the number is all 0
+        return "0";
+    }
+    return num.substr(firstNonZero);
+}
+//helper function to compare strings which represents two huge numbers
+bool compareHugeNumbers(const std::string& num1, const std::string& num2) {
+    //remove zeros
+    std::string n1 = removeZeros(num1);
+    std::string n2 = removeZeros(num2);
+    //compare lengths
+    if (num1.length() != num2.length()) {
+        return num1.length() < num2.length();
+    }
+    return num1 < num2;
+}

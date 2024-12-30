@@ -12,27 +12,27 @@ class DBFile : public IDataBase {
         //constuctor to the class
         DBFile(std::string path);
         //pure virtual method to find movies that user watched
-        virtual std::vector<unsigned long int> findUser(unsigned long int uid) override;
+        virtual std::vector<std::string> findUser(std::string uid) override;
         //pure virtual method to users that watched a movie
-        virtual std::vector<unsigned long int> findMovie(unsigned long int mid) override;
+        virtual std::vector<std::string> findMovie(std::string mid) override;
         //pure virtual method to add movies a user has watched
-        virtual void updateUser(unsigned long int uid, const std::vector<unsigned long int>& mids) override;
+        virtual void updateUser(std::string uid, const std::vector<std::string>& mids) override;
         //pure virtual method to add users that watched a movie
-        virtual void updateMovie(unsigned long int mid, const std::vector<unsigned long int>& uids) override;
+        virtual void updateMovie(std::string mid, const std::vector<std::string>& uids) override;
         //pure virtual method to find common watched movies between 2 users
-        virtual std::vector<unsigned long int> getCommonMovies(unsigned long int uid1, unsigned long int uid2) override;
+        virtual std::vector<std::string> getCommonMovies(std::string uid1, std::string uid2) override;
         //pure virtual method to find all the movie ids of watched movies
-        virtual std::vector<unsigned long int> getAllMovies() override;
+        virtual std::vector<std::string> getAllMovies() override;
         //method to clean the data from the files
         virtual void cleanUp() override;
         //pure virtual method to check if a user exists
-        virtual bool isUserExists(unsigned long int uid) override;
+        virtual bool isUserExists(std::string uid) override;
         //pure virtual method to check if a movie exists
-        virtual bool isMovieExists(unsigned long int mid) override;
+        virtual bool isMovieExists(std::string mid) override;
         //pure virtual method to delete users from a movie
-        virtual void deleteUsers(unsigned long int mid, const std::vector<unsigned long int>& uids) override;
+        virtual void deleteUsers(std::string mid, const std::vector<std::string>& uids) override;
         //pure virtual method to delete movies from a user
-        virtual void deleteMovies(unsigned long int uid, const std::vector<unsigned long int>& mids) override;
+        virtual void deleteMovies(std::string uid, const std::vector<std::string>& mids) override;
 };
 
 #endif

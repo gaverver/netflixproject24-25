@@ -1,35 +1,35 @@
 #ifndef IDATABASE_H
 #define IDATABASE_H
-
+#include <string>
 #include <vector>
 
 
 class IDataBase { 
     public:
         //pure virtual method to find movies that user watched
-        virtual std::vector<unsigned long int> findUser(unsigned long int uid) = 0;
+        virtual std::vector<std::string> findUser(std::string uid) = 0;
         //pure virtual method to users that watched a movie
-        virtual std::vector<unsigned long int> findMovie(unsigned long int mid) = 0;
+        virtual std::vector<std::string> findMovie(std::string mid) = 0;
         //pure virtual method to add movies a user has watched
-        virtual void updateUser(unsigned long int uid, const std::vector<unsigned long int>& mids) = 0;
+        virtual void updateUser(std::string uid, const std::vector<std::string>& mids) = 0;
         //pure virtual method to add users that watched a movie
-        virtual void updateMovie(unsigned long int mid, const std::vector<unsigned long int>& uids) = 0;
+        virtual void updateMovie(std::string mid, const std::vector<std::string>& uids) = 0;
         //pure virtual method to find common watched movies between 2 users
-        virtual std::vector<unsigned long int> getCommonMovies(unsigned long int uid1, unsigned long int uid2) = 0;
+        virtual std::vector<std::string> getCommonMovies(std::string uid1, std::string uid2) = 0;
         //pure virtual method to find all the movie ids of watched movies
-        virtual std::vector<unsigned long int> getAllMovies() = 0;
+        virtual std::vector<std::string> getAllMovies() = 0;
         //virtual destructor to ensure proper cleanup in derived classes
         virtual ~IDataBase() = default;
         //pure virtual method to cleans all data
         virtual void cleanUp() = 0;
         //pure virtual method to check if a user exists
-        virtual bool isUserExists(unsigned long int uid) = 0;
+        virtual bool isUserExists(std::string uid) = 0;
         //pure virtual method to check if a movie exists
-        virtual bool isMovieExists(unsigned long int mid) = 0;
+        virtual bool isMovieExists(std::string mid) = 0;
         //pure virtual method to delete users from a movie
-        virtual void deleteUsers(unsigned long int mid, const std::vector<unsigned long int>& uids) = 0;
+        virtual void deleteUsers(std::string mid, const std::vector<std::string>& uids) = 0;
         //pure virtual method to delete movies from a user
-        virtual void deleteMovies(unsigned long int uid, const std::vector<unsigned long int>& mids) = 0;
+        virtual void deleteMovies(std::string uid, const std::vector<std::string>& mids) = 0;
 
 };
 
