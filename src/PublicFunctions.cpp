@@ -62,3 +62,21 @@ std::string captureCommandOutput(ICommand* Runner, const std::vector<std::string
     // Return the output of the function
     return outputBuffer.str();
 }
+
+// function to check if the string is a valid MongoDB ObjectId
+bool IsValidId(const std::string& str) {
+    // check if the string length is exactly 24 characters
+    if (str.length() != 24) {
+        return false;
+    }
+    
+    // check if each character in the string is a valid hexadecimal character (0-9, a-f)
+    for (char c : str) {
+        // isxdigit checks if the character is a valid hex digit (0-9, a-f, a-f)
+        if (!std::isxdigit(c)) {
+            return false;
+        }
+    }
+
+    return true;
+}
