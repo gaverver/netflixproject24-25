@@ -46,7 +46,7 @@ TEST(PATCHTesting, SimpleExecuteTest) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 101 to the databse so patch will work.
-    test.updateUser(101, {100});
+    test.updateUser("101", {"100"});
     // execute the command PATCH 101 102
     args.push_back("101");
     args.push_back("102");
@@ -55,18 +55,18 @@ TEST(PATCHTesting, SimpleExecuteTest) {
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
     // get the movies that were saved under the 101 userID in the databse
-    std::vector<unsigned long int> movies = test.findUser(101);
+    std::vector<std::string> movies = test.findUser("101");
     // movieID's that were supposed to be saved
-    std::vector<unsigned long int> expectedMovies;
-    expectedMovies.push_back(100);
-    expectedMovies.push_back(102);
+    std::vector<std::string> expectedMovies;
+    expectedMovies.push_back("100");
+    expectedMovies.push_back("102");
     // check if the correct movies were saved under the user
     EXPECT_EQ(expectedMovies, movies);
     // find all the users that watched that movie
-    std::vector<unsigned long int> users = test.findMovie(102);
+    std::vector<std::string> users = test.findMovie("102");
     // UserID's that were supposed to be saved
-    std::vector<unsigned long int> expectedUsers;
-    expectedUsers.push_back(101);
+    std::vector<std::string> expectedUsers;
+    expectedUsers.push_back("101");
     EXPECT_EQ(expectedUsers, users);
     // clear the files after the test
     test.cleanUp();
@@ -83,7 +83,7 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the user 2 to the databse so patch will work.
-    test.updateUser(2, {1});
+    test.updateUser("2", {"1"});
     // execute the command PATCH 2 3 4
     args.push_back("2");
     args.push_back("3");
@@ -93,25 +93,25 @@ TEST(PATCHTesting, MultipleMoviesOneUserTest) {
     // check if the correct string was printed
     EXPECT_EQ(output, "204 No Content\n");
     // get the movies that were saved under the 2 userID in the databse
-    std::vector<unsigned long int> movies = test.findUser(2);
+    std::vector<std::string> movies = test.findUser("2");
     // movieID's that were supposed to be saved
-    std::vector<unsigned long int> expectedMovies;
-    expectedMovies.push_back(1);
-    expectedMovies.push_back(3);
-    expectedMovies.push_back(4);
+    std::vector<std::string> expectedMovies;
+    expectedMovies.push_back("1");
+    expectedMovies.push_back("3");
+    expectedMovies.push_back("4");
     // check if the correct movies were saved under the user
     EXPECT_EQ(expectedMovies, movies);
     // find all the users that watched movie number 3
-    std::vector<unsigned long int> users = test.findMovie(3);
+    std::vector<std::string> users = test.findMovie("3");
     // UserID's that were supposed to be saved(users that watched movie number 3)
-    std::vector<unsigned long int> expectedUsers3;
-    expectedUsers3.push_back(2);
+    std::vector<std::string> expectedUsers3;
+    expectedUsers3.push_back("2");
     EXPECT_EQ(expectedUsers3, users);
     // find all the users that watched movie number 4
-    users = test.findMovie(4);
+    users = test.findMovie("4");
     // UserID's that were supposed to be saved(users that watched movie number 4)
-    std::vector<unsigned long int> expectedUsers4;
-    expectedUsers4.push_back(2);
+    std::vector<std::string> expectedUsers4;
+    expectedUsers4.push_back("2");
     EXPECT_EQ(expectedUsers4, users);
     // clear the files after the test
     test.cleanUp();
@@ -129,8 +129,8 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     std::vector<std::string> args1;
 
     // first add manually the users to the databse so patch will work.
-    test.updateUser(2, {1});
-    test.updateUser(3, {1});
+    test.updateUser("2", {"1"});
+    test.updateUser("3", {"1"});
 
     // execute the command PATCH 2 3 4
     args1.push_back("2");
@@ -151,48 +151,48 @@ TEST(PATCHTesting, MultipleMoviesMultipleUsersTest) {
     EXPECT_EQ(output, "204 No Content\n");
 
     // get the movies that were saved under the userID 2 in the databse
-    std::vector<unsigned long int> movies2 = test.findUser(2);
+    std::vector<std::string> movies2 = test.findUser("2");
     // movieID's that were supposed to be saved
-    std::vector<unsigned long int> expectedMovies2;
-    expectedMovies2.push_back(1);
-    expectedMovies2.push_back(3);
-    expectedMovies2.push_back(4);
+    std::vector<std::string> expectedMovies2;
+    expectedMovies2.push_back("1");
+    expectedMovies2.push_back("3");
+    expectedMovies2.push_back("4");
     // check if the correct movies were saved under the user
     EXPECT_EQ(expectedMovies2, movies2);
 
     // get the movies that were saved under the userID 3 in the databse
-    std::vector<unsigned long int> movies3 = test.findUser(3);
+    std::vector<std::string> movies3 = test.findUser("3");
     // movieID's that were supposed to be saved
-    std::vector<unsigned long int> expectedMovies3;
-    expectedMovies3.push_back(1);
-    expectedMovies3.push_back(4);
-    expectedMovies3.push_back(5);
+    std::vector<std::string> expectedMovies3;
+    expectedMovies3.push_back("1");
+    expectedMovies3.push_back("4");
+    expectedMovies3.push_back("5");
     // check if the correct movies were saved under the user
     EXPECT_EQ(expectedMovies3, movies3);
 
     // find all the users that watched movie number 3
-    std::vector<unsigned long int> users = test.findMovie(3);
+    std::vector<std::string> users = test.findMovie("3");
     // UserID's that were supposed to be saved(users that watched movie number 3)
-    std::vector<unsigned long int> expectedUsers3;
-    expectedUsers3.push_back(2);
+    std::vector<std::string> expectedUsers3;
+    expectedUsers3.push_back("2");
     // check if the list of users that watched the movie is good
     EXPECT_EQ(expectedUsers3, users);
 
 
     // find all the users that watched movie number 4
-    users = test.findMovie(4);
+    users = test.findMovie("4");
     // UserID's that were supposed to be saved(users that watched movie number 4)
-    std::vector<unsigned long int> expectedUsers4;
-    expectedUsers4.push_back(2);
-    expectedUsers4.push_back(3);
+    std::vector<std::string> expectedUsers4;
+    expectedUsers4.push_back("2");
+    expectedUsers4.push_back("3");
     // check if the list of users that watched the movie is good
     EXPECT_EQ(expectedUsers4, users);
 
     // find all the users that watched movie number 4
-    users = test.findMovie(5);
+    users = test.findMovie("5");
     // UserID's that were supposed to be saved(users that watched movie number 4)
-    std::vector<unsigned long int> expectedUsers5;
-    expectedUsers5.push_back(3);
+    std::vector<std::string> expectedUsers5;
+    expectedUsers5.push_back("3");
     // check if the list of users that watched the movie is good
     EXPECT_EQ(expectedUsers5, users);
 
@@ -211,10 +211,10 @@ TEST(PATCHTesting, InvalidInputTest400) {
     ICommand* patch = new PATCHCommand(test, menu);
     std::vector<std::string> args;
     // first add manually the users to the databse so patch will work.
-    test.updateUser(5, {6});
+    test.updateUser("5", {"6"});
 
-    // execute the command PATCH c 6
-    args.push_back("c");
+    // execute the command PATCH x 6
+    args.push_back("x");
     args.push_back("6");
     // execute the PATCH command that should update the databse and print an appropriate message
     std::string output = captureCommandOutput(patch, args);
@@ -222,18 +222,18 @@ TEST(PATCHTesting, InvalidInputTest400) {
     EXPECT_EQ(output, "400 Bad Request\n");
 
     // get the movies that were saved under the 5 userID in the databse(id 5)
-    std::vector<unsigned long int> movies = test.findUser(5);
+    std::vector<std::string> movies = test.findUser("5");
     // movieID's that were supposed to be saved
-    std::vector<unsigned long int> expectedMovies;
-    expectedMovies.push_back(6);
+    std::vector<std::string> expectedMovies;
+    expectedMovies.push_back("6");
     // check if the correct movies were saved under the user(id 5)
     EXPECT_EQ(expectedMovies, movies);
 
     // find all the users that watched that movie(id 6)
-    std::vector<unsigned long int> users = test.findMovie(6);
+    std::vector<std::string> users = test.findMovie("6");
     // UserID's that were supposed to be saved
-    std::vector<unsigned long int> expectedUsers;
-    expectedUsers.push_back(5);
+    std::vector<std::string> expectedUsers;
+    expectedUsers.push_back("5");
     // check if the correct users were saved under the movie(id 6)
     EXPECT_EQ(expectedUsers, users);
 
@@ -246,32 +246,15 @@ TEST(PATCHTesting, InvalidInputTest400) {
     EXPECT_EQ(output, "400 Bad Request\n");
 
     // get the movies that were saved under the 5 userID in the databse(id 5)
-    std::vector<unsigned long int> movies5 = test.findUser(5);
+    std::vector<std::string> movies5 = test.findUser("5");
     // check if the correct movies were saved under the user(id 5) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedMovies, movies5);
 
     // find all the users that watched that movie(id 6)
-    std::vector<unsigned long int> users6 = test.findMovie(6);
+    std::vector<std::string> users6 = test.findMovie("6");
     // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedUsers, users6);
 
-    // execute the command PATCH 28446744073709551615 6 - over the range on unsigned long int
-    args[0] = "28446744073709551615";
-    args[1] = "6";
-    // execute the PATCH command that should update the databse and print an appropriate message
-    output = captureCommandOutput(patch, args);
-    // check if the correct string was printed - as we entered an invalid userID
-    EXPECT_EQ(output, "400 Bad Request\n");
-
-    // get the movies that were saved under the 5 userID in the databse(id 5)
-    movies = test.findUser(5);
-    // check if the correct movies were saved under the user(id 5) - we check this to see if the invalid input didn't effect this
-    EXPECT_EQ(expectedMovies, movies);
-
-    // find all the users that watched that movie(id 6)
-    users = test.findMovie(6);
-    // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
-    EXPECT_EQ(expectedUsers, users);
     args.resize(1);
     // execute the command PATCH 1 - less then 2 arguments
     args[0] = "1";
@@ -281,12 +264,12 @@ TEST(PATCHTesting, InvalidInputTest400) {
     EXPECT_EQ(output, "400 Bad Request\n");
 
     // get the movies that were saved under the 5 userID in the databse(id 5)
-    movies = test.findUser(5);
+    movies = test.findUser("5");
     // check if the correct movies were saved under the user(id 5) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedMovies, movies);
 
     // find all the users that watched that movie(id 6)
-    users = test.findMovie(6);
+    users = test.findMovie("6");
     // check if the correct users were saved under the movie(id 6) - we check this to see if the invalid input didn't effect this
     EXPECT_EQ(expectedUsers, users);
 
@@ -311,7 +294,7 @@ TEST(PATCHTesting, InvalidInputTest404) {
     // check if the correct string was printed - the user doesn't exist so it is logically incorrect usage.
     EXPECT_EQ(output, "404 Not Found\n");
     // check that the user wasn't added to the db.
-    EXPECT_EQ(test.isUserExists(5), false);
+    EXPECT_EQ(test.isUserExists("5"), false);
 
     // clear the files after the test
     test.cleanUp();
