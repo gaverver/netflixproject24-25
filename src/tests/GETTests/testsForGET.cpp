@@ -32,8 +32,8 @@ void setup_pos1(IDataBase &db) {
     db.cleanUp();
 
     // update all data
-    db.updateUser(1, {1});
-    db.updateUser(2, {1});
+    db.updateUser("1", {"1"});
+    db.updateUser("2", {"1"});
 }
 
 // Helper function to setup the data before testing test3
@@ -42,9 +42,9 @@ void setup_pos2(IDataBase &db) {
     db.cleanUp();
 
     // update all data
-    db.updateUser(1, {1});
-    db.updateUser(2, {1, 3});
-    db.updateUser(3, {2});
+    db.updateUser("1", {"1"});
+    db.updateUser("2", {"1", "3"});
+    db.updateUser("3", {"2"});
 }
 
 // Helper function to setup the data before testing test1, test4, test5
@@ -53,16 +53,16 @@ void setup_pos3(IDataBase &db) {
     db.cleanUp();
 
     // update all data
-    db.updateUser(1, {100, 101,     102, 103});
-    db.updateUser(2, {101, 102, 104, 105, 106});
-    db.updateUser(3, {100, 104, 105, 107, 108});
-    db.updateUser(4, {101, 105, 106, 107, 109, 110});
-    db.updateUser(5, {100, 102, 103, 105, 108, 111});
-    db.updateUser(6, {100, 103, 104, 110, 111, 112, 113});
-    db.updateUser(7, {102, 105, 106, 107, 108, 109, 110});
-    db.updateUser(8, {101, 104, 105, 106, 109, 111, 114});
-    db.updateUser(9, {100, 103, 105, 107, 112, 113, 115});
-    db.updateUser(10, {100, 102, 105, 106, 107, 109, 110, 116});
+    db.updateUser("1", {"100", "101", "102", "103"});
+    db.updateUser("2", {"101", "102", "104", "105", "106"});
+    db.updateUser("3", {"100", "104", "105", "107", "108"});
+    db.updateUser("4", {"101", "105", "106", "107", "109", "110"});
+    db.updateUser("5", {"100", "102", "103", "105", "108", "111"});
+    db.updateUser("6", {"100", "103", "104", "110", "111", "112", "113"});
+    db.updateUser("7", {"102", "105", "106", "107", "108", "109", "110"});
+    db.updateUser("8", {"101", "104", "105", "106", "109", "111", "114"});
+    db.updateUser("9", {"100", "103", "105", "107", "112", "113", "115"});
+    db.updateUser("10", {"100", "102", "105", "106", "107", "109", "110", "116"});
 }
 
 // Test case 1: Check invalid input in execute function
@@ -76,47 +76,39 @@ TEST(GETTest, ExecuteInvalidInput) {
     IMenu& menu = cm;
     GETCommand GET(db, menu);
 
-    // check what if user id is empty (should print nothing)
+    // check what if user id is empty (should print error)
     auto output = captureOutput([&]() { GET.execute({"", "104"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if user id is not an unsigned long int (should print nothing)
+    // check what if user id is invalid (should print error)
     output = captureOutput([&]() { GET.execute({"c", "123"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if movie id is not an unsigned long int (should print nothing)
+    // check what if movie id is invalid (should print error)
     output = captureOutput([&]() { GET.execute({"1", "12x"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if user id is negative (should print nothing)
+    // check what if user id is negative (invalid) (should print error)
     output = captureOutput([&]() { GET.execute({"-1", "104"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if movie id is negative (should print nothing)
+    // check what if movie id is negative (invalid) (should print error)
     output = captureOutput([&]() { GET.execute({"1", "-104"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if only 1 argument (no movie id) (should print nothing)
+    // check what if only 1 argument (no movie id) (should print error)
     output = captureOutput([&]() { GET.execute({"4"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if 3 arguments (too match) (should print nothing)
+    // check what if 3 arguments (too match) (should print error)
     output = captureOutput([&]() { GET.execute({"1", "104", "105"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
-    // check what if user id is above the maximum unsigned long int (should print nothing)
-    output = captureOutput([&]() { GET.execute({"18446744073709551616", "104"}); });
-    EXPECT_EQ(output, "400 Bad Request\n");
-
-    // check what if movie id is above the maximum unsigned long int (should print nothing)
-    output = captureOutput([&]() { GET.execute({"1", "18446744073709551616"}); });
-    EXPECT_EQ(output, "400 Bad Request\n");
-
-    // check what if user don't exist (should print nothing)
+    // check what if user don't exist (should print error)
     output = captureOutput([&]() { GET.execute({"11", "104"}); });
     EXPECT_EQ(output, "404 Not Found\n");
 
-    // check what if movie don't exist (should print nothing)
+    // check what if movie don't exist (should print error)
     output = captureOutput([&]() { GET.execute({"1", "99"}); });
     EXPECT_EQ(output, "404 Not Found\n");
 }
