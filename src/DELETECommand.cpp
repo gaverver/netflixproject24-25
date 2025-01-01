@@ -20,13 +20,11 @@ void DELETECommand::execute(const std::vector<std::string>& args) {
         return;
     }
 
-    // casting from string to unsigned long int, and returns if there was a problem doing so
-    bool isValid = true;
-
-    // casting the first argument from string to unsigned long int (the user id)
-    unsigned long int uid = fromStringToULI(args[0], isValid);
-    // if the casting has failed, execute of DELETE should prints error code
-    if (!isValid) {
+    // for comfort
+    std::string uid = args[0];
+    
+    // if the user id isn't valid
+    if (!IsValidId(uid)) {
         // error number - 400 - invalid command
         menu.print("400 Bad Request");
         return;
@@ -44,20 +42,19 @@ void DELETECommand::execute(const std::vector<std::string>& args) {
     }
 
     // this will contain all the movies we want to delete from the user watched list
-    std::vector<unsigned long int> movies_to_delete;
+    std::vector<std::string> movies_to_delete;
     // all the movies that user watched
-    std::vector<unsigned long int> watched_movies = db.findUser(uid);
+    std::vector<std::string> watched_movies = db.findUser(uid);
     // go through all the arguments (except the first one) to constract the movies
     for (int i = 1; i < args.size(); i++) {
-        // casting the current argument from string to unsigned long int (a movie id)
-        unsigned long int mid = fromStringToULI(args[i], isValid);
-        // if the casting has failed, execute of DELETE should prints error code
-        if (!isValid) {
+        // the current movie
+        std::string mid = args[i];
+        // if the mid is invalid, execute of DELETE should prints error code
+        if (!IsValidId(mid)) {
             // error number - 400 - invalid command, that's the final error number
             error_400 = true;
             break;
         }
-        // else, the casting succeed
         // if the current movie does not exist, execute of DELETE should prints error code
         if (!db.isMovieExists(mid)) {
             // error number - 404 - with the specific data base!!!, invalid command
