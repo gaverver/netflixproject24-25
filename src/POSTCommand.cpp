@@ -15,16 +15,16 @@ std::string POSTCommand::rw_status() const {
 }
 
 void POSTCommand::execute(const std::vector<std::string>& args) {
-    // check if enought arguments were entered.
+    // check if enough arguments were entered.
     if (args.size() < 2) {
         menu.print("400 Bad Request");
         return;
     }
-    std::vector<unsigned long int> passedMovies;
-    std::vector<unsigned long int> userVector;
+    std::vector<std::string> passedMovies;
+    std::vector<std::string> userVector;
     bool isValid = true;
     for (size_t i = 0; i < args.size(); i++) {
-        unsigned long int convertedNum = fromStringToULI(args[i], isValid);
+        isValid = IsValidId(args[i]);
         // if one of the arguments is invalid so it prints an appropriate message that the arguments aren't good(400 Bad Request)
         if (!isValid) {
             menu.print("400 Bad Request");
@@ -32,9 +32,9 @@ void POSTCommand::execute(const std::vector<std::string>& args) {
         }
         // the first argument(i=0) is the userID and the other arguments are the moviesID
         if (i == 0) {
-            userVector.push_back(convertedNum);
+            userVector.push_back(args[i]);
         } else {
-            passedMovies.push_back(convertedNum);
+            passedMovies.push_back(args[i]);
         }
     }
     // if the user already exist it is not a legal use of the command - prints an appropriate message
