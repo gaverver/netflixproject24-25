@@ -81,7 +81,7 @@ TEST(GETTest, ExecuteInvalidInput) {
     EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if user id is invalid (should print error)
-    output = captureOutput([&]() { GET.execute({"c", "123"}); });
+    output = captureOutput([&]() { GET.execute({"t", "123"}); });
     EXPECT_EQ(output, "400 Bad Request\n");
 
     // check what if movie id is invalid (should print error)
