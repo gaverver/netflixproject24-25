@@ -7,6 +7,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <chrono>
+#include "../../ThreadPool.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -259,7 +260,7 @@ TEST(ServerTesting, InvalidInputTest) {
     EXPECT_EQ(movies1, std::vector<std::string>({"2"})); 
 }
 int main(int argc, char **argv) {
-    ThreadFactory tf;
+    ThreadPool tf(2);
     executor& exec = tf;
     server test(server_port, exec);
     std::thread serverThread(&server::start, &test);
