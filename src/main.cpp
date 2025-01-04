@@ -4,7 +4,7 @@
 #include <string>
 
 int main(int argc, char** argv) {
-    ThreadPool tp(10);
+    ThreadPool tp(100);
     executor& exec = tp;
     // create the server to run it.
     server runner(std::stoi(argv[1]), exec);
