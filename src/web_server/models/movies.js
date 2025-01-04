@@ -32,6 +32,11 @@ const Movie = new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'categories',
         default: []
+    },
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'images',
+        required: true
     }
 });
 
