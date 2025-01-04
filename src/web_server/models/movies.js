@@ -20,7 +20,7 @@ const Movie = new Schema({
     },
     age_limit: {
         type: Number,
-        required: true,
+        default: 0,
         min: 0,
         max: 18
     },
