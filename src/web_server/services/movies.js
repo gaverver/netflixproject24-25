@@ -54,7 +54,12 @@ const updateMovie = async (id, data) => {
     return await movie.save();
 }
 
-
+const getRecommendation = async (userId, movieId) => {
+    const [ip, port] = App.recommendConString.split(':');
+    const response = await sendMessageToServer(ip, parseInt(port), `GET ${userId} ${movieId}`);
+    // Remove the "200 Ok\n\n" prefix
+    const cleanResponse = response.replace(/^200 Ok\n\n/, '');
+}
 
 
 
