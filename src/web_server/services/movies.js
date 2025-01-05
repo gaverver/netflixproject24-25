@@ -59,6 +59,7 @@ const getRecommendation = async (userId, movieId) => {
     const response = await sendMessageToServer(ip, parseInt(port), `GET ${userId} ${movieId}`);
     // Remove the "200 Ok\n\n" prefix
     const cleanResponse = response.replace(/^200 Ok\n\n/, '');
+    return cleanResponse;
 }
 
 
