@@ -167,7 +167,7 @@ TEST(AppTests, InvalidInputTest1) {
     // clear the databse before usage so there will not be data that is not needed there.
     data.cleanUp();
     // enter some illegal commands and POST and GET and DELETE commands
-    std::vector<std::string> commands = {"DELETE 1 1", "POST 1 1", "POST 2 1 3", "POST 3 2", "PATCH 1 2 3 5 4 x", "PATCH 2 p 3 c", "POST f 1 1 1 2 2 2 3 3 3", "GET 1 2", "GET 1 x", "DELETE 1 1"};
+    std::vector<std::string> commands = {"DELETE 1 1", "POST 1 1", "POST 2 1 3", "POST 3 2", "PATCH 1 2 3 5 4 x", "PATCH 2 p 3 c", "POST z 1 1 1 2 2 2 3 3 3", "GET 1 2", "GET 1 x", "DELETE 1 1"};
     std::string expectedOutput = "404 Not Found\n201 Created\n201 Created\n201 Created\n400 Bad Request\n400 Bad Request\n400 Bad Request\n200 Ok\n\n3\n400 Bad Request\n204 No Content\n";
     // capture the output from the cout
     std::string printedOutput = captureOutput(commands);
