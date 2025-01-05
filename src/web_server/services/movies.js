@@ -1,7 +1,9 @@
 const Movie = require('../models/movies')
-const User = require('../models/')
+const categoriesService = require('categories')
 const App = require('../app')
 const net = require('net')
+const categories = require('../models/categories')
+const mongoose = require('mongoose');
 
 const createMovie = async (name, description, actors, published, age_limit, creators, categories) => {
     //create movie with required fields
@@ -46,6 +48,13 @@ const getMovieById = async (id) => {
     return await Movie.findById(id);
 }
 
+const getMovies = async (userId) => {
+    const movie = await Movie.find({
+        categories: { $in: [    ] },
+        users: { $ne: mongoose.Types.ObjectId(userId)}
+    }).limit(20)
+}
+
 const updateMovie = async (id, data) => {
     movie = getMovieById(id);
     for (const key in data) {
@@ -62,7 +71,25 @@ const getRecommendation = async (userId, movieId) => {
     return cleanResponse;
 }
 
+const addMovieToUser = async (userId, movieId) => {
+    //add to mongo
+    const updatedMovie = await Movie.findByIdAndUpdate(
+        movieId, 
+        { $push: { users: userId } }, 
+        { new: true } // Return the updated document
+    );
+    if (!updateMovie) return null;
+    //add to the recommendation system
+    const [ip, port] = App.recommendConString.split(':');
+    //try to post
+    const response = await sendMessageToServer(ip, parseInt(port), `POST ${userId} ${movieId}`);
+    //if user already exists in the system, use patch
+    if (response == "404 Not Found") {
+        await sendMessageToServer(ip, parseInt(port), `PATCH ${userId} ${movieId}`);
+    }
 
+    return updateMovie;
+}
 
 
 //helper function to send a message to the server and wait for a response
