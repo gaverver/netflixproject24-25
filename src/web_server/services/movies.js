@@ -2,7 +2,6 @@ const Movie = require('../models/movies')
 const categoriesService = require('categories')
 const App = require('../app')
 const net = require('net')
-const categories = require('../models/categories')
 const mongoose = require('mongoose');
 
 const createMovie = async (name, description, actors, published, age_limit, creators, categories) => {
@@ -49,16 +48,31 @@ const getMovieById = async (id) => {
 }
 
 const getMovies = async (userId) => {
-    const movie = await Movie.find({
-        categories: { $in: [    ] },
-        users: { $ne: mongoose.Types.ObjectId(userId)}
-    }).limit(20)
+    //get all categories
+    const categories = await categoriesService.getCategories()
+    //list of all the movies that will be returned
+    const allMovies = [];
+    for (const category of categories) {
+        if (category.promoted) {
+            const movies = await Movie.find({
+                categories: { $in: [category._id] },
+                users: { $ne: mongoose.Types.ObjectId(userId)}
+            }).limit(20)
+            //add the movies to the list
+            allMovies.push({
+                category: category.name,
+                categoryId: category._id,
+                movies
+              });
+        }
+    }
+
+    return allMovies;
 }
 
 const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories) => {
     movie = getMovieById(id);
     if (!movie) return null;
-    movie.id = id;
     movie.name = name;
     movie.description = description;
     movie.actors = actors;
@@ -81,7 +95,7 @@ const addMovieToUser = async (userId, movieId) => {
     const updatedMovie = await Movie.findByIdAndUpdate(
         movieId, 
         { $push: { users: userId } }, 
-        { new: true } // Return the updated document
+        { new: true }
     );
     if (!updateMovie) return null;
     //add to the recommendation system
