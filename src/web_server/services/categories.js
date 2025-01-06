@@ -37,9 +37,7 @@ const updateCategory = async (id, name, promoted, movieIds) => {
 };
 
 const deleteCategory = async (id) => {
-    const category = await Category.findByIdAndDelete(id);
-    if (!category) return null;
-    return category;
+    return await Category.findByIdAndDelete(id);
 };
 
 module.exports = {createCategory, getCategoryById, getCategories, updateCategory, deleteCategory }
