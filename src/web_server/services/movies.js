@@ -3,7 +3,7 @@ const categoriesService = require('categories')
 const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
-
+//functio to create a movie
 const createMovie = async (name, description, actors, published, age_limit, creators, categories) => {
     //create movie with required fields
     const movie = new Movie({
@@ -29,7 +29,7 @@ const createMovie = async (name, description, actors, published, age_limit, crea
     }
     return await movie.save()
 }
-
+//function to delete a movie
 const deleteMovie = async (id) => {
     //delete from mongoDB
     const movie = await Movie.findByIdAndDelete(id);
@@ -42,18 +42,20 @@ const deleteMovie = async (id) => {
 
     return movie;
 }
-
+//function to get a movie by its id
 const getMovieById = async (id) => {
     return await Movie.findById(id);
 }
-
+//function to get promoted catrgorie's movies
 const getMovies = async (userId) => {
     //get all categories
     const categories = await categoriesService.getCategories()
     //list of all the movies that will be returned
     const allMovies = [];
+    //iterating over the categories
     for (const category of categories) {
         if (category.promoted) {
+            //find 20 movies in this category that the current user didn't watched
             const movies = await Movie.find({
                 categories: { $in: [category._id] },
                 users: { $ne: mongoose.Types.ObjectId(userId)}
@@ -69,7 +71,7 @@ const getMovies = async (userId) => {
 
     return allMovies;
 }
-
+//function to update a movie
 const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories) => {
     movie = getMovieById(id);
     if (!movie) return null;
@@ -83,13 +85,13 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     
     return await movie.save();
 }
-
+//function to get recommendation for movies
 const getRecommendation = async (userId, movieId) => {
     const [ip, port] = App.recommendConString.split(':');
     const response = await sendMessageToServer(ip, parseInt(port), `GET ${userId} ${movieId}`);
     return response;
 }
-
+//add a movie to user
 const addMovieToUser = async (userId, movieId) => {
     //add to mongo
     const updatedMovie = await Movie.findByIdAndUpdate(
@@ -109,7 +111,7 @@ const addMovieToUser = async (userId, movieId) => {
 
     return updateMovie;
 }
-
+//function to get movies that applies a query
 const queryGet = async (query) => {
     const movies = await Movie.find({
         $or: [
