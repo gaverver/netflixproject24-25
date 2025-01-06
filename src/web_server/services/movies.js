@@ -55,11 +55,18 @@ const getMovies = async (userId) => {
     }).limit(20)
 }
 
-const updateMovie = async (id, data) => {
+const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories) => {
     movie = getMovieById(id);
-    for (const key in data) {
-        movie[key] = data[key]
-    }
+    if (!movie) return null;
+    movie.id = id;
+    movie.name = name;
+    movie.description = description;
+    movie.actors = actors;
+    movie.published = published;
+    movie.age_limit = age_limit;
+    movie.creators = creators;
+    movie.categories = categories;
+    
     return await movie.save();
 }
 
