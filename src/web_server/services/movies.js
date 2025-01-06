@@ -110,6 +110,17 @@ const addMovieToUser = async (userId, movieId) => {
     return updateMovie;
 }
 
+const queryGet = async (query) => {
+    const movies = await Movie.find({
+        $or: [
+          { name: { $regex: `.*${query}.*`, $options: 'i' } },
+          { description: { $regex: `.*${query}.*`, $options: 'i' } },
+          { actors: { $regex: `.*${query}.*`, $options: 'i' } },
+          { creators: { $regex: `.*${query}.*`, $options: 'i' } }
+        ]
+      });
+      return movies;
+}
 
 //helper function to send a message to the server and wait for a response
 const sendMessageToServer = (ip, port, message) => {
