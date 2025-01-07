@@ -46,13 +46,8 @@ const createUser = async (username, password, email, phoneNumber, picture, watch
             client.on('error', (err) => reject(err));
         });
     };
-    var recommendationResponse = null
-    try {
-        // get the response data from the cpp server
-        recommendationResponse = await createRecommendationConnection(user.id, watched_movies.join(' '));
-    } catch (error) {
-        return null;
-    }
+    // get the response data from the cpp server
+    const recommendationResponse = await createRecommendationConnection(user.id, watched_movies.join(' '));
     const savedUser = await user.save()
     // return the user that was created and the response of the recommendation system.
     return await [savedUser, recommendationResponse]
