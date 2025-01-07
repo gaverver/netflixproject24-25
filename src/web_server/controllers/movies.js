@@ -1,5 +1,5 @@
 const movieService = require('../services/movies');
-
+const mongoose = require('mongoose');
 
 //function for creating a movie
 const createMovie = async (req, res) => {
@@ -59,4 +59,21 @@ const createMovie = async (req, res) => {
     await movieService.createMovie(name, description, actors, published, age_limit, creators, categories);
     return res.status(201).end();
 
+}
+
+const getMovies = async (req, res) => {
+    //get the corresponding movies
+    const userId = req.headers['userId']; // Replace 'user-id' with the actual header name used
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required in the headers' });
+    }
+
+    // Validate the user ID format (assuming it's a MongoDB ObjectId)
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ error: 'Invalid User ID format' });
+    }
+    movies = movieService.getMovies(userId);
+
+    res.st
 }
