@@ -91,5 +91,19 @@ const getMovieById = async (req, res) => {
         return res.status(200).json(movie);
     } catch (error) {
         return res.status(404).json({ error:'Movie not found' });
-}}
+    }
+}
 
+const deleteMovie = async (req, res) => {
+    // avoid server crushes, by routing to an invalid place
+    try {
+        const movie = await movieService.deleteMovie(req.params.id);
+        // deleteMovie in the services returns null if the category havn't found
+        if (!movie) {
+            return res.status(404).json({ error:'movie not found' });
+        }
+        return res.status(204).end();
+    } catch (error) {
+        return res.status(404).json({ error:'Movie not found' });
+    }
+}
