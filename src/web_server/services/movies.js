@@ -99,7 +99,7 @@ const addMovieToUser = async (userId, movieId) => {
         { $push: { users: userId } }, 
         { new: true }
     );
-    if (!updateMovie) return null;
+    if (!updatedMovie) return null;
     //add to the recommendation system
     const [ip, port] = App.recommendConString.split(':');
     //try to post
@@ -109,7 +109,7 @@ const addMovieToUser = async (userId, movieId) => {
         await sendMessageToServer(ip, parseInt(port), `PATCH ${userId} ${movieId}`);
     }
 
-    return updateMovie;
+    return updatedMovie;
 }
 //function to get movies that applies a query
 const queryGet = async (query) => {
@@ -144,3 +144,5 @@ const sendMessageToServer = (ip, port, message) => {
 
     });
 };
+
+module.exports = {createMovie, deleteMovie, getMovieById, getMovies, updateMovie, getRecommendation, addMovieToUser, queryGet}
