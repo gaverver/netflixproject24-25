@@ -75,7 +75,7 @@ const getMovies = async (req, res) => {
     }
     movies = movieService.getMovies(userId);
 
-    res.status(200).json({ movies });
+    return res.status(200).json({ movies });
 }
 
 const getMovieById = async (req, res) => {
@@ -114,9 +114,17 @@ const getRecommendation = async (req, res) => {
     const resStatus = response.substring(0, 3);
     if (stat === '200') {
         //return json of the ids
-        res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
+        return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
     } else {
         //return why it failed
-        res.status(resStatus).json({ error : response })
+        return res.status(resStatus).json({ error : response })
     }
+}
+
+const addMovieToUser = async (req, res) => {
+    const movie = movieService.addMovieToUser(req.headers['userId'], req.params.id)
+    if (!movie) {
+        return res.status(404).json( {error : "404 not found"} )
+    }
+    return res.status(204).end();
 }
