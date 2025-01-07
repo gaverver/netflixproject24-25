@@ -5,7 +5,7 @@ const PORT = process.env.CPP_SERVER_PORT
 const serverIP = process.env.CPP_SERVER_IP
 
 
-const createUser = async (username, password, email, phoneNumber, picture, watched_movies) => {
+const createUser = async (username, password, email, phoneNumber, picture) => {
     // check if a user with the same username/email/phone number as entered exists. If yes, then a new user won't be created in the db.
     const existingUser = await User.find({
         $or: [
@@ -23,13 +23,9 @@ const createUser = async (username, password, email, phoneNumber, picture, watch
     if (picture) {
         user.picture = picture
     }
-    // if a list of watched movies was entered, switch to it.
-    if (watched_movies) {
-        user.watched_movies = watched_movies
-    }
   
     const savedUser = await user.save()
-    // return the user that was created and the response of the recommendation system.
+    // return the user that was created
     return savedUser
 }
 
