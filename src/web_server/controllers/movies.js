@@ -133,3 +133,7 @@ const queryGet = async (req, res) => {
     const movies = movieService.queryGet(req.params.query);
     res.status(200).json({ movies })
 }
+
+const updateMovie = async (req, res) => {
+    
+}
