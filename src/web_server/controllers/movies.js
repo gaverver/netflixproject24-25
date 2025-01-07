@@ -107,3 +107,16 @@ const deleteMovie = async (req, res) => {
         return res.status(404).json({ error:'Movie not found' });
     }
 }
+
+const getRecommendation = async (req, res) => {
+    //get response from the server
+    const response = movieService.getRecommendation(req.headers['userId'], req.params.id)
+    const resStatus = response.substring(0, 3);
+    if (stat === '200') {
+        //return json of the ids
+        res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
+    } else {
+        //return why it failed
+        res.status(resStatus).json({ error : response })
+    }
+}
