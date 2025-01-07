@@ -68,7 +68,14 @@ const getMovies = async (userId) => {
               });
         }
     }
-
+    //add the special category
+    const movies = await Movie.find({
+        users: { $in: [mongoose.Types.ObjectId(userId)] }
+    }).limit(20)
+    allMovies.push({
+        category: "Watched Movies",
+        movies
+      });
     return allMovies;
 }
 //function to update a movie
