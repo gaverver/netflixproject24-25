@@ -1,9 +1,6 @@
 const User = require("../models/users")
 const net = require('net');
 
-const PORT = process.env.CPP_SERVER_PORT
-const serverIP = process.env.CPP_SERVER_IP
-
 
 const createUser = async (username, password, email, phoneNumber, picture) => {
     // check if a user with the same username/email/phone number as entered exists. If yes, then a new user won't be created in the db.
