@@ -1,11 +1,8 @@
 const User = require("../models/users")
 const net = require('net');
 
-const PORT = process.env.CPP_SERVER_PORT
-const serverIP = process.env.CPP_SERVER_IP
 
-
-const createUser = async (username, password, email, phoneNumber, picture, watched_movies) => {
+const createUser = async (username, password, email, phoneNumber, picture) => {
     // check if a user with the same username/email/phone number as entered exists. If yes, then a new user won't be created in the db.
     const existingUser = await User.find({
         $or: [
@@ -23,34 +20,10 @@ const createUser = async (username, password, email, phoneNumber, picture, watch
     if (picture) {
         user.picture = picture
     }
-    // if a list of watched movies was entered, switch to it.
-    if (watched_movies) {
-        user.watched_movies = watched_movies
-    }
   
-    const createRecommendationConnection = (userId, movieString) => {
-        return new Promise((resolve, reject) => {
-            // connect to the recommendation server at the serverIp and port in the config files.
-            const client = net.createConnection({ host: serverIP, port: PORT }, () => {
-                // add the user to the recommendation system.
-                if (movieString === "") {
-                    const movieId = '1'.repeat(24);
-                    client.write(`POST ${userId} ${movieId}`);
-                    client.write(`DELETE ${userId} ${movieId}`);
-                } else {
-                    client.write(`POST ${userId} ${movieString}`);
-                }
-            });
-
-            client.on('data', (data) => resolve(data.toString()));
-            client.on('error', (err) => reject(err));
-        });
-    };
-    // get the response data from the cpp server
-    const recommendationResponse = await createRecommendationConnection(user.id, watched_movies.join(' '));
     const savedUser = await user.save()
-    // return the user that was created and the response of the recommendation system.
-    return await [savedUser, recommendationResponse]
+    // return the user that was created
+    return savedUser
 }
 
 const getUserById = async (id) => {
