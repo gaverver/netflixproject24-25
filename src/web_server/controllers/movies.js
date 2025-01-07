@@ -63,17 +63,33 @@ const createMovie = async (req, res) => {
 
 const getMovies = async (req, res) => {
     //get the corresponding movies
-    const userId = req.headers['userId']; // Replace 'user-id' with the actual header name used
+    const userId = req.headers['userId'];
 
     if (!userId) {
         return res.status(400).json({ error: 'User ID is required in the headers' });
     }
 
-    // Validate the user ID format (assuming it's a MongoDB ObjectId)
+    // Validate the user ID format
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ error: 'Invalid User ID format' });
     }
     movies = movieService.getMovies(userId);
 
-    res.st
+    res.status(200).json({ movies });
 }
+
+const getMovieById = async (req, res) => {
+    // avoid server crushes, by routing to an invalid place
+    try {
+        const movie = await movieService.getMovieById(req.params.id);
+        
+        // getMovieById in the services returns null if the category havn't found
+        if (!movie) {
+            return res.status(404).json({ error:'Movie not found' });
+        }
+        
+        return res.status(200).json(movie);
+    } catch (error) {
+        return res.status(404).json({ error:'Movie not found' });
+}}
+
