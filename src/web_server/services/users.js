@@ -28,29 +28,9 @@ const createUser = async (username, password, email, phoneNumber, picture, watch
         user.watched_movies = watched_movies
     }
   
-    const createRecommendationConnection = (userId, movieString) => {
-        return new Promise((resolve, reject) => {
-            // connect to the recommendation server at the serverIp and port in the config files.
-            const client = net.createConnection({ host: serverIP, port: PORT }, () => {
-                // add the user to the recommendation system.
-                if (movieString === "") {
-                    const movieId = '1'.repeat(24);
-                    client.write(`POST ${userId} ${movieId}`);
-                    client.write(`DELETE ${userId} ${movieId}`);
-                } else {
-                    client.write(`POST ${userId} ${movieString}`);
-                }
-            });
-
-            client.on('data', (data) => resolve(data.toString()));
-            client.on('error', (err) => reject(err));
-        });
-    };
-    // get the response data from the cpp server
-    const recommendationResponse = await createRecommendationConnection(user.id, watched_movies.join(' '));
     const savedUser = await user.save()
     // return the user that was created and the response of the recommendation system.
-    return await [savedUser, recommendationResponse]
+    return savedUser
 }
 
 const getUserById = async (id) => {
