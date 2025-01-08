@@ -1,5 +1,6 @@
 const userService = require("../services/users")
 const fs = require('fs')
+const mongoose = require('mongoose')
 
 async function countFilesInDirectory(directoryPath) {
     try {
@@ -64,17 +65,17 @@ const createUser = async (req, res) => {
         return res.status(400).json({ error:'phone number is in an invalid format' });
     }
     // check if a picture was entered
-    if (picture === undefined) {
-        return res.status(400).json({ error:'picture is required'})
+    if (picture !== undefined) {
+        // check if the type is a number - as it represents the number of the picture in the folder
+        if (!Number.isInteger(picture)) {
+            return res.status(400).json({ error:'Invalid data: picture must be an int' });
+        }
+        // check if the number is valid
+        if (picture < 1 || picture > MAX_IMAGES) {
+            return res.status(400).json({ error:`picture must be between 1 and ${MAX_IMAGES}`})
+        }
     }
-    // check if the type is a number - as it represents the number of the picture in the folder
-    if (!Number.isInteger(picture)) {
-        return res.status(400).json({ error:'Invalid data: picture must be an int' });
-    }
-    // check if the number is valid
-    if (picture < 1 || picture > MAX_IMAGES) {
-        return res.status(400).json({ error:`picture must be between 1 and ${MAX_IMAGES}`})
-    }
+    
 
     
 
@@ -85,7 +86,7 @@ const createUser = async (req, res) => {
         if (response === null) {
             return res.status(404).json({ error:'username and/or email and/ or phoneNumber already exists'})
         }
-        res.status(201).end()
+        res.status(201).set('Location', `/api/users/${response._id}`).end();
     } catch (error) {
         // return error indicates that the server has crushed
         return res.status(500).json({ error: 'Internal Server Error' });
@@ -95,6 +96,10 @@ const createUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const id = req.params.id
+    // check if the user's id is invalid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(404).json({ error:'Invalid data: user id must be a valid ObjectId'});
+    }
     try {
         const user = await userService.getUserById(id); 
         // getUserById in the services returns null if the category wasn't found
@@ -104,7 +109,8 @@ const getUserById = async (req, res) => {
         // return the user and his details
         return res.status(200).json(user);
     } catch (error) {
-        return res.status(404).json({ error:'User not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
