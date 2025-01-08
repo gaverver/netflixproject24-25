@@ -46,15 +46,15 @@ const createUser = async (req, res) => {
     if (phoneNumberRegex.test(phoneNumber) === false) {
         return res.status(400).json({ error:'phone number is in an invalid format' });
     }
-
+    // check if a picture was entered
     if (picture === undefined) {
         return res.status(400).json({ error:'picture is required'})
     }
-
-    if (typeof picture !== 'number') {
-        return res.status(400).json({ error:'Invalid data: password must be a number' });
+    // check if the type is a number - as it represents the number of the picture in the folder
+    if (!Number.isInteger(picture)) {
+        return res.status(400).json({ error:'Invalid data: picture must be an int' });
     }
-
+    // check if the number is valid
     if (picture < 1 || picture > MAX_IMAGES) {
         return res.status(400).json({ error:`picture must be between 1 and ${MAX_IMAGES}`})
     }
