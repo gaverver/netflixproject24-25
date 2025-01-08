@@ -76,7 +76,6 @@ const getMovies = async (userId) => {
             //add the movies to the list
             allMovies.push({
                 category: category.name,
-                categoryId: category._id,
                 movies
               });
         }
