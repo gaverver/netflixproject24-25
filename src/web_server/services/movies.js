@@ -5,6 +5,16 @@ const net = require('net')
 const mongoose = require('mongoose');
 //functio to create a movie
 const createMovie = async (name, description, actors, published, age_limit, creators, categories, photo) => {
+    //check if there's a movie with the same name or photo
+    const existingMovie = await Movie.find({
+        $or: [
+            { name: name },
+            { photo: photo }
+        ]
+    })
+    if (existingMovie && existingMovie.length > 0) {
+        return null
+    }
     //create movie with required fields
     const movie = new Movie({
         name: name,
