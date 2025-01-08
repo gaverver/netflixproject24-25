@@ -3,28 +3,18 @@ const mongoose = require('mongoose');
 
 //helper function for validation of input
 const validationCheck = (name, description, actors, published, age_limit, creators, categories, photo, res) => {
-    //check that the required arguments passed
-    if (name === undefined) {
-        return res.status(400).json({ error:'Name is required' });
-    }
-    if (description === undefined) {
-        return res.status(400).json({ error:'Description is required' });
-    }
-    if (creators === undefined) {
-        return res.status(400).json({ error:'Creators is required' });
-    }
     
     //check the type of the arguments
-    if (typeof name !== 'string') {
+    if (name !== undefined && typeof name !== 'string') {
         return res.status(400).json({ error: 'Invalid data: name must be a string' });
     }
-    if (typeof description !== 'string') {
+    if (description !== undefined && typeof description !== 'string') {
         return res.status(400).json({ error: 'Invalid data: description must be a string' });
     }
-    if (!Array.isArray(creators)) {
+    if (creators !== undefined && !Array.isArray(creators)) {
         return res.status(400).json({ error: 'Invalid data: creators must be an array' });
     }
-    if (!creators.every(i => typeof i === 'string')) {
+    if (creators !== undefined && !creators.every(i => typeof i === 'string')) {
         return res.status(400).json({ error: 'Invalid data: creators must contain valid ObjectIds' });
     }
     if (published !== undefined && isNaN(new Date(published).getTime())) {
@@ -67,8 +57,18 @@ const createMovie = async (req, res) => {
     try {
         //get the required parameters
         const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
+        //check that the required arguments passed
+        if (name === undefined) {
+            return res.status(400).json({ error:'Name is required' });
+        }
+        if (description === undefined) {
+            return res.status(400).json({ error:'Description is required' });
+        }
+        if (creators === undefined) {
+            return res.status(400).json({ error:'Creators is required' });
+        }
+        
         //validation of arguments
-
         const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
         if (x !== true) {
             return x;
