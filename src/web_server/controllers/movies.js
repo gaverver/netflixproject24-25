@@ -2,7 +2,7 @@ const movieService = require('../services/movies');
 const mongoose = require('mongoose');
 
 //helper function for validation of input
-const validationCheck = (name, description, actors, published, age_limit, creators, categories, res) => {
+const validationCheck = (name, description, actors, published, age_limit, creators, categories, photo, res) => {
     //check that the required arguments passed
     if (name === undefined) {
         return res.status(400).json({ error:'Name is required' });
@@ -51,21 +51,25 @@ const validationCheck = (name, description, actors, published, age_limit, creato
             return res.status(400).json({ error: 'Invalid data: categories must contain valid ObjectIds' });
         }
     }
+
+    if (photo !== undefined && !mongoose.Types.ObjectId.isValid(photo)) {
+        return res.status(400).json({ error: 'Invalid data: photo must contain valid ObjectId' })
+    }
     return true;
 }
 
 //function for creating a movie
 const createMovie = async (req, res) => {
     //get the required parameters
-    const {name, description, actors, published, age_limit, creators, categories} = req.body;
+    const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
     //validation of arguments
 
-    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, res);
+    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
     if (x !== true) {
         return x;
     }
 
-    await movieService.createMovie(name, description, actors, published, age_limit, creators, categories);
+    await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories);
     return res.status(201).end();
 
 }
@@ -144,10 +148,10 @@ const queryGet = async (req, res) => {
 }
 
 const updateMovie = async (req, res) => {
-    const {name, description, actors, published, age_limit, creators, categories} = req.body;
+    const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
     const id = req.body.id;
     //validation check
-    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, res);
+    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
     if (x !== true) {
         return x;
     }
@@ -157,7 +161,7 @@ const updateMovie = async (req, res) => {
     }
     //update
 
-    const movie = await movieService.updateMovie(id,name, description, actors, published, age_limit, creators, categories);
+    const movie = await movieService.updateMovie(id,name, description, actors, published, age_limit, creators, categories, photo);
     if (!movie) {
         return res.status(404).json({ error:'Movie not found' });
     }
