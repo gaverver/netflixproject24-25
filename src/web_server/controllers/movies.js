@@ -1,12 +1,8 @@
 const movieService = require('../services/movies');
 const mongoose = require('mongoose');
 
-//function for creating a movie
-const createMovie = async (req, res) => {
-    //get the required parameters
-    const {name, description, actors, published, age_limit, creators, categories} = req.body;
-    //validation of arguments
-
+//helper function for validation of input
+const validationCheck = (name, description, actors, published, age_limit, creators, categories, res) => {
     //check that the required arguments passed
     if (name === undefined) {
         return res.status(400).json({ error:'Name is required' });
@@ -55,6 +51,19 @@ const createMovie = async (req, res) => {
             return res.status(400).json({ error: 'Invalid data: categories must contain valid ObjectIds' });
         }
     }
+    return true;
+}
+
+//function for creating a movie
+const createMovie = async (req, res) => {
+    //get the required parameters
+    const {name, description, actors, published, age_limit, creators, categories} = req.body;
+    //validation of arguments
+
+    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, res);
+    if (x !== true) {
+        return x;
+    }
 
     await movieService.createMovie(name, description, actors, published, age_limit, creators, categories);
     return res.status(201).end();
@@ -73,7 +82,7 @@ const getMovies = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ error: 'Invalid User ID format' });
     }
-    movies = movieService.getMovies(userId);
+    movies = await movieService.getMovies(userId);
 
     return res.status(200).json({ movies });
 }
@@ -110,7 +119,7 @@ const deleteMovie = async (req, res) => {
 
 const getRecommendation = async (req, res) => {
     //get response from the server
-    const response = movieService.getRecommendation(req.headers['userId'], req.params.id)
+    const response = await movieService.getRecommendation(req.headers['userId'], req.params.id)
     const resStatus = response.substring(0, 3);
     if (stat === '200') {
         //return json of the ids
@@ -130,10 +139,27 @@ const addMovieToUser = async (req, res) => {
 }
 
 const queryGet = async (req, res) => {
-    const movies = movieService.queryGet(req.params.query);
+    const movies = await movieService.queryGet(req.params.query);
     res.status(200).json({ movies })
 }
 
 const updateMovie = async (req, res) => {
-    
+    const {name, description, actors, published, age_limit, creators, categories} = req.body;
+    const id = req.body.id;
+    //validation check
+    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, res);
+    if (x !== true) {
+        return x;
+    }
+    //check validation of id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    //update
+
+    const movie = await movieService.updateMovie(id,name, description, actors, published, age_limit, creators, categories);
+    if (!movie) {
+        return res.status(404).json({ error:'Movie not found' });
+    }
+    return res.status(204).end();
 }
