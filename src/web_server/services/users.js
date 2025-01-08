@@ -1,5 +1,4 @@
 const User = require("../models/users")
-const net = require('net');
 
 
 const createUser = async (username, password, email, phoneNumber, picture) => {
@@ -14,13 +13,10 @@ const createUser = async (username, password, email, phoneNumber, picture) => {
     if (existingUser && existingUser.length > 0) {
         return null; // User already exists, returns null
     }
+    pictureURL=`http://localhost:${process.env.PORT}/${picture}.jpeg`
     // Create a new user with the given fields.
-    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber})
-    // if a picture was entered, switch to it.
-    if (picture) {
-        user.picture = picture
-    }
-  
+    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber, picture: pictureURL})
+    
     const savedUser = await user.save()
     // return the user that was created
     return savedUser
