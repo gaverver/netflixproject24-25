@@ -60,17 +60,23 @@ const validationCheck = (name, description, actors, published, age_limit, creato
 
 //function for creating a movie
 const createMovie = async (req, res) => {
-    //get the required parameters
-    const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
-    //validation of arguments
+    try {
+        //get the required parameters
+        const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
+        //validation of arguments
 
-    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
-    if (x !== true) {
-        return x;
+        const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
+        if (x !== true) {
+            return x;
+        }
+
+        const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories);
+        return res.status(201).set('Location', `/api/movies/${newMovie._id}`).end();
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories);
-    return res.status(201).end();
+    
 
 }
 
@@ -86,15 +92,25 @@ const getMovies = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ error: 'Invalid User ID format' });
     }
-    movies = await movieService.getMovies(userId);
+    try {
+        movies = await movieService.getMovies(userId);
 
-    return res.status(200).json({ movies });
+        return res.status(200).json({ movies });
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
 }
 
 const getMovieById = async (req, res) => {
     // avoid server crushes, by routing to an invalid place
     try {
-        const movie = await movieService.getMovieById(req.params.id);
+        const id = req.params.id
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+        }
+        const movie = await movieService.getMovieById(id);
         
         // getMovieById in the services returns null if the category havn't found
         if (!movie) {
@@ -103,67 +119,110 @@ const getMovieById = async (req, res) => {
         
         return res.status(200).json(movie);
     } catch (error) {
-        return res.status(404).json({ error:'Movie not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
 const deleteMovie = async (req, res) => {
     // avoid server crushes, by routing to an invalid place
     try {
-        const movie = await movieService.deleteMovie(req.params.id);
+        const id = req.params.id
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+        }
+        const movie = await movieService.deleteMovie(id);
         // deleteMovie in the services returns null if the category havn't found
         if (!movie) {
             return res.status(404).json({ error:'movie not found' });
         }
         return res.status(204).end();
     } catch (error) {
-        return res.status(404).json({ error:'Movie not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
 const getRecommendation = async (req, res) => {
-    //get response from the server
-    const response = await movieService.getRecommendation(req.headers['userId'], req.params.id)
-    const resStatus = response.substring(0, 3);
-    if (stat === '200') {
-        //return json of the ids
-        return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
-    } else {
-        //return why it failed
-        return res.status(resStatus).json({ error : response })
+    //validation check
+    if (!mongoose.Types.ObjectId.isValid(req.headers['userId'])) {
+        return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    //get response from the server
+    try {
+        const response = await movieService.getRecommendation(req.headers['userId'], req.params.id)
+        const resStatus = response.substring(0, 3);
+        if (stat === '200') {
+            //return json of the ids
+            return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
+        } else {
+            //return why it failed
+            return res.status(resStatus).json({ error : response })
+        }
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    
 }
 
 const addMovieToUser = async (req, res) => {
-    const movie = movieService.addMovieToUser(req.headers['userId'], req.params.id)
-    if (!movie) {
-        return res.status(404).json( {error : "404 not found"} )
+    //validation check
+    if (!mongoose.Types.ObjectId.isValid(req.headers['userId'])) {
+        return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
-    return res.status(204).end();
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    try {
+        const movie = movieService.addMovieToUser(req.headers['userId'], req.params.id)
+        if (!movie) {
+            return res.status(404).json( {error : "404 not found"} )
+        }
+        return res.status(204).end();
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
 }
 
 const queryGet = async (req, res) => {
-    const movies = await movieService.queryGet(req.params.query);
-    res.status(200).json({ movies })
+    try {
+        const movies = await movieService.queryGet(req.params.query);
+        res.status(200).json({ movies })
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
 }
 
 const updateMovie = async (req, res) => {
     const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
-    const id = req.body.id;
+    const id = req.params.id;
+    //check validation of id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
     //validation check
     const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
     if (x !== true) {
         return x;
     }
-    //check validation of id
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
-    }
     //update
-
-    const movie = await movieService.updateMovie(id,name, description, actors, published, age_limit, creators, categories, photo);
-    if (!movie) {
-        return res.status(404).json({ error:'Movie not found' });
+    try {
+        const movie = await movieService.updateMovie(id,name, description, actors, published, age_limit, creators, categories, photo);
+        if (!movie) {
+            return res.status(404).json({ error:'Movie not found' });
+        }
+        return res.status(204).end();
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-    return res.status(204).end();
+
 }
