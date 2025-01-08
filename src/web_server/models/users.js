@@ -26,7 +26,7 @@ const User = new Schema({
     // the picture of the user, selected by a list of pictures
     picture: {
         type: String,
-        required: true
+        default: "1"
     },
     // list of movie id's that were watched by the user
     watched_movies: {
