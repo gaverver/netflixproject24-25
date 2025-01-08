@@ -97,7 +97,7 @@ const createUser = async (req, res) => {
 const getUserById = async (req, res) => {
     const id = req.params.id
     // check if the user's id is invalid
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error:'Invalid data: user id must be a valid ObjectId'});
     }
     try {
