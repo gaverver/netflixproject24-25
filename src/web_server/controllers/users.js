@@ -1,8 +1,25 @@
 const userService = require("../services/users")
+const fs = require(fs)
 
+async function countFilesInDirectory(directoryPath) {
+    try {
+      const files = await fs.promises.readdir(directoryPath); // Use promises to make it async
+      // counts the files inside the avatars folder(user pictures)
+      const fileCount = files.filter(file => {
+        return fs.statSync(path.join(directoryPath, file)).isFile();
+      }).length;
+      return fileCount;
+    } catch (err) {
+      return 0; // Return 0 if there's an error
+    }
+  }
 
 const createUser = async (req, res) => {
-    const MAX_IMAGES = 10
+    // count the files inside te avatars directory - this will be the collection of the avatars that the user can use
+    const MAX_IMAGES = await countFilesInDirectory("../../data/avatars")
+    if (MAX_IMAGES === 0) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
     // get all the necessary details.
     const username = req.body.username
     const email = req.body.email
@@ -63,7 +80,7 @@ const createUser = async (req, res) => {
 
     try {
         // create the user using the service.
-        const response = userService.createUser(username, email, password, phoneNumber, picture)
+        const response = await userService.createUser(username, email, password, phoneNumber, picture)
         // respond with the fitting response depending on the returned value
         if (response === null) {
             return res.status(404).json({ error:'username and/or email and/ or phoneNumber already exists'})
