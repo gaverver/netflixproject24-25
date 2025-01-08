@@ -48,11 +48,16 @@ const deleteMovie = async (id) => {
     //delete from mongoDB
     const movie = await Movie.findByIdAndDelete(id);
     if (!movie) return null;
-    //delete movie from recommendation system
+    //delete movie from users
     const [ip, port] = App.recommendConString.split(':');
     for (const userId of movie.users) {
         const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
         usersService.deleteMovieFromUser(userId, id);
+    }
+    //delete from category
+    for (const categoryId of movie.categories) {
+        const newMovies = categoriesService.getCategoryById(categoryId).movieIds.filter(movieId => movieId !== id);
+        categoriesService.updateCategory(undefined, undefined, undefined, newMovies);
     }
 
     return movie;
@@ -66,15 +71,12 @@ const getMovies = async (userId) => {
     //get all categories
     const categories = await categoriesService.getCategories()
     //list of all the movies that will be returned
-    const allMovies = [];
+    const allMovies = {};
     //iterating over the categories
     for (const category of categories) {
         if (category.promoted) {
             //find 20 movies in this category that the current user didn't watched
-            const movies = await Movie.find({
-                categories: { $in: [category._id] },
-                users: { $ne: mongoose.Types.ObjectId(userId)}
-            }).limit(20)
+            const movies = category.
             //add the movies to the list
             allMovies.push({
                 category: category.name,
