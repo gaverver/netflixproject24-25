@@ -13,10 +13,10 @@ const createUser = async (username, password, email, phoneNumber, picture) => {
     if (existingUser && existingUser.length > 0) {
         return null; // User already exists, returns null
     }
-    // create the url of the image in the website
-    pictureURL=`http://localhost:${process.env.PORT}/${picture}.jpeg`
+    // create the picture ID of the image in the website
+    const pictureID=`${picture}`
     // Create a new user with the given fields.
-    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber, picture: pictureURL})
+    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber, picture: pictureID})
     
     const savedUser = await user.save()
     // return the user that was created
