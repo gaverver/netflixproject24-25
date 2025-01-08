@@ -1,5 +1,6 @@
 const Movie = require('../models/movies')
 const categoriesService = require('categories')
+const usersService = require('users')
 const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
@@ -113,6 +114,16 @@ const getRecommendation = async (userId, movieId) => {
 }
 //add a movie to user
 const addMovieToUser = async (userId, movieId) => {
+
+    //check that the user and the movie exists
+    const movie = getMovieById(movieId)
+    if (!movie) {
+        return null
+    }
+    const user = usersService.getUserById(userId)
+    if (!user) {
+        return null
+    }
     //add to mongo
     const updatedMovie = await Movie.findByIdAndUpdate(
         movieId, 
@@ -120,6 +131,8 @@ const addMovieToUser = async (userId, movieId) => {
         { new: true }
     );
     if (!updatedMovie) return null;
+    const updatedUser = await usersService.addMovieToUser(userId, movieId)
+    if (!updatedUser) return null;
     //add to the recommendation system
     const [ip, port] = App.recommendConString.split(':');
     //try to post
