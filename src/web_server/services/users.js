@@ -33,4 +33,16 @@ const getUserById = async (id) => {
     return await User.findById(id)
 }
 
-module.exports = {getUserById, createUser }
+// helper function to add a watched movie - used by movies
+async function addMovieToUser(userId, movieId) {
+    const user = User.find({_id: userId})
+    user.watched_movies.push(movieId)
+}
+
+// helper function to delete a watched movie - used by movies
+async function deleteMovieFromUser(userId, movieId) {
+    const user = User.find({_id: userId})
+    user.watched_movies = watched_movies.filter(movie => movie !== movieId);
+}
+
+module.exports = {getUserById, createUser, addMovieToUser, deleteMovieFromUser }
