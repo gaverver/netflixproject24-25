@@ -137,8 +137,8 @@ const queryGet = async (query) => {
         $or: [
           { name: { $regex: `.*${query}.*`, $options: 'i' } },
           { description: { $regex: `.*${query}.*`, $options: 'i' } },
-          { actors: { $regex: `.*${query}.*`, $options: 'i' } },
-          { creators: { $regex: `.*${query}.*`, $options: 'i' } }
+          { actors: { $elemMatch: { $regex: `.*${query}.*`, $options: 'i' } } },
+          { creators: { $elemMatch: { $regex: `.*${query}.*`, $options: 'i' } } }
         ]
       });
       return movies;
