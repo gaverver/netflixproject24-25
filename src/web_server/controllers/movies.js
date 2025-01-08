@@ -58,6 +58,10 @@ const validationCheck = (name, description, actors, published, age_limit, creato
     return true;
 }
 
+
+
+
+
 //function for creating a movie
 const createMovie = async (req, res) => {
     try {
@@ -71,6 +75,9 @@ const createMovie = async (req, res) => {
         }
 
         const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories);
+        if (newMovie === null) {
+            return res.status(404).json({ error: 'name and/or photo already exists' })
+        }
         return res.status(201).set('Location', `/api/movies/${newMovie._id}`).end();
     } catch (error) {
         // return error indicates that the server has crushed
