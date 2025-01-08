@@ -52,6 +52,7 @@ const deleteMovie = async (id) => {
     const [ip, port] = App.recommendConString.split(':');
     for (const userId of movie.users) {
         const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
+        usersService.deleteMovieFromUser(userId, id);
     }
 
     return movie;
