@@ -4,7 +4,7 @@ const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
 //functio to create a movie
-const createMovie = async (name, description, actors, published, age_limit, creators, categories) => {
+const createMovie = async (name, description, actors, published, age_limit, creators, categories, photo) => {
     //create movie with required fields
     const movie = new Movie({
         name: name,
@@ -26,6 +26,9 @@ const createMovie = async (name, description, actors, published, age_limit, crea
     //check if 'categories' passed
     if (categories !== undefined) {
         movie.categories = categories
+    }
+    if (photo !== undefined) {
+        movie.photo = photo
     }
     return await movie.save()
 }
@@ -79,7 +82,7 @@ const getMovies = async (userId) => {
     return allMovies;
 }
 //function to update a movie
-const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories) => {
+const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories, photo) => {
     movie = getMovieById(id);
     if (!movie) return null;
     movie.name = name;
@@ -89,6 +92,7 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     movie.age_limit = age_limit;
     movie.creators = creators;
     movie.categories = categories;
+    movie.photo = photo;
     
     return await movie.save();
 }
