@@ -1,5 +1,5 @@
 const userService = require("../services/users")
-const fs = require(fs)
+const fs = require('fs')
 
 async function countFilesInDirectory(directoryPath) {
     try {
