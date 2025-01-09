@@ -41,13 +41,13 @@ If you want to access from remoted device also, run this:
    3. **Create and run a new container:**  
       `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
-## Client Execution
-In order to run the client using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+## Web Server Execution
+In order to run the web server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **create a new image:**  
-          `docker build -f Dockerfile.client -t client .`  
+          `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_id> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
    2. **create and run the container:**  
-          `docker run -it --network=host client <server_ip> <server_port>`  
+          `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port>  server`  
 
 ## Test Execution
 
