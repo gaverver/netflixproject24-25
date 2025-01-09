@@ -51,37 +51,42 @@ In order to run the web server using Docker, you need to run the following comma
 
 ## Web Server Functionality
 ### User API
-- *GET /api/users/:id*
-  - *Description:* fetches the user details associated with a given ID, such as their name, photo, and additional information stored in the database.
-  - *Example:*
+- **GET /api/users/:id**
+  - **Description:** fetches the user details associated with a given ID, such as their name, photo, and additional information stored in the database.
+  - **Example Usage:**
     for windows and linux:
-    `curl -i -X GET http://localhost:<webServer_port>/api/users/<user_id>`
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/users/<user_id>
 
-- *POST /api/users*
-  - *Description:* This operation creates a new user. All the details of the user are sent in the body.
-  - *Requirments:* When creating a user, the following must be sent in the body: username(string), password(string), email(string), phoneNumber(10 digit string). Also, picture(integer) is optional. You must select a number greater/equal than 1 and there is a limited number of photos you can choose from.  
-  - *Example:*
-    for linux:
-    `curl -i -X POST http://localhost:<webServer_port>/api/users \
-    -H "Content-Type: application/json" \
-    -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":0512369874}'`
-    for windows(cmd):
-    `curl -i -X POST http://localhost:<webServer_port>/api/users ^
-    -H "Content-Type: application/json" ^
-    -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":0512369874}"`
+- **POST /api/users**
+  - **Description:** This operation creates a new user. All the details of the user are sent in the body.
+  - **Requirments:** When creating a user, the following must be sent in the body: username(string), password(string), email(string), phoneNumber(10 digit string). Also, picture(integer) is optional. You must select a number greater/equal than 1 and there is a limited number of photos you can choose from.  
+  - **Example Usage:**  
+    for linux:  
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/users \  
+    -H "Content-Type: application/json" \  
+    -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":0512369874}'  
+    for windows(cmd):  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/users ^  
+    -H "Content-Type: application/json" ^  
+    -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":0512369874}"  
 
-- *POST /api/tokens*
-  - *Description:* The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.
-  - - *Requirments:* The following must be sent in the body: username(string), password(string)  
-  - *Example:*
-    for linux:
-    `curl -i -X POST http://localhost:<webServer_port>/api/tokens \
-    -H "Content-Type: application/json" \
-    -d '{"username":"gavriel","password":"5555"}''`
-    for windows(cmd):
-    `curl -i -X POST http://localhost:<webServer_port>/api/tokens ^
-    -H "Content-Type: application/json" ^
-    -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"`
+- **POST /api/tokens** 
+  - **Description:** The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.  
+  - - **Requirments:** The following must be sent in the body: username(string), password(string)  
+  - **Example Usage:**    
+    for linux:  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens \  
+    -H "Content-Type: application/json" \  
+    -d '{"username":"gavriel","password":"5555"}''  
+    for windows(cmd):  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^  
+    -H "Content-Type: application/json" ^  
+    -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"  
 
 ## data management
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
