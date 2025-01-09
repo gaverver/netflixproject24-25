@@ -57,5 +57,9 @@ async function deleteMovieFromUser(userId, movieId) {
 
 const getCategories = async () => { return await Category.find({}); };
 
+const getUserById = async (id) => {
+    // return the user inside the db by his ID. His password won't be returned because of 'select = false' 
+    return await User.findById(id)
+}
 
-module.exports = {deleteCategoryFromMovie, addCategoryToMovie, addMovieToCategory, deleteMovieFromCategory, addMovieToUser, deleteMovieFromUser, getCategories}
+module.exports = {deleteCategoryFromMovie, addCategoryToMovie, addMovieToCategory, deleteMovieFromCategory, addMovieToUser, deleteMovieFromUser, getCategories, getUserById}
