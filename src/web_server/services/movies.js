@@ -38,7 +38,7 @@ const createMovie = async (name, description, actors, published, age_limit, crea
     if (categories !== undefined) {
         movie.categories = categories
         for (const categoryId of categories) {
-            categoriesService.addMovieToCategory(categoryId, movie._id);
+            await categoriesService.addMovieToCategory(categoryId, movie._id);
         }
     }
     if (photo !== undefined) {
@@ -55,11 +55,11 @@ const deleteMovie = async (id) => {
     const [ip, port] = App.recommendConString.split(':');
     for (const userId of movie.users) {
         const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
-        usersService.deleteMovieFromUser(userId, id);
+        await usersService.deleteMovieFromUser(userId, id);
     }
     //delete from category
     for (const categoryId of movie.categories) {
-        categoriesService.deleteMovieFromCategory(categoryId, id);
+        await categoriesService.deleteMovieFromCategory(categoryId, id);
     }
 
     return movie;
@@ -110,7 +110,7 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     }
     if (movie.categories && movie.categories.length > 0) {
         for (categoryId of movie.categories) {
-            categoriesService.deleteMovieFromCategory(categoryId, id);
+            await categoriesService.deleteMovieFromCategory(categoryId, id);
         }
     }
     if (categories === undefined) {
@@ -197,4 +197,18 @@ const sendMessageToServer = (ip, port, message) => {
     });
 };
 
-module.exports = {createMovie, deleteMovie, getMovieById, getMovies, updateMovie, getRecommendation, addMovieToUser, queryGet}
+const deleteCategoryFromMovie = async (movieId, categoryId) => {
+    const movie = await getMovieById(movieId);
+    movie.categories = movie.categories.filter(id => id !== categoryId);
+    await movie.save();
+}
+
+const addCategoryToMovie = async (movieId, categoryId) => {
+    const movie = await getMovieById(movieId);
+    if (!movie.categories.includes(categoryId)) {
+        movie.categories.push(categoryId);
+    }
+    await movie.save();
+}
+
+module.exports = {createMovie, deleteMovie, getMovieById, getMovies, updateMovie, getRecommendation, addMovieToUser, queryGet, deleteCategoryFromMovie, addCategoryToMovie}
