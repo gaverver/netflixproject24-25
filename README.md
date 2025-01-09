@@ -47,7 +47,7 @@ In order to run the web server using Docker, you need to run the following comma
    1. **create a new image:**  
           `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_ip> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
    2. **create and run the container:**  
-          `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port>  server`  
+          `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port> server`  
 
 ## Test Execution
 
