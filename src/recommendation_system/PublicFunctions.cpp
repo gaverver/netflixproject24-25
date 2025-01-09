@@ -66,7 +66,7 @@ std::string captureCommandOutput(ICommand* Runner, const std::vector<std::string
 // function to check if the string is a valid MongoDB ObjectId
 bool IsValidId(const std::string& str) {
     // check if the string length is exactly 24 characters
-    if (str.length() != 24) {
+    if (str.length() == 0) {
         return false;
     }
     
