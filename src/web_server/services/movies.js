@@ -70,7 +70,7 @@ const getMovieById = async (id) => {
 //function to get promoted catrgorie's movies
 const getMovies = async (userId) => {
     //get the user
-    user = utilities.getUserById(userId);
+    user = await utilities.getUserById(userId);
     watchedMovies = user.watched_movies;
     //get all categories
     const categories = await utilities.getCategories()
@@ -121,7 +121,7 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     } else {
         movie.categories = categories;
         for (categoryId of categories) {
-            utilities.addMovieToCategory(categoryId, id);
+            await utilities.addMovieToCategory(categoryId, id);
         }
     }
     if (photo !== undefined) {
@@ -144,7 +144,7 @@ const addMovieToUser = async (userId, movieId) => {
     if (!movie) {
         return null
     }
-    const user = utilities.getUserById(userId)
+    const user = await utilities.getUserById(userId)
     if (!user) {
         return null
     }
