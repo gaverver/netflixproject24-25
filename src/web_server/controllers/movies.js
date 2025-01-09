@@ -223,6 +223,19 @@ const updateMovie = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
     }
+    //check that the required arguments passed
+    if (name === undefined) {
+        return res.status(400).json({ error:'Name is required' });
+    }
+    if (description === undefined) {
+        return res.status(400).json({ error:'Description is required' });
+    }
+    if (creators === undefined) {
+        return res.status(400).json({ error:'Creators is required' });
+    }
+    if (photo === undefined) {
+        return res.status(400).json({ error:'Photo is required' });
+    }
     //validation check
     const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
     if (x !== true) {
