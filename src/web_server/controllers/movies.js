@@ -233,3 +233,5 @@ const updateMovie = async (req, res) => {
     }
 
 }
+
+module.exports = {createMovie, getMovies, getMovieById, deleteMovie, getRecommendation, addMovieToUser, queryGet, updateMovie}

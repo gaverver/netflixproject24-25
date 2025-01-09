@@ -1,6 +1,6 @@
 const Movie = require('../models/movies')
-const categoriesService = require('categories')
-const usersService = require('users')
+const categoriesService = require('./categories')
+const usersService = require('./users')
 const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
@@ -101,8 +101,12 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     movie.name = name;
     movie.description = description;
     movie.actors = actors;
-    movie.published = published;
-    movie.age_limit = age_limit;
+    if (published !== undefined) {
+        movie.published = published;
+    }
+    if (age_limit !== undefined) {
+        movie.age_limit = age_limit;
+    }
     if (creators === undefined) {
         movie.creators = [];
     } else {
@@ -121,7 +125,9 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
             categoriesService.addMovieToCategory(categoryId, id);
         }
     }
-    movie.photo = photo;
+    if (photo !== undefined) {
+        movie.photo = photo;
+    }
     
     return await movie.save();
 }
