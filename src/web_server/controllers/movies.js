@@ -67,6 +67,9 @@ const createMovie = async (req, res) => {
         if (creators === undefined) {
             return res.status(400).json({ error:'Creators is required' });
         }
+        if (photo === undefined) {
+            return res.status(400).json({ error:'Photo is required' });
+        }
         
         //validation of arguments
         const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
@@ -89,7 +92,7 @@ const createMovie = async (req, res) => {
 
 const getMovies = async (req, res) => {
     //get the corresponding movies
-    const userId = req.headers['userId'];
+    const userId = req.headers['userid'];
 
     if (!userId) {
         return res.status(400).json({ error: 'User ID is required in the headers' });
@@ -101,7 +104,9 @@ const getMovies = async (req, res) => {
     }
     try {
         movies = await movieService.getMovies(userId);
-
+        if (!movies) {
+            return res.status(404).json({ error: "user doesn't exists" })
+        }
         return res.status(200).json({ movies });
     } catch (error) {
         // return error indicates that the server has crushed
@@ -152,7 +157,7 @@ const deleteMovie = async (req, res) => {
 
 const getRecommendation = async (req, res) => {
     //validation check
-    if (!mongoose.Types.ObjectId.isValid(req.headers['userId'])) {
+    if (!mongoose.Types.ObjectId.isValid(req.headers['userid'])) {
         return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -160,9 +165,9 @@ const getRecommendation = async (req, res) => {
     }
     //get response from the server
     try {
-        const response = await movieService.getRecommendation(req.headers['userId'], req.params.id)
+        const response = await movieService.getRecommendation(req.headers['userid'], req.params.id)
         const resStatus = response.substring(0, 3);
-        if (stat === '200') {
+        if (resStatus === '200') {
             //return json of the ids
             return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
         } else {
@@ -178,16 +183,19 @@ const getRecommendation = async (req, res) => {
 
 const addMovieToUser = async (req, res) => {
     //validation check
-    if (!mongoose.Types.ObjectId.isValid(req.headers['userId'])) {
+    if (!mongoose.Types.ObjectId.isValid(req.headers['userid'])) {
         return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
     }
     try {
-        const movie = movieService.addMovieToUser(req.headers['userId'], req.params.id)
+        const movie = await movieService.addMovieToUser(req.headers['userid'], req.params.id)
         if (!movie) {
-            return res.status(404).json( {error : "404 not found"} )
+            return res.status(404).json( {error : "user and/or movie doesn't exists"} )
+        }
+        if (movie === "user already added") {
+            return res.status(404).json( {error : "404 user already added"} )
         }
         return res.status(204).end();
     } catch (error) {
@@ -214,6 +222,19 @@ const updateMovie = async (req, res) => {
     //check validation of id
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    //check that the required arguments passed
+    if (name === undefined) {
+        return res.status(400).json({ error:'Name is required' });
+    }
+    if (description === undefined) {
+        return res.status(400).json({ error:'Description is required' });
+    }
+    if (creators === undefined) {
+        return res.status(400).json({ error:'Creators is required' });
+    }
+    if (photo === undefined) {
+        return res.status(400).json({ error:'Photo is required' });
     }
     //validation check
     const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);

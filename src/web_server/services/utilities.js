@@ -43,16 +43,16 @@ const deleteMovieFromCategory = async (categoryId, movieId) => {
 
 // helper function to add a watched movie - used by movies
 async function addMovieToUser(userId, movieId) {
-    const user = await User.find({_id: userId})
+    const user = await User.findById(userId);
     user.watched_movies.push(movieId)
-    await user.save();
+    return await user.save();
 }
 
 // helper function to delete a watched movie - used by movies
 async function deleteMovieFromUser(userId, movieId) {
     const user = await User.find({_id: userId})
     user.watched_movies = watched_movies.filter(movie => movie !== movieId);
-    await user.save();
+    return await user.save();
 }
 
 const getCategories = async () => { return await Category.find({}); };
