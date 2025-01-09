@@ -33,10 +33,15 @@ const Movie = new Schema({
         ref: 'categories',
         default: []
     },
-    image: {
+    users: {
+        type: [Schema.Types.ObjectId],
+        ref: 'users',
+        default: []
+    },
+    photo: {
         type: Schema.Types.ObjectId,
         ref: 'images',
-        required: true
+        default: null
     }
 });
 
