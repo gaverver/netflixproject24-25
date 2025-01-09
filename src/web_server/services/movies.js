@@ -1,6 +1,5 @@
 const Movie = require('../models/movies')
-const categoriesService = require('./categories')
-const usersService = require('./users')
+const utilities = require('./utilities')
 const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
@@ -38,7 +37,7 @@ const createMovie = async (name, description, actors, published, age_limit, crea
     if (categories !== undefined) {
         movie.categories = categories
         for (const categoryId of categories) {
-            await categoriesService.addMovieToCategory(categoryId, movie._id);
+            await utilities.addMovieToCategory(categoryId, movie._id);
         }
     }
     if (photo !== undefined) {
@@ -55,11 +54,11 @@ const deleteMovie = async (id) => {
     const [ip, port] = App.recommendConString.split(':');
     for (const userId of movie.users) {
         const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
-        await usersService.deleteMovieFromUser(userId, id);
+        await utilities.deleteMovieFromUser(userId, id);
     }
     //delete from category
     for (const categoryId of movie.categories) {
-        await categoriesService.deleteMovieFromCategory(categoryId, id);
+        await utilities.deleteMovieFromCategory(categoryId, id);
     }
 
     return movie;
@@ -71,10 +70,10 @@ const getMovieById = async (id) => {
 //function to get promoted catrgorie's movies
 const getMovies = async (userId) => {
     //get the user
-    user = usersService.getUserById(userId);
+    user = utilities.getUserById(userId);
     watchedMovies = user.watched_movies;
     //get all categories
-    const categories = await categoriesService.getCategories()
+    const categories = await utilities.getCategories()
     //list of all the movies that will be returned
     const allMovies = {};
     //iterating over the categories
@@ -114,7 +113,7 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     }
     if (movie.categories && movie.categories.length > 0) {
         for (categoryId of movie.categories) {
-            await categoriesService.deleteMovieFromCategory(categoryId, id);
+            await utilities.deleteMovieFromCategory(categoryId, id);
         }
     }
     if (categories === undefined) {
@@ -122,7 +121,7 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     } else {
         movie.categories = categories;
         for (categoryId of categories) {
-            categoriesService.addMovieToCategory(categoryId, id);
+            utilities.addMovieToCategory(categoryId, id);
         }
     }
     if (photo !== undefined) {
@@ -145,7 +144,7 @@ const addMovieToUser = async (userId, movieId) => {
     if (!movie) {
         return null
     }
-    const user = usersService.getUserById(userId)
+    const user = utilities.getUserById(userId)
     if (!user) {
         return null
     }
@@ -156,7 +155,7 @@ const addMovieToUser = async (userId, movieId) => {
         { new: true }
     );
     if (!updatedMovie) return null;
-    const updatedUser = await usersService.addMovieToUser(userId, movieId)
+    const updatedUser = await utilities.addMovieToUser(userId, movieId)
     if (!updatedUser) return null;
     //add to the recommendation system
     const [ip, port] = App.recommendConString.split(':');
@@ -203,18 +202,4 @@ const sendMessageToServer = (ip, port, message) => {
     });
 };
 
-const deleteCategoryFromMovie = async (movieId, categoryId) => {
-    const movie = await getMovieById(movieId);
-    movie.categories = movie.categories.filter(id => id !== categoryId);
-    await movie.save();
-}
-
-const addCategoryToMovie = async (movieId, categoryId) => {
-    const movie = await getMovieById(movieId);
-    if (!movie.categories.includes(categoryId)) {
-        movie.categories.push(categoryId);
-    }
-    await movie.save();
-}
-
-module.exports = {createMovie, deleteMovie, getMovieById, getMovies, updateMovie, getRecommendation, addMovieToUser, queryGet, deleteCategoryFromMovie, addCategoryToMovie}
+module.exports = {createMovie, deleteMovie, getMovieById, getMovies, updateMovie, getRecommendation, addMovieToUser, queryGet}
