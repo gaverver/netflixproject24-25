@@ -3,13 +3,13 @@ const Category = require('../models/categories');
 const User = require("../models/users")
 //rmove a category from a movie
 const deleteCategoryFromMovie = async (movieId, categoryId) => {
-    const movie = await Movie.findById(id);
+    const movie = await Movie.findById(movieId);
     movie.categories = movie.categories.filter(id => id !== categoryId);
     await movie.save();
 }
 //add a category to a movie
 const addCategoryToMovie = async (movieId, categoryId) => {
-    const movie = await Movie.findById(id);
+    const movie = await Movie.findById(movieId);
     if (!movie.categories.includes(categoryId)) {
         movie.categories.push(categoryId);
     }
@@ -19,7 +19,7 @@ const addCategoryToMovie = async (movieId, categoryId) => {
 // 2 helper functions to use
 const addMovieToCategory = async (categoryId, movieId) => {
     // get the category
-    const category = await Category.findById(id);
+    const category = await Category.findById(categoryId);
     // check if the movie is not already there
     if (!category.movieIds.includes(movieId)) {
         // add the movieId to the movieIds array
@@ -30,7 +30,7 @@ const addMovieToCategory = async (categoryId, movieId) => {
 
 const deleteMovieFromCategory = async (categoryId, movieId) => {
     // get the category
-    const category = await Category.findById(id);
+    const category = await Category.findById(categoryId);
     // get the index of the movie in the array
     const index = category.movieIds.indexOf(movieId);
     // check if the movie is there
