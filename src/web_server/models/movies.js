@@ -41,7 +41,7 @@ const Movie = new Schema({
     photo: {
         type: Schema.Types.ObjectId,
         ref: 'images',
-        default: null
+        required: true
     }
 });
 

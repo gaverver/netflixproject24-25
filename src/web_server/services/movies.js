@@ -1,10 +1,9 @@
 const Movie = require('../models/movies')
 const utilities = require('./utilities')
-const App = require('../app')
 const net = require('net')
 const mongoose = require('mongoose');
 //functio to create a movie
-const createMovie = async (name, description, actors, published, age_limit, creators, categories, photo) => {
+const createMovie = async (name, description, actors, published, age_limit, creators, photo, categories) => {
     //check if there's a movie with the same name or photo
     const existingMovie = await Movie.find({
         $or: [
@@ -51,7 +50,9 @@ const deleteMovie = async (id) => {
     const movie = await Movie.findByIdAndDelete(id);
     if (!movie) return null;
     //delete movie from users
-    const [ip, port] = App.recommendConString.split(':');
+    require('custom-env').env(process.env.NODE_ENV, './config');
+    const recommendConString = process.env.RECOMMEND_CON_STRING
+    const [ip, port] = recommendConString.split(':');
     for (const userId of movie.users) {
         const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
         await utilities.deleteMovieFromUser(userId, id);
@@ -132,8 +133,10 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
 }
 //function to get recommendation for movies
 const getRecommendation = async (userId, movieId) => {
-    const [ip, port] = App.recommendConString.split(':');
-    const response = await sendMessageToServer(ip, parseInt(port), `GET ${userId} ${movieId}`);
+    require('custom-env').env(process.env.NODE_ENV, './config');
+    const recommendConString = process.env.RECOMMEND_CON_STRING
+    const [ip, port] = recommendConString.split(':');
+    const response = await sendMessageToServer(ip, parseInt(port), `GET ${userId} ${movieId}\n`);
     return response;
 }
 //add a movie to user
@@ -148,6 +151,10 @@ const addMovieToUser = async (userId, movieId) => {
     if (!user) {
         return null
     }
+    //check that the user isn't already added to the movie
+    if (movie.users.includes(userId)) {
+        return "user already added"
+    }
     //add to mongo
     const updatedMovie = await Movie.findByIdAndUpdate(
         movieId, 
@@ -158,12 +165,15 @@ const addMovieToUser = async (userId, movieId) => {
     const updatedUser = await utilities.addMovieToUser(userId, movieId)
     if (!updatedUser) return null;
     //add to the recommendation system
-    const [ip, port] = App.recommendConString.split(':');
+    require('custom-env').env(process.env.NODE_ENV, './config');
+    const recommendConString = process.env.RECOMMEND_CON_STRING
+    const [ip, port] = recommendConString.split(':');
     //try to post
-    const response = await sendMessageToServer(ip, parseInt(port), `POST ${userId} ${movieId}`);
+    const response = await sendMessageToServer(ip, parseInt(port), `POST ${userId} ${movieId}\n`);
     //if user already exists in the system, use patch
-    if (response == "404 Not Found") {
-        await sendMessageToServer(ip, parseInt(port), `PATCH ${userId} ${movieId}`);
+    const resStatus = response.substring(0, 3);
+    if (resStatus == "404") {
+        await sendMessageToServer(ip, parseInt(port), `PATCH ${userId} ${movieId}\n`);
     }
 
     return updatedMovie;
