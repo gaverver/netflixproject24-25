@@ -169,6 +169,7 @@ In order to run the web server using Docker, you need to run the following comma
     ```
 
 ### Movie API 
+**Note:** before every command that you want to pass an image id, you'll first need to generate an image as described earlier. Once the image is created, you can use its ID in your commands.
 - **Post /api/movies**
   - **Description:** Creates a new movie. All the details of the category are sent in the body.
   - **Requirments:** When creating a movie, the following must be sent in the body: name(string), description(string), creators(list of string). Also, actors(list of string), published(date), age_limit(int between 0 and 18), categories(list of id's), users(list of id's), photo(id) are optional.
