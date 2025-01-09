@@ -103,8 +103,24 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     movie.actors = actors;
     movie.published = published;
     movie.age_limit = age_limit;
-    movie.creators = creators;
-    movie.categories = categories;
+    if (creators === undefined) {
+        movie.creators = [];
+    } else {
+        movie.creators = creators;
+    }
+    if (movie.categories && movie.categories.length > 0) {
+        for (categoryId of movie.categories) {
+            categoriesService.deleteMovieFromCategory(categoryId, id);
+        }
+    }
+    if (categories === undefined) {
+        movie.categories = [];
+    } else {
+        movie.categories = categories;
+        for (categoryId of categories) {
+            categoriesService.addMovieToCategory(categoryId, id);
+        }
+    }
     movie.photo = photo;
     
     return await movie.save();
