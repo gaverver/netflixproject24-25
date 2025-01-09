@@ -1,4 +1,4 @@
-const Image = require('../models/image');
+const Image = require('../models/images');
 
 async function createImage(data, contentType) {
     // creating a new inage and saving the changes
