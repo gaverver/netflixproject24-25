@@ -1,44 +1,71 @@
 const categoryService = require('../services/categories');
+const mongoose = require('mongoose')
 
 const createCategory = async (req, res) => {
-
-    // for comfort
-    const { name, promoted, movieIds } = req.body;
-
-    // name is a required field
-    if (name === undefined) {
-        return res.status(400).json({ error:'Name is required' });
-    }
-
-    // validate the input
-    if (typeof name !== 'string') {
-        return res.status(400).json({ error: 'Invalid data: name must be a string' });
-    }
-
-    if (promoted !== undefined && typeof promoted !== 'boolean') {
-        return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
-    }
-
-    if (movieIds !== undefined) {
-        if (!Array.isArray(movieIds)) {
-            return res.status(400).json({ error: 'Invalid data: movieIds must be an array' });
-        }
-        if (!movieIds.every(id => mongoose.Types.ObjectId.isValid(id))) {
-            return res.status(400).json({ error: 'Invalid data: movieIds must contain valid ObjectIds' });
-        }
-    }
     
-    await categoryService.createCategory(name, promoted, movieIds)
-    return res.status(201).end();
+    // avoid server crushes, by catching an error
+    try {
+        // for comfort
+        const { name, promoted, movieIds } = req.body;
+
+        // name is a required field
+        if (name === undefined) {
+            return res.status(400).json({ error:'Name is required' });
+        }
+
+        // validate the input
+        if (typeof name !== 'string') {
+            return res.status(400).json({ error: 'Invalid data: name must be a string' });
+        }
+
+        // promoted doesn't have to be passed, it has a default value
+        if (promoted !== undefined && typeof promoted !== 'boolean') {
+            return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
+        }
+
+        // movieIds doesn't have to be passed, it has a default value
+        if (movieIds !== undefined) {
+            // check if the movieIds inserted is an array of valid ObjectIds
+            if (!Array.isArray(movieIds)) {
+                return res.status(400).json({ error: 'Invalid data: movieIds must be an array' });
+            }
+            if (!movieIds.every(id => mongoose.Types.ObjectId.isValid(id))) {
+                return res.status(400).json({ error: 'Invalid data: movieIds must contain valid ObjectIds' });
+            }
+        }
+    
+        const newCategory = await categoryService.createCategory(name, promoted, movieIds)
+        // returned null because another category with the same name already exists
+        if (!newCategory) {
+            return res.status(404).json({ error: 'A category with this name already exists' });
+        }
+        // add Location to the http header for the new category that has been created
+        return res.status(201).set('Location', `/api/categories/${newCategory._id}`).end();
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 const getCategories = async (req, res) => {
-    // gets all exsiting categories
-    return res.status(200).json(await categoryService.getCategories());
+    // avoid server crushes, by catching an error
+    try {
+        // gets all exsiting categories
+        return res.status(200).json(await categoryService.getCategories());   
+    } catch (error) {
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 const getCategory = async (req, res) => {
-    // avoid server crushes, by routing to an invalid place
+
+    // check if the category's id is invalid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+    }
+
+    // avoid server crushes, by catching an error
     try {
         const category = await categoryService.getCategoryById(req.params.id);
         
@@ -49,18 +76,24 @@ const getCategory = async (req, res) => {
         
         return res.status(200).json(category);
     } catch (error) {
-        return res.status(404).json({ error:'Category not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
 const updateCategory = async (req, res) => {
+
+    // check if the category's id is invalid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+    }
 
     // for comfort
     const { name, promoted, movieIds } = req.body;
 
     // check if the body has some new data, if not, it's a bad request
     if (name === undefined && promoted === undefined && movieIds === undefined) {
-        return res.status(400).json({ error:'No new data have been inserted' });
+        return res.status(400).json({ error:'No new data have been inserted' });    
     }
 
     // validate the input
@@ -72,7 +105,9 @@ const updateCategory = async (req, res) => {
         return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
     }
 
+    // movieIds doesn't have to be passed, it has a default value
     if (movieIds !== undefined) {
+        // check if the movieIds inserted is an array of valid ObjectIds
         if (!Array.isArray(movieIds)) {
             return res.status(400).json({ error: 'Invalid data: movieIds must be an array' });
         }
@@ -81,21 +116,32 @@ const updateCategory = async (req, res) => {
         }
     }
 
-    // avoid server crushes, by routing to an invalid place
+    // avoid server crushes, by catching an error
     try {
-        const category = await categoryService.updateCategory(req.params.id, name, movieIds);
+        const category = await categoryService.updateCategory(req.params.id, name, promoted, movieIds);
         // updateCategory in the services returns null if the category havn't found
         if (!category) {
-            return res.status(404).json({ error:'Category not found' });
+            return res.status(404).json({ error: 'Category not found' });
+        }
+        // check what if a different category with the new name already exists
+        if (category === "name already exists") {
+            return res.status(404).json({ error: 'A category with the new name already exists'})
         }
         return res.status(204).end();
     } catch (error) {
-        return res.status(404).json({ error:'Category not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
 const deleteCategory = async (req, res) => {
-    // avoid server crushes, by routing to an invalid place
+
+    // check if the category's id is invalid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+    }
+
+    // avoid server crushes, by catching an error
     try {
         const category = await categoryService.deleteCategory(req.params.id);
         // deleteCategory in the services returns null if the category havn't found
@@ -104,7 +150,8 @@ const deleteCategory = async (req, res) => {
         }
         return res.status(204).end();
     } catch (error) {
-        return res.status(404).json({ error:'Category not found' });
+        // return error indicates that the server has crushed
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
