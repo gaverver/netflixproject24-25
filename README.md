@@ -16,7 +16,8 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-
+## Separation of the Recommendation System from the Web Server
+First, the C++ server code from exercise 2 is located in a separate branch named "ex2". In this assignment, the src folder contains two subfolders. The first, "recommendation_system," includes the C++ server code from exercise 2, updated with the changes required for exercise 3. The second, "web_server," contains all the code for the web server, including the JavaScript code.
 ## Server Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
