@@ -4,14 +4,18 @@ const mongoose = require('mongoose')
 
 async function countFilesInDirectory(directoryPath) {
     try {
-      const files = await fs.promises.readdir(directoryPath); // Use promises to make it async
-      // counts the files inside the avatars folder(user pictures)
-      const fileCount = files.filter(file => {
-        return fs.statSync(path.join(directoryPath, file)).isFile();
-      }).length;
-      return fileCount;
+      const files = await fs.promises.readdir(directoryPath); // Read the directory contents
+      const fileCount = await Promise.all(files.map(async (file) => {
+        try {
+          const stats = await fs.promises.stat(`${directoryPath}/${file}`); // Concatenate strings for the file path
+          return stats.isFile() ? 1 : 0; // Return 1 if it's a file, otherwise 0
+        } catch (err) {
+          return 0; // Return 0 in case of error with file stats
+        }
+      }));
+      return fileCount.reduce((total, count) => total + count, 0); // Sum up the counts
     } catch (err) {
-      return 0; // Return 0 if there's an error
+      return 0; // Return 0 if there's an error reading the directory
     }
   }
 
@@ -81,7 +85,7 @@ const createUser = async (req, res) => {
 
     try {
         // create the user using the service.
-        const response = await userService.createUser(username, email, password, phoneNumber, picture)
+        const response = await userService.createUser(username, password, email, phoneNumber, picture)
         // respond with the fitting response depending on the returned value
         if (response === null) {
             return res.status(404).json({ error:'username and/or email and/ or phoneNumber already exists'})
