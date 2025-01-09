@@ -53,7 +53,7 @@ In order to run the web server using Docker, you need to run the following comma
 ### User API
 - **GET /api/users/:id**
   - **Description:** fetches the user details associated with a given ID, such as their name, photo, and additional information stored in the database.
-  - **Example Usage:**
+  - **Example Usage:**  
     for windows and linux:
     ```bash
     curl -i -X GET http://localhost:<webServer_port>/api/users/<user_id>
@@ -61,7 +61,7 @@ In order to run the web server using Docker, you need to run the following comma
 - **POST /api/users**
   - **Description:** This operation creates a new user. All the details of the user are sent in the body.
   - **Requirments:** When creating a user, the following must be sent in the body: username(string), password(string), email(string), phoneNumber(10 digit string). Also, picture(integer) is optional. You must select a number greater/equal than 1 and there is a limited number of photos you can choose from.  
-  - **Example Usage:**  
+  - **Example Usage:**   
     for linux:  
     ```bash
     curl -i -X POST http://localhost:<webServer_port>/api/users \  
@@ -93,17 +93,17 @@ In order to run the web server using Docker, you need to run the following comma
 
 ### Category API
 - **Get /api/categories**
-  - **Description:** fetches all the info of the existing categories in the system.
-  - **Example Usage:**
+  - **Description:** fetches all the info of all the existing categories in the system.
+  - **Example Usage:**  
     for linux and windows:
     ```bash
     curl -i http://localhost:<webServer_port>/api/categories
     ```
 
 - **Post /api/categories**
-  - **Description:** Creates a new category .All the details of the category are sent in the body.
+  - **Description:** Creates a new category. All the details of the category are sent in the body.
   - **Requirments:** When creating a category, the following must be sent in the body: name(string). Also, promoted(bool) and movieIds(list of id's) are optional.
-  - **Example Usage:**
+  - **Example Usage:**  
     for linux:
     ```bash
     curl -i -X POST http://localhost:<webServer_port>/api/categories \
@@ -119,37 +119,117 @@ In order to run the web server using Docker, you need to run the following comma
 
 - **Get /api/categories/:id**
   - **Description:** fetches all the info of the category with the given id from the system.
-  - **Example Usage:**
+  - **Example Usage:**  
     for linux and windows:
     ```bash
-    curl -i http://localhost:<webServer_port>/api/categories/<user_id>
+    curl -i http://localhost:<webServer_port>/api/categories/<category_id>
     ```
     
 - **Patch /api/categories/:id**
   - **Description:** Updates the details of the category identified by the specified id using the information provided in the request body.
   - **Requirments:** When updating a category, you must enter at least one of the following in the body: name(string), promoted(bool), movieIds(list of id's).
-  - **Example Usage:**
+  - **Example Usage:**  
     for linux:
     ```bash
-     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<user_id> \
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<category_id> \
      -H "Content-Type: application/json" \
      -d '{"name": "Action and Adventure"}'
     ```
     for windows:
     ```bash
-     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<user_id> ^  
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<category_id> ^  
      -H "Content-Type: application/json" ^  
      -d "{\"name\": \"Action and Adventure\"}"
     ```
     
 - **Delete /api/categories/:id**
   - **Description:** Deletes the category with the given id from the system.
-  - **Example Usage:**
+  - **Example Usage:**  
     for linux and windows:
     ```bash
-    curl -i -X DELETE http://localhost:<webServer_port>/api/categories/<user_id>
+    curl -i -X DELETE http://localhost:<webServer_port>/api/categories/<category_id>
     ```
-    
+
+### Movie API 
+- **Post /api/movies**
+  - **Description:** Creates a new movie. All the details of the category are sent in the body.
+  - **Requirments:** When creating a movie, the following must be sent in the body: name(string), description(string), creators(list of string). Also, actors(list of string), published(date), age_limit(int between 0 and 18), categories(list of id's), users(list of id's), photo(id) are optional.
+  - **Example Usage:**  
+    for linux:  
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Gavri", "creators": ["gavriel shandalov"], "description": "here is a description"}'
+    ```
+    for windows:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies -H "Content-Type: application/json" -d "{\"name\": \"Gavri\", \"creators\": [\"gavriel shandalov\"], \"description\": \"here is a description\"}"
+    ```
+- **Get /api/movies**
+  - **Description:** The operation returns movies by category(only promoted ones). Promoted categories include 20 random unseen movies for the user. A special category lists the last 20 movies the user watched in random order.
+  - **Required:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies -H "userId: <user_id>"
+    ```
+
+- **Get /api/movies/:id**
+  - **Description:** The operation returns the information about the movie whose id is as given.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/<user_id>
+    ```
+
+- **Delete /api/movies/:id**
+  - **Description:** Deletes the movie with the given id from the system.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE http://localhost:<webServer_port>/api/movies/<user_id>
+    ```
+
+- **Put /api/movies/:id**
+  - **Description:** Replaces an existing movie identified by the given id with the given fields.
+  - **Requirments:** When updating a category, you must enter the following in the body: name(string), description(string), creators(list of string). Also, actors(list of string), published(date), age_limit(int between 0 and 18), categories(list of id's), users(list of id's), photo(id) are optional.
+  - **Example Usage:**  
+    for linux:  
+    ```bash
+    curl -i -X PUT http://localhost:<webServer_port>/api/movies \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Gavri", "creators": ["gavriel shandalov"], "description": "here is a description"}'
+    ```
+    for windows:
+    ```bash
+    curl -i -X PUT http://localhost:<webServer_port>/api/movies -H "Content-Type: application/json" -d "{\"name\": \"Gavri\", \"creators\": [\"gavriel shandalov\"], \"description\": \"here is a description\"}"
+    ```
+
+- **Get /api/movies/:id/recommend/**
+  - **Description:** Retrieves recommended movies from the recommendation system for the current user, based on the movie identified by the given id.
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/<movie_id>/recommend/ -H "userId: <user_id>"
+    ```
+
+- **Post /api/movies/:id/recommend/**
+  - **Description:** The operation adds to the recommendation system that the current user has watched the movie identified by the given id.  
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".  
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies/<movie_id>/recommend/ -H "userId: <user_id>"
+    ```
+
+- **Get /api/movies/search/:query/**
+  - **Description:** Retrieves the movies that match the search result of the query string. In other words, it searches for the query string in any of the fields of the movies and retrieves the movies where the string appears in one of their fields.  
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/search/<query_string>/
+    ```
 ## data management
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
