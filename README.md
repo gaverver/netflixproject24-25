@@ -91,6 +91,65 @@ In order to run the web server using Docker, you need to run the following comma
     -H "Content-Type: application/json" ^  
     -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"  
 
+### Category API
+- **Get /api/categories**
+  - **Description:** fetches all the info of the existing categories in the system.
+  - **Example Usage:**
+    for linux and windows:
+    ```bash
+    curl -i http://localhost:<webServer_port>/api/categories
+    ```
+
+- **Post /api/categories**
+  - **Description:** Creates a new category .All the details of the category are sent in the body.
+  - **Requirments:** When creating a category, the following must be sent in the body: name(string). Also, promoted(bool) and movieIds(list of id's) are optional.
+  - **Example Usage:**
+    for linux:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/categories \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Drama", "promoted": true}'
+    ```
+    for windows(cmd):
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/categories ^  
+     -H "Content-Type: application/json" ^  
+     -d "{\"name\": \"Drama\", \"promoted\": true}"
+    ```
+
+- **Get /api/categories/:id**
+  - **Description:** fetches all the info of the category with the given id from the system.
+  - **Example Usage:**
+    for linux and windows:
+    ```bash
+    curl -i http://localhost:<webServer_port>/api/categories/<user_id>
+    ```
+    
+- **Patch /api/categories/:id**
+  - **Description:** Updates the details of the category identified by the specified id using the information provided in the request body.
+  - **Requirments:** When updating a category, you must enter at least one of the following in the body: name(string), promoted(bool), movieIds(list of id's).
+  - **Example Usage:**
+    for linux:
+    ```bash
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<user_id> \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Action and Adventure"}'
+    ```
+    for windows:
+    ```bash
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<user_id> ^  
+     -H "Content-Type: application/json" ^  
+     -d "{\"name\": \"Action and Adventure\"}"
+    ```
+    
+- **Delete /api/categories/:id**
+  - **Description:** Deletes the category with the given id from the system.
+  - **Example Usage:**
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE http://localhost:<webServer_port>/api/categories/<user_id>
+    ```
+    
 ## data management
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
