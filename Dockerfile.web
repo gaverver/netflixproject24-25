@@ -1,0 +1,35 @@
+# Use the official Node.js image as the base image
+FROM node:18
+
+# Set the working directory inside the container
+WORKDIR /usr/src/Netflix/src/web_server
+
+# Copy only the package.json and package-lock.json files first to leverage Docker cache
+COPY ./src/web_server/package.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application files to the appropriate directory
+COPY . /usr/src/Netflix
+
+# Set the working directory for your application
+WORKDIR /usr/src/Netflix/src/web_server
+
+# Accept three arguments during the build process
+ARG CONNECTION_STRING
+ARG PORT
+ARG CPP_IP
+ARG CPP_PORT
+
+# Create a .env.local file with the passed arguments
+RUN mkdir -p ./config && \
+    echo "CONNECTION_STRING=${CONNECTION_STRING}" > ./config/.env.local && \
+    echo "PORT=${PORT}" >> ./config/.env.local && \
+    echo "RECOMMEND_CON_STRING=${CPP_IP}:${CPP_PORT}" >> ./config/.env.local
+
+# Expose the port your app runs on (adjust if necessary)
+EXPOSE 8080
+
+# Set the default command to run your app
+CMD ["npm", "start"]
