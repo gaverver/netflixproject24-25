@@ -3,8 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-// Import the router for handling API routes
+// Import the router for handling API routes and images router
 const api = require('./routes/api');
+const imagesRouter = require('./routes/images')
 // Load environment variables from the configuration file based on the current environment
 require('custom-env').env(process.env.NODE_ENV, './config');
 // Connect to MongoDB using the connection string from the environment variables
@@ -18,6 +19,9 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.json());
 // Use the API router for all routes starting with /api
 app.use('/api', api);
+
+// Use the images router
+app.use('/images', imagesRouter);
 
 // Catch-all route for everything that doesn't start with /api
 app.all('*', (req, res) => {
