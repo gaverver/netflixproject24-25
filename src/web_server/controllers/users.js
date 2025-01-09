@@ -64,7 +64,7 @@ const createUser = async (req, res) => {
         return res.status(400).json({ error:'email is required' });
     }
     // check if the phoneNumber is with the correct format.
-    const phoneNumberRegex = /^(?:\+?\d{1,3}[-.\s]?)?(?:\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+    const phoneNumberRegex = /^\d{10}$/;
     if (phoneNumberRegex.test(phoneNumber) === false) {
         return res.status(400).json({ error:'phone number is in an invalid format' });
     }
