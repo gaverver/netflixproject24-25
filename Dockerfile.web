@@ -4,7 +4,7 @@ FROM node:18
 # Set the working directory inside the container
 WORKDIR /usr/src/Netflix/src/web_server
 
-# Copy only the package.json and package-lock.json files first to leverage Docker cache
+# Copy only the package.json files first
 COPY ./src/web_server/package.json ./
 
 # Install dependencies
