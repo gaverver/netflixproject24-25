@@ -68,6 +68,9 @@ const getMovieById = async (id) => {
 }
 //function to get promoted catrgorie's movies
 const getMovies = async (userId) => {
+    //get the user
+    user = usersService.getUserById(userId);
+    watchedMovies = user.watched_movies;
     //get all categories
     const categories = await categoriesService.getCategories()
     //list of all the movies that will be returned
@@ -75,23 +78,18 @@ const getMovies = async (userId) => {
     //iterating over the categories
     for (const category of categories) {
         if (category.promoted) {
-            //find 20 movies in this category that the current user didn't watched
-            const movies = category.
+            //shuffle the movies in this category
+            const randomMovies = category.movieIds.sort((a,b) => Math.random() - 0.5)
+            //get the 20 movies
+            const movies = randomMovies.filter(movieId => !watchedMovies.includes(movieId)).slice(0,20);
             //add the movies to the list
-            allMovies.push({
-                category: category.name,
-                movies
-              });
+            allMovies[category.name] = movies;
         }
     }
     //add the special category
-    const movies = await Movie.find({
-        users: { $in: [mongoose.Types.ObjectId(userId)] }
-    }).limit(20)
-    allMovies.push({
-        category: "Watched Movies",
-        movies
-      });
+    const lastMovies = watchedMovies.slice(-20);
+    const randomLastMovies = lastMovies.sort((a,b) => Math.random() - 0.5);
+    allMovies["Recent watch movies"] = randomLastMovies;
     return allMovies;
 }
 //function to update a movie
