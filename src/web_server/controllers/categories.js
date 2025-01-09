@@ -17,7 +17,7 @@ const createCategory = async (req, res) => {
         if (typeof name !== 'string') {
             return res.status(400).json({ error: 'Invalid data: name must be a string' });
         }
-    
+
         // promoted doesn't have to be passed, it has a default value
         if (promoted !== undefined && typeof promoted !== 'boolean') {
             return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
@@ -35,6 +35,10 @@ const createCategory = async (req, res) => {
         }
     
         const newCategory = await categoryService.createCategory(name, promoted, movieIds)
+        // returned null because another category with the same name already exists
+        if (!newCategory) {
+            return res.status(404).json({ error: 'A category with this name already exists' });
+        }
         // add Location to the http header for the new category that has been created
         return res.status(201).set('Location', `/api/categories/${newCategory._id}`).end();
     } catch (error) {
@@ -117,7 +121,11 @@ const updateCategory = async (req, res) => {
         const category = await categoryService.updateCategory(req.params.id, name, promoted, movieIds);
         // updateCategory in the services returns null if the category havn't found
         if (!category) {
-            return res.status(404).json({ error:'Category not found' });
+            return res.status(404).json({ error: 'Category not found' });
+        }
+        // check what if a different category with the new name already exists
+        if (category === "name already exists") {
+            return res.status(404).json({ error: 'A category with the new name already exists'})
         }
         return res.status(204).end();
     } catch (error) {
