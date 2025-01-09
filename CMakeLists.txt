@@ -17,18 +17,18 @@ FetchContent_MakeAvailable(googletest)
 
 # Glob all .cpp and .h files in the src directory
 file(GLOB SOURCES_AND_HEADERS
-    ${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/*.h
+    ${CMAKE_SOURCE_DIR}/src/recommendation_system/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/recommendation_system/*.h
 )
 
 # Explicitly remove app.cpp and app.h
 list(REMOVE_ITEM SOURCES_AND_HEADERS
-    "${CMAKE_SOURCE_DIR}/src/main.cpp"
+    "${CMAKE_SOURCE_DIR}/src/recommendation_system/main.cpp"
 ) 
 
 file(GLOB TESTS 
-    ${CMAKE_SOURCE_DIR}/src/tests/*/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/tests/*/*.h    
+    ${CMAKE_SOURCE_DIR}/src/recommendation_system/tests/*/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/recommendation_system/tests/*/*.h    
 )
 
 #Correct paths relative to /usr/src/myapp when CMake is run from the build directory
