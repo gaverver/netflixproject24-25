@@ -95,7 +95,7 @@ const getMovies = async (userId) => {
 }
 //function to update a movie
 const updateMovie = async (id, name, description, actors, published, age_limit, creators, categories, photo) => {
-    movie = getMovieById(id);
+    movie = await getMovieById(id);
     if (!movie) return null;
     movie.name = name;
     movie.description = description;
@@ -140,7 +140,7 @@ const getRecommendation = async (userId, movieId) => {
 const addMovieToUser = async (userId, movieId) => {
 
     //check that the user and the movie exists
-    const movie = getMovieById(movieId)
+    const movie = await getMovieById(movieId)
     if (!movie) {
         return null
     }
