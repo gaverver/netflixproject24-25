@@ -20,6 +20,8 @@ app.use(express.json());
 app.use('/api', api);
 // a variable with the ip and port of the recommendation system
 const recommendConString = process.env.RECOMMEND_CON_STRING
+// load the avatars for the clients.
+app.use(express.static('../../data/avatars'))
 // run the server on the port from the configuration file
 app.listen(process.env.PORT);
 
