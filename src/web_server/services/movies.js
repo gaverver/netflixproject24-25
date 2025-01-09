@@ -19,6 +19,7 @@ const createMovie = async (name, description, actors, published, age_limit, crea
         name: name,
         description: description,
         creators: creators,
+        photo: photo
     })
     //check if 'actors' passed
     if (actors !== undefined) {
@@ -38,9 +39,6 @@ const createMovie = async (name, description, actors, published, age_limit, crea
         for (const categoryId of categories) {
             await utilities.addMovieToCategory(categoryId, movie._id);
         }
-    }
-    if (photo !== undefined) {
-        movie.photo = photo
     }
     return await movie.save()
 }

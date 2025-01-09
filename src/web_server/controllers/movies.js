@@ -67,6 +67,9 @@ const createMovie = async (req, res) => {
         if (creators === undefined) {
             return res.status(400).json({ error:'Creators is required' });
         }
+        if (photo === undefined) {
+            return res.status(400).json({ error:'Photo is required' });
+        }
         
         //validation of arguments
         const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
