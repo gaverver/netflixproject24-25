@@ -62,7 +62,7 @@ const getCategory = async (req, res) => {
 
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+        return res.status(404).json({ error:'Category not found' });
     }
 
     // avoid server crushes, by catching an error
@@ -85,7 +85,7 @@ const updateCategory = async (req, res) => {
 
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+        return res.status(404).json({ error:'Category not found' });
     }
 
     // for comfort
@@ -138,7 +138,7 @@ const deleteCategory = async (req, res) => {
 
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ error:'Invalid data: category id must be a valid ObjectId'});
+        return res.status(404).json({ error:'Category not found' });
     }
 
     // avoid server crushes, by catching an error
