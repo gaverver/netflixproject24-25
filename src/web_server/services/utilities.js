@@ -55,4 +55,7 @@ async function deleteMovieFromUser(userId, movieId) {
     await user.save();
 }
 
-module.exports = {deleteCategoryFromMovie, addCategoryToMovie, addMovieToCategory, deleteMovieFromCategory, addMovieToUser, deleteMovieFromUser}
+const getCategories = async () => { return await Category.find({}); };
+
+
+module.exports = {deleteCategoryFromMovie, addCategoryToMovie, addMovieToCategory, deleteMovieFromCategory, addMovieToUser, deleteMovieFromUser, getCategories}
