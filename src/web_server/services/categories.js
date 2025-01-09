@@ -48,8 +48,10 @@ const updateCategory = async (id, name, promoted, movieIds) => {
         await utilities.deleteCategoryFromMovie(movie, id);
     }
     // add to each new movie the category to the categories field
-    for (const movie of movieIds) {
-        await utilities.addCategoryToMovie(movie, id);
+    if (movieIds !== undefined) {
+        for (const movie of movieIds) {
+            await utilities.addCategoryToMovie(movie, id);
+        }
     }
     return category;
 };
