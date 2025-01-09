@@ -72,6 +72,7 @@ const getMovieById = async (id) => {
 const getMovies = async (userId) => {
     //get the user
     user = await utilities.getUserById(userId);
+    if (!user) return null;
     watchedMovies = user.watched_movies;
     //get all categories
     const categories = await utilities.getCategories()

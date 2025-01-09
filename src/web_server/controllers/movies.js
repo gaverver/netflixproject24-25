@@ -101,7 +101,9 @@ const getMovies = async (req, res) => {
     }
     try {
         movies = await movieService.getMovies(userId);
-
+        if (!movies) {
+            return res.status(404).json({ error: "user doesn't exists" })
+        }
         return res.status(200).json({ movies });
     } catch (error) {
         // return error indicates that the server has crushed
