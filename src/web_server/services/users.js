@@ -36,7 +36,9 @@ const getUserById = async (id) => {
 // helper function to add a watched movie - used by movies
 async function addMovieToUser(userId, movieId) {
     const user = await User.find({_id: userId})
-    user.watched_movies.push(movieId)
+    if (!user.watched_movies.includes(movieId)) {
+        user.watched_movies = user.watched_movies.filter(movie => movie !== movieId);
+    }
     await user.save();
 }
 
