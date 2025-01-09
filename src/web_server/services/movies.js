@@ -37,6 +37,9 @@ const createMovie = async (name, description, actors, published, age_limit, crea
     //check if 'categories' passed
     if (categories !== undefined) {
         movie.categories = categories
+        for (const categoryId of categories) {
+            categoriesService.addMovieToCategory(categoryId, movie._id);
+        }
     }
     if (photo !== undefined) {
         movie.photo = photo
@@ -56,8 +59,7 @@ const deleteMovie = async (id) => {
     }
     //delete from category
     for (const categoryId of movie.categories) {
-        const newMovies = categoriesService.getCategoryById(categoryId).movieIds.filter(movieId => movieId !== id);
-        categoriesService.updateCategory(undefined, undefined, undefined, newMovies);
+        categoriesService.deleteMovieFromCategory(categoryId, id);
     }
 
     return movie;
