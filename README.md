@@ -40,7 +40,33 @@ In order to run the web server using Docker, you need to run the following comma
           `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_ip> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
    2. **create and run the container:**  
           `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port> server`  
+## Web Server Images Functionality
+- **Post /images**
+  - **Description:** The operation creates an image which is stored in the database.
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X POST --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images -H "Content-Type: application/octet-stream"
+    ```
 
+- **Get /images/:id**
+  - **Description:** The operation retrives an image which is stored in the database and identified by the given id.
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images/<image_id> -H "Content-Type: application/octet-stream"
+    ```
+
+- **Delete /images/:id**
+  - **Description:** The operation deletes an image which is stored in the database and identified by the given id.
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images/<image_id> -H "Content-Type: application/octet-stream"
+    ```
 ## Web Server Functionality
 ### User API
 - **GET /api/users/:id**
@@ -69,7 +95,7 @@ In order to run the web server using Docker, you need to run the following comma
 
 - **POST /api/tokens** 
   - **Description:** The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.  
-  - - **Requirments:** The following must be sent in the body: username(string), password(string)  
+  - **Requirments:** The following must be sent in the body: username(string), password(string)  
   - **Example Usage:**    
     for linux:  
     ```bash  
