@@ -13,6 +13,9 @@ const createCategory = async (name, promoted, movieIds) => {
     // check if 'movieIds' is explicitly passed
     if (movieIds !== undefined) {
         category.movieIds = movieIds;
+        for (const movie of movieIds) {
+            await utilities.addCategoryToMovie(movie, category._id);
+        }
     }
     return await category.save();
 };

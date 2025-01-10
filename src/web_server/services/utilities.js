@@ -4,7 +4,8 @@ const User = require("../models/users")
 //rmove a category from a movie
 const deleteCategoryFromMovie = async (movieId, categoryId) => {
     const movie = await Movie.findById(movieId);
-    movie.categories = movie.categories.filter(id => id !== categoryId);
+    const categoriesList = movie.categories;
+    movie.categories = categoriesList.filter(id => !id.equals(categoryId));
     await movie.save();
 }
 //add a category to a movie
