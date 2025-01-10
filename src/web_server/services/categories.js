@@ -13,6 +13,12 @@ const createCategory = async (name, promoted, movieIds) => {
     // check if 'movieIds' is explicitly passed
     if (movieIds !== undefined) {
         category.movieIds = movieIds;
+        // add to each movie this category
+        if (Array.isArray(movieIds) && movieIds.length > 0) {
+            for (const movie of movieIds) {
+                await utilities.addCategoryToMovie(movie, category._id)
+            }
+        }
     }
     return await category.save();
 };
@@ -43,27 +49,37 @@ const updateCategory = async (id, name, promoted, movieIds) => {
     }
     await category.save();
     // update in each new/removed movie the categories field
+    // if there was no fromer movies
+    if (!formerMovies || formerMovies.length == 0) {
+        return category;
+    }
     // delete from each former movie the category from categories field
     for (const movie of formerMovies) {
         await utilities.deleteCategoryFromMovie(movie, id);
     }
     // add to each new movie the category to the categories field
-    for (const movie of movieIds) {
-        await utilities.addCategoryToMovie(movie, id);
+    if (movieIds !== undefined) {
+        for (const movie of movieIds) {
+            await utilities.addCategoryToMovie(movie, id);
+        }
     }
     return category;
 };
 
 const deleteCategory = async (id) => {
     // get the category by id and delete it
-    const deletedCategory = await Category.findByIdAndDelete(id);
+    const category = await Category.findById(id);
     // if the category does not exists, return null
-    if (!deletedCategory) return null;
+    if (!category) return null;
+    // check if movieIds is empty and nothing more to delete
+    if (!category.movieIds || category.movieIds.length === 0) {
+        return await Category.findByIdAndDelete(id);
+    }
     // else, delete the category from every movie that has it
-    for (const movie of deletedCategory.movieIds) {
+    for (const movie of category.movieIds) {
         await utilities.deleteCategoryFromMovie(movie, id);
     }
-    return deletedCategory;
+    return await Category.findByIdAndDelete(id);
 };
 
 
