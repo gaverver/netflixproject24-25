@@ -53,20 +53,18 @@ In order to run the web server using Docker, you need to run the following comma
 
 - **Get /images/:id**
   - **Description:** The operation retrives an image which is stored in the database and identified by the given id.
-  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
   - **Example Usage:**  
     for linux and windows:
     ```bash
-    curl -i -X GET --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images/<image_id> -H "Content-Type: application/octet-stream"
+    curl -i -X GET http://localhost:<webServer_port>/images/<image_id>
     ```
 
 - **Delete /images/:id**
   - **Description:** The operation deletes an image which is stored in the database and identified by the given id.
-  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
   - **Example Usage:**  
     for linux and windows:
     ```bash
-    curl -i -X DELETE --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images/<image_id> -H "Content-Type: application/octet-stream"
+    curl -i -X DELETE http://localhost:<webServer_port>/images/<image_id>
     ```
 ## Web Server Functionality
 ### User API
@@ -251,6 +249,7 @@ In order to run the web server using Docker, you need to run the following comma
     curl -i -X GET http://localhost:<webServer_port>/api/movies/search/<query_string>/
     ```
 ## data management
+### Recommendation System
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
 ## running examples
 ### POST and PATCH and DELETE
