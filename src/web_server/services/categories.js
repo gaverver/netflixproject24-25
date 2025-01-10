@@ -1,5 +1,5 @@
 const Category = require('../models/categories');
-const MovieService = require('../services/movies')
+const utilities = require('../services/utilities')
 
 const createCategory = async (name, promoted, movieIds) => {
     // check if there is a category with this name
@@ -13,6 +13,12 @@ const createCategory = async (name, promoted, movieIds) => {
     // check if 'movieIds' is explicitly passed
     if (movieIds !== undefined) {
         category.movieIds = movieIds;
+        // add to each movie this category
+        if (Array.isArray(movieIds) && movieIds.length > 0) {
+            for (const movie of movieIds) {
+                await utilities.addCategoryToMovie(movie, category._id)
+            }
+        }
     }
     return await category.save();
 };
@@ -43,52 +49,38 @@ const updateCategory = async (id, name, promoted, movieIds) => {
     }
     await category.save();
     // update in each new/removed movie the categories field
+    // if there was no fromer movies
+    if (!formerMovies || formerMovies.length == 0) {
+        return category;
+    }
     // delete from each former movie the category from categories field
     for (const movie of formerMovies) {
-        await MovieService.deleteCategoryFromMovie(movie, id);
+        await utilities.deleteCategoryFromMovie(movie, id);
     }
     // add to each new movie the category to the categories field
-    for (const movie of movieIds) {
-        await MovieService.addCategoryToMovie(movie, id);
+    if (movieIds !== undefined) {
+        for (const movie of movieIds) {
+            await utilities.addCategoryToMovie(movie, id);
+        }
     }
     return category;
 };
 
 const deleteCategory = async (id) => {
     // get the category by id and delete it
-    const deletedCategory = await Category.findByIdAndDelete(id);
+    const category = await Category.findById(id);
     // if the category does not exists, return null
-    if (!deletedCategory) return null;
+    if (!category) return null;
+    // check if movieIds is empty and nothing more to delete
+    if (!category.movieIds || category.movieIds.length === 0) {
+        return await Category.findByIdAndDelete(id);
+    }
     // else, delete the category from every movie that has it
-    for (const movie of deletedCategory.movieIds) {
-        await MovieService.deleteCategoryFromMovie(movie, id);
+    for (const movie of category.movieIds) {
+        await utilities.deleteCategoryFromMovie(movie, id);
     }
-    return deletedCategory;
+    return await Category.findByIdAndDelete(id);
 };
 
-// 2 helper functions to use
-const addMovieToCategory = async (categoryId, movieId) => {
-    // get the category
-    const category = await getCategoryById(categoryId);
-    // check if the movie is not already there
-    if (!category.movieIds.includes(movieId)) {
-        // add the movieId to the movieIds array
-        category.movieIds.push(movieId);
-    }
-    await category.save();
-};
 
-const deleteMovieFromCategory = async (categoryId, movieId) => {
-    // get the category
-    const category = await getCategoryById(categoryId);
-    // get the index of the movie in the array
-    const index = category.movieIds.indexOf(movieId);
-    // check if the movie is there
-    if (index !== -1) {
-        // remove the movieId from the movieIds array
-        category.movieIds.splice(index, 1);
-    }
-    await category.save();
-};
-
-module.exports = { createCategory, getCategoryById, getCategories, updateCategory, deleteCategory, addMovieToCategory, deleteMovieFromCategory }
+module.exports = { createCategory, getCategoryById, getCategories, updateCategory, deleteCategory}
