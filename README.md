@@ -1,14 +1,6 @@
-# server and client - excercise 2
+# Web Server Functionality and MongoDB - excercise 3
 
-## About Last Implementaion
-### does the fact that some commands changed their name made you change your code?
-No, because there is a pure virtual function called description in ICommand interface, such that every time a command change his name, we change his description and help's execution didn't changed his implementation. (of course we needed to change the name of the command, and so the name of a few files, and so the includes in each file, but we couldn't do it SOLID)
-### does the fact that some new commands added to the project made you change your code?
-No, because we created ICommand interface, such that it will be easy to add new commands, they just need to implement this interface.
-### does the fact that the expected output of the commands have changed made you change your code?
-No, The changes in the command output cause us to update only the value of the strings that we need to print, but except for this we didn't touch a code that is closed for changes and open for extensions, and the change we made is needed. In ex1, we made app class which handles the running of the program and doesn't require us to change the way the program runs in order to change the output.     
-### does the fact that now the input/output comes from sockets of clients instead of the console made you change your code?
-No, because we created IMenu interface, such that it will be easy to change the way we print and scan staff, we just need the new method to implement the interface.
+
 ## App Information
 ### what is the application about
 The application designed to add users to the database, add/delete movies from user's watched list, recommend movies to users etc. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies. you can also delete movies from your watched list, or patch an existing user's watched list. we work with a server and each client has his own thread in the server ready to work just for him (for now, until we will implement threadpool). in that way manu users could connect to the server and use our app at the same time. 
@@ -24,7 +16,8 @@ The application designed to add users to the database, add/delete movies from us
      it will recommend according to the algorithm stated at the first exercise.
 5. help
      helps the end-user to learn about how to use the functionalities of the application
-
+## Separation of the Recommendation System from the Web Server
+First, the C++ server code from exercise 2 is located in a separate branch named "ex2". In this assignment, the src folder contains two subfolders. The first, "recommendation_system," includes the C++ server code from exercise 2, updated with the changes required for exercise 3. The second, "web_server," contains all the code for the web server, including the JavaScript code.
 ## Server Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
@@ -48,18 +41,218 @@ In order to run the web server using Docker, you need to run the following comma
           `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_ip> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
    2. **create and run the container:**  
           `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port> server`  
+## Web Server Images Functionality
+- **Post /images**
+  - **Description:** The operation creates an image which is stored in the database.
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X POST --data-binary "@<path_to_image>" http://localhost:<webServer_port>/images -H "Content-Type: application/octet-stream"
+    ```
 
-## Test Execution
+- **Get /images/:id**
+  - **Description:** The operation retrives an image which is stored in the database and identified by the given id.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/images/<image_id>
+    ```
 
-In order to run the tests using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
+- **Delete /images/:id**
+  - **Description:** The operation deletes an image which is stored in the database and identified by the given id.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE http://localhost:<webServer_port>/images/<image_id>
+    ```
+## Web Server Functionality
+### User API
+- **GET /api/users/:id**
+  - **Description:** fetches the user details associated with a given ID, such as their name, photo, and additional information stored in the database.
+  - **Example Usage:**  
+    for windows and linux:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/users/<user_id>
 
-   1. **Create a new image:**  
-      `docker build -f Dockerfile.tst -t netflix-tests .`  
+- **POST /api/users**
+  - **Description:** This operation creates a new user. All the details of the user are sent in the body.
+  - **Requirments:** When creating a user, the following must be sent in the body: username(string), password(string), email(string), phoneNumber(10 digit string). Also, picture(integer) is optional. You must select a number greater/equal than 1 and there is a limited number of photos you can choose from.  
+  - **Example Usage:**   
+    for linux:  
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/users \  
+     -H "Content-Type: application/json" \  
+     -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":"0512369874"}'
+    ```
+    for windows(cmd):  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/users ^  
+     -H "Content-Type: application/json" ^  
+     -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":\"0512369874\"}"
+  
 
-   2. **Create a new container:**  
-      `docker run netflix-tests`
+- **POST /api/tokens** 
+  - **Description:** The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.  
+  - **Requirments:** The following must be sent in the body: username(string), password(string)  
+  - **Example Usage:**    
+    for linux:  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens \  
+    -H "Content-Type: application/json" \  
+    -d '{"username":"gavriel","password":"5555"}''
+    ```
+    for windows(cmd):  
+    ```bash  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^  
+    -H "Content-Type: application/json" ^  
+    -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"  
+
+### Category API
+- **Get /api/categories**
+  - **Description:** fetches all the info of all the existing categories in the system.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i http://localhost:<webServer_port>/api/categories
+    ```
+
+- **Post /api/categories**
+  - **Description:** Creates a new category. All the details of the category are sent in the body.
+  - **Requirments:** When creating a category, the following must be sent in the body: name(string). Also, promoted(bool) and movieIds(list of id's) are optional.
+  - **Example Usage:**  
+    for linux:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/categories \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Drama", "promoted": true}'
+    ```
+    for windows(cmd):
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/categories ^  
+     -H "Content-Type: application/json" ^  
+     -d "{\"name\": \"Drama\", \"promoted\": true}"
+    ```
+
+- **Get /api/categories/:id**
+  - **Description:** fetches all the info of the category with the given id from the system.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i http://localhost:<webServer_port>/api/categories/<category_id>
+    ```
+    
+- **Patch /api/categories/:id**
+  - **Description:** Updates the details of the category identified by the specified id using the information provided in the request body.
+  - **Requirments:** When updating a category, you must enter at least one of the following in the body: name(string), promoted(bool), movieIds(list of id's).
+  - **Example Usage:**  
+    for linux:
+    ```bash
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<category_id> \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Action and Adventure"}'
+    ```
+    for windows:
+    ```bash
+     curl -i -X PATCH http://localhost:<webServer_port>/api/categories/<category_id> ^  
+     -H "Content-Type: application/json" ^  
+     -d "{\"name\": \"Action and Adventure\"}"
+    ```
+    
+- **Delete /api/categories/:id**
+  - **Description:** Deletes the category with the given id from the system.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE http://localhost:<webServer_port>/api/categories/<category_id>
+    ```
+
+### Movie API 
+**Note:** before every command that you want to pass an image id, you'll first need to generate an image as described earlier. Once the image is created, you can use its ID in your commands.
+- **Post /api/movies**
+  - **Description:** Creates a new movie. All the details of the category are sent in the body.
+  - **Requirments:** When creating a movie, the following must be sent in the body: name(string), description(string), creators(list of string). Also, actors(list of string), published(date), age_limit(int between 0 and 18), categories(list of id's), users(list of id's), photo(id) are optional.
+  - **Example Usage:**  
+    for linux:  
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Gavri", "creators": ["gavriel shandalov"], "description": "here is a description"}'
+    ```
+    for windows:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies -H "Content-Type: application/json" -d "{\"name\": \"Gavri\", \"creators\": [\"gavriel shandalov\"], \"description\": \"here is a description\"}"
+    ```
+- **Get /api/movies**
+  - **Description:** The operation returns movies by category(only promoted ones). Promoted categories include 20 random unseen movies for the user. A special category lists the last 20 movies the user watched in random order.
+  - **Required:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies -H "userId: <user_id>"
+    ```
+
+- **Get /api/movies/:id**
+  - **Description:** The operation returns the information about the movie whose id is as given.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/<user_id>
+    ```
+
+- **Delete /api/movies/:id**
+  - **Description:** Deletes the movie with the given id from the system.
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X DELETE http://localhost:<webServer_port>/api/movies/<user_id>
+    ```
+
+- **Put /api/movies/:id**
+  - **Description:** Replaces an existing movie identified by the given id with the given fields.
+  - **Requirments:** When updating a category, you must enter the following in the body: name(string), description(string), creators(list of string). Also, actors(list of string), published(date), age_limit(int between 0 and 18), categories(list of id's), users(list of id's), photo(id) are optional.
+  - **Example Usage:**  
+    for linux:  
+    ```bash
+    curl -i -X PUT http://localhost:<webServer_port>/api/movies \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Gavri", "creators": ["gavriel shandalov"], "description": "here is a description"}'
+    ```
+    for windows:
+    ```bash
+    curl -i -X PUT http://localhost:<webServer_port>/api/movies -H "Content-Type: application/json" -d "{\"name\": \"Gavri\", \"creators\": [\"gavriel shandalov\"], \"description\": \"here is a description\"}"
+    ```
+
+- **Get /api/movies/:id/recommend/**
+  - **Description:** Retrieves recommended movies from the recommendation system for the current user, based on the movie identified by the given id.
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/<movie_id>/recommend/ -H "userId: <user_id>"
+    ```
+
+- **Post /api/movies/:id/recommend/**
+  - **Description:** The operation adds to the recommendation system that the current user has watched the movie identified by the given id.  
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".  
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X POST http://localhost:<webServer_port>/api/movies/<movie_id>/recommend/ -H "userId: <user_id>"
+    ```
+
+- **Get /api/movies/search/:query/**
+  - **Description:** Retrieves the movies that match the search result of the query string. In other words, it searches for the query string in any of the fields of the movies and retrieves the movies where the string appears in one of their fields.  
+  - **Example Usage:**  
+    for linux and windows:
+    ```bash
+    curl -i -X GET http://localhost:<webServer_port>/api/movies/search/<query_string>/
+    ```
 ## data management
+### Recommendation System
 The data is stored in files. Inside 'data' folder there are 2 txt files: users.txt and movies.txt. In users.txt, each line has numbers seperated by space: ' ', such that the first number refers to the user id, and the other numbers refers to the movie ids of the movies that the user watched. For convenience, the movie ids are sorted and has no duplicates, this maintence helps us to boost the performance of complex commands, and saves space.
+### Web Server
+The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
 ### POST and PATCH and DELETE
 ![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
