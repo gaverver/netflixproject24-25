@@ -13,7 +13,7 @@ In order to run the server using Docker, you need to run the following commands 
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`
    2. **Create network:**  
-      `docker network create  --subnet=<host-ip>/24  netflix_network`  
+      `docker network create netflix_network`  
    3. **Create and run a new container:**  
       `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
