@@ -3,19 +3,8 @@
 
 ## App Information
 ### what is the application about
-The application designed to add users to the database, add/delete movies from user's watched list, recommend movies to users etc. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies. you can also delete movies from your watched list, or patch an existing user's watched list. we work with a server and each client has his own thread in the server ready to work just for him (for now, until we will implement threadpool). in that way manu users could connect to the server and use our app at the same time. 
-### command that can be runned
-1. POST, arguments: [userid] [movieid1] [movieid2] ...
-     adds user to the system if he didn't exist with movies that he watched. If the users was registered before, it will print an error.
-2. PATCH, arguments: [userid] [movieid1] [movieid2] ...
-     adds movies to the user's watched list if he was already exist, if he didn't exist before, prints error.
-3. DELETE, arguments: [userid] [movieid1] [movieid2] ...
-     deletes movies from the user's watched list only if he's already exist and watched all the movies inserted. (if not, prints an error)
-4. GET, arguments: [userid] [movieid]
-     recommend to a certain user on 10 (at most) movies where the movies cannot be the movie inserted or movies that the user already watched.
-     it will recommend according to the algorithm stated at the first exercise.
-5. help
-     helps the end-user to learn about how to use the functionalities of the application
+The application designed to be like Netflix, but without the view, just the functionality in the backend. using API, users can connect to our server, and run some commands through curl (CRUD operations, on different urls), they can add new users, moveis, images or categories to the data base, or get details on them or patch/put or delete them. (in the next exercise we will have to consider which kind of users can do all this commands and which are not allowed, but not in this exercise). there are more functionalities our app could do like recommend on some movies to some users using the algorithm from last exercise, and search for a movie which contains a field that contains a sub-string of the input from the user, what gives the user an option to search for a movie through his name or get all movies an actor play in etc...
+our server can handle many users at the same time.
 ## Separation of the Recommendation System from the Web Server
 First, the C++ server code from exercise 2 is located in a separate branch named "ex2". In this assignment, the src folder contains two subfolders. The first, "recommendation_system," includes the C++ server code from exercise 2, updated with the changes required for exercise 3. The second, "web_server," contains all the code for the web server, including the JavaScript code.
 ## Server Execution
