@@ -23,7 +23,7 @@ In order to run the web server using Docker, you need to run the following comma
    1. **create a new image:**  
           `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=serverContainer --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t web_server .`  
    2. **create and run the container:**  
-          `docker run -d --name  myappcontainer --network=netflix_network -p 3000:3000 web_server`  
+          `docker run -d --name  myappcontainer --network=netflix_network -p <webServer_port>:<webServer_port> web_server`  
 ## Web Server Images Functionality
 - **Post /images**
   - **Description:** The operation creates an image which is stored in the database.
