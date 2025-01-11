@@ -36,7 +36,7 @@ const doesUserExist = async (req, res) => {
             return res.status(404).json({ error:'user not found'})
         }
         // else, we found such user, and we return the user's id
-        return res.status(200).json(foundUser._id);
+        return res.status(200).json({ _id: foundUser._id});
     } catch (error) {
         // server error (to avoid crushing)
         return res.status(500).json({ error:'Internal Server Error' });
