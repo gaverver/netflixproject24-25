@@ -294,6 +294,9 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 #### Movies - Get /api/movies
 ![getmovies1](https://github.com/user-attachments/assets/df2a470f-2a14-4ffc-aa73-901cb420a53e)
 ![getmovies2](https://github.com/user-attachments/assets/f4053ccd-fefd-4674-a60f-a546e31931a1)
+![getmovies3](https://github.com/user-attachments/assets/c7fb7c33-3411-45ba-9f7d-050ad58d7ba7)
+![getmovies4](https://github.com/user-attachments/assets/e4662c68-a7b4-4673-8d2a-3cd8de2544a4)
+![getmovies5](https://github.com/user-attachments/assets/b51e55ad-a69b-459d-9871-924c336c38b9)
 ### Categories - Invalid Check
 #### Categories - Invalid Check for Get /api/categories/:id
 ![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
@@ -308,10 +311,14 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![patchanddelete1](https://github.com/user-attachments/assets/214abd3a-0b58-4390-9e8c-f7668429a660)
 ![patchanddelete2](https://github.com/user-attachments/assets/d2774381-1182-43db-9d61-bc69f4f6a036)
 ### Images - Create(Post) and Delete
-![imagesrun1](https://github.com/user-attachments/assets/b44141b9-a6b2-42a3-8cb3-675404523d96)
-![imagesmongo1](https://github.com/user-attachments/assets/ade96664-4f00-45f6-9aca-5ff3ee3a3ce6)
-![imagesrun2](https://github.com/user-attachments/assets/c759f527-da07-4c65-9c2d-1379a75714a4)
-![imagemongo2](https://github.com/user-attachments/assets/76eda8a4-d987-4cb1-a910-cde48b172dab)
+![iamgegood1](https://github.com/user-attachments/assets/0a2fce8d-44e9-40e2-94fe-461296316f43)
+![imagegood2](https://github.com/user-attachments/assets/d32080c5-9cee-41f7-972e-1f3803ff3c64)
+![imagegood3](https://github.com/user-attachments/assets/31c4cd26-e538-4ca7-96d5-51bec3485fa6)
+![imagegood4](https://github.com/user-attachments/assets/f10ab26e-095e-4a61-812f-7c689c4823ab)
+
+
+
+
 
 
 
