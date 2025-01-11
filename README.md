@@ -263,6 +263,24 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
 ### POST /api/tokens - check if a user is registered
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
+### Categories appendix running
+![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
+![mongoappendix1](https://github.com/user-attachments/assets/e226f93a-ea65-47a9-a80a-338e1c7bb3c9)
+![appendix2](https://github.com/user-attachments/assets/07ed9639-38ca-4628-8698-4500077b2cfd)
+![mongoappendix2](https://github.com/user-attachments/assets/0c651567-de90-491e-ad25-66b68e50e10b)
+![appendix3](https://github.com/user-attachments/assets/e982a31f-3c72-47fc-b5c4-2bc42796415d)
+![mongoappendix3](https://github.com/user-attachments/assets/98330c1f-e65b-4abf-99c5-3a06954f1cde)
+![appendix4](https://github.com/user-attachments/assets/a11e5171-7acb-4b63-803a-6e74b482d8af)
+![appendix5](https://github.com/user-attachments/assets/883f8af3-39a1-4c7a-b326-de058b111127)
+![mongoappendix5](https://github.com/user-attachments/assets/aa479987-fd04-42dd-b79b-f5ff7c229a13)
+
+
+
+
+
+
+
+
 
 
 
