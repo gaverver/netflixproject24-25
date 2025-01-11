@@ -81,14 +81,14 @@ In order to run the web server using Docker, you need to run the following comma
   - **Example Usage:**   
     for linux:  
     ```bash
-    curl -i -X POST http://localhost:<webServer_port>/api/users \  
-     -H "Content-Type: application/json" \  
+    curl -i -X POST http://localhost:<webServer_port>/api/users \
+     -H "Content-Type: application/json" \
      -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":"0512369874"}'
     ```
     for windows(cmd):  
     ```bash  
-    curl -i -X POST http://localhost:<webServer_port>/api/users ^  
-     -H "Content-Type: application/json" ^  
+    curl -i -X POST http://localhost:<webServer_port>/api/users ^
+     -H "Content-Type: application/json" ^
      -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":\"0512369874\"}"
   
 
@@ -254,11 +254,15 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ### Web Server
 The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
-### POST and PATCH and DELETE
-![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
-### GET and help and data is stored even after exiting and connecting again
-![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
-### Running 2 clients simultaneously
-![image](https://github.com/user-attachments/assets/0777d62e-ed53-4402-9b2f-b3b3880b77b9)
+### Post /api/users - creating a user
+![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
+![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
+### Get /api/users/:id - getting information about a user
+![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
+### POST /api/tokens - check if a user is registered
+![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
+
+
+
 
 
