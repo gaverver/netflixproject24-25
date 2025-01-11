@@ -267,6 +267,8 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![recommend5](https://github.com/user-attachments/assets/bdccb048-fb9a-4195-894f-917c16ff86da)
 ### Movies - invalid check for Post /api/movies
 ![invalidcheck](https://github.com/user-attachments/assets/665482ba-acb9-42b6-bf2d-9a3f06ba6e01)
+### Movies - invalid check for Get /api/movies/:id
+![invalididmovies](https://github.com/user-attachments/assets/09c9b174-d203-4994-9c7d-89c4341a0f4e)
 ### Images - Create and Delete
 ![imagesrun1](https://github.com/user-attachments/assets/b44141b9-a6b2-42a3-8cb3-675404523d96)
 ![imagesmongo1](https://github.com/user-attachments/assets/ade96664-4f00-45f6-9aca-5ff3ee3a3ce6)
