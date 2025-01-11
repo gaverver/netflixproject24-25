@@ -15,7 +15,7 @@ const validationCheck = (name, description, actors, published, age_limit, creato
         return res.status(400).json({ error: 'Invalid data: creators must be an array' });
     }
     if (creators !== undefined && !creators.every(i => typeof i === 'string')) {
-        return res.status(400).json({ error: 'Invalid data: creators must contain valid ObjectIds' });
+        return res.status(400).json({ error: 'Invalid data: creators must contain strings' });
     }
     if (published !== undefined && isNaN(new Date(published).getTime())) {
         return res.status(400).json({ error: 'Invalid data: published must be a valid date' });
@@ -29,7 +29,7 @@ const validationCheck = (name, description, actors, published, age_limit, creato
             return res.status(400).json({ error: 'Invalid data: actors must be an array' });
         }
         if (!actors.every(actor => typeof actor === 'string')) {
-            return res.status(400).json({ error: 'Invalid data: actors must contain valid ObjectIds' });
+            return res.status(400).json({ error: 'Invalid data: actors must contain strings' });
         }
     }
 
@@ -43,7 +43,7 @@ const validationCheck = (name, description, actors, published, age_limit, creato
     }
 
     if (photo !== undefined && !mongoose.Types.ObjectId.isValid(photo)) {
-        return res.status(400).json({ error: 'Invalid data: photo must contain valid ObjectId' })
+        return res.status(400).json({ error: 'Invalid data: photo must be valid ObjectId' })
     }
     return true;
 }
@@ -169,7 +169,7 @@ const getRecommendation = async (req, res) => {
         const resStatus = response.substring(0, 3);
         if (resStatus === '200') {
             //return json of the ids
-            return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
+            return res.status(resStatus).json(response.replace(/^200 Ok\n\n/, '').replace(/\n/, "").split(' '))
         } else {
             //return why it failed
             return res.status(resStatus).json({ error : response })

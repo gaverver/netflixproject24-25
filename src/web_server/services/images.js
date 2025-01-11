@@ -15,7 +15,8 @@ async function deleteImage(id) {
     const image = await Image.findById(id);
     // if the image didn't found return null
     if (image) {
-        return await Image.deleteOne(id);
+        await Image.deleteOne({ _id: id });
+        return image;
     }
     return null;
 }

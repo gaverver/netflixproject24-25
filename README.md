@@ -13,7 +13,7 @@ In order to run the server using Docker, you need to run the following commands 
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`
    2. **Create network:**  
-      `docker network create  --subnet=<host-ip>/24  netflix_network`  
+      `docker network create netflix_network`  
    3. **Create and run a new container:**  
       `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
@@ -23,7 +23,7 @@ In order to run the web server using Docker, you need to run the following comma
    1. **create a new image:**  
           `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=serverContainer --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t web_server .`  
    2. **create and run the container:**  
-          `docker run -d --name  myappcontainer --network=netflix_network -p 3000:3000 web_server`  
+          `docker run -d --name  myappcontainer --network=netflix_network -p <webServer_port>:<webServer_port> web_server`  
 ## Web Server Images Functionality
 - **Post /images**
   - **Description:** The operation creates an image which is stored in the database.
@@ -238,14 +238,15 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
 ### /api/users commands examples
-#### Post /api/users - creating a user
+#### Post /api/users - creating a user - including valid and invalid
 ![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
 ![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
 ![createUserInvalid](https://github.com/user-attachments/assets/d24c1d4d-e63c-49bc-a330-921989b2a43b)
-#### Get /api/users/:id - getting information about a user
+#### Get /api/users/:id - getting information about a user - including valid and invalid
 ![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
 ![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
-#### POST /api/tokens - check if a user is registered
+![invaliduser](https://github.com/user-attachments/assets/7c349fbe-e935-41d9-ab17-da7426d3178c)
+#### POST /api/tokens - check if a user is registered - including valid and invalid
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
 ### Categories appendix running
 ![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
@@ -265,7 +266,32 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![recommend3](https://github.com/user-attachments/assets/8f62ef29-3542-4dec-8258-b5ef1afe71ff)
 ![recommend4](https://github.com/user-attachments/assets/c41ede5e-eb2c-4c8a-b773-50fe15017baa)
 ![recommend5](https://github.com/user-attachments/assets/bdccb048-fb9a-4195-894f-917c16ff86da)
-
+### Movies - invalid check
+#### Movies - invalid check for Post /api/movies
+![invalidcheck](https://github.com/user-attachments/assets/665482ba-acb9-42b6-bf2d-9a3f06ba6e01)
+#### Movies - invalid check for Get /api/movies/:id
+![invalididmovies](https://github.com/user-attachments/assets/09c9b174-d203-4994-9c7d-89c4341a0f4e)
+#### Movies - invalid check for Put /api/movies/:id
+![putinvlid](https://github.com/user-attachments/assets/b15d2997-7f72-44f7-aefb-65bc21955dff)
+#### Movies - invalid check for Delete /api/movies/:id
+![deleteinvalid](https://github.com/user-attachments/assets/a2f08dd9-801f-49d9-8daa-3e7a00b5f964)
+#### Movies - invalid check for Get /api/movies/:id/recommend
+![recommendgetinvalid](https://github.com/user-attachments/assets/3e1e4183-4342-4436-bbce-4164c58692f4)
+#### Movies - invalid check for Post /api/movies/:id/recommend
+![recommendpostinvalid](https://github.com/user-attachments/assets/06ec45a1-90d2-455b-b51f-7dd103c0e327)
+### Movies - valid usage
+#### Movies - Get /api/movies/:id
+![moviegetidvalid](https://github.com/user-attachments/assets/49e4d950-3066-4cac-8a65-db85bbd89064)
+### Categories - Invalid Check
+#### Categories - Invalid Check for Get /api/categories/:id
+![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
+#### Categories - Invalid Check for Delete /api/categories/:id
+![deleteinvlalidcategory](https://github.com/user-attachments/assets/4243a72a-18ed-4ecf-8e20-13ed719d96bf)
+### Images - Create and Delete
+![imagesrun1](https://github.com/user-attachments/assets/b44141b9-a6b2-42a3-8cb3-675404523d96)
+![imagesmongo1](https://github.com/user-attachments/assets/ade96664-4f00-45f6-9aca-5ff3ee3a3ce6)
+![imagesrun2](https://github.com/user-attachments/assets/c759f527-da07-4c65-9c2d-1379a75714a4)
+![imagemongo2](https://github.com/user-attachments/assets/76eda8a4-d987-4cb1-a910-cde48b172dab)
 
 
 
