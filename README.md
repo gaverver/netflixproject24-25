@@ -81,14 +81,14 @@ In order to run the web server using Docker, you need to run the following comma
   - **Example Usage:**   
     for linux:  
     ```bash
-    curl -i -X POST http://localhost:<webServer_port>/api/users \  
-     -H "Content-Type: application/json" \  
+    curl -i -X POST http://localhost:<webServer_port>/api/users \
+     -H "Content-Type: application/json" \
      -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":"0512369874"}'
     ```
     for windows(cmd):  
     ```bash  
-    curl -i -X POST http://localhost:<webServer_port>/api/users ^  
-     -H "Content-Type: application/json" ^  
+    curl -i -X POST http://localhost:<webServer_port>/api/users ^
+     -H "Content-Type: application/json" ^
      -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":\"0512369874\"}"
   
 
