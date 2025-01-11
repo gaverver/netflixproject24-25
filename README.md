@@ -238,14 +238,15 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
 ### /api/users commands examples
-#### Post /api/users - creating a user
+#### Post /api/users - creating a user - including valid and invalid
 ![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
 ![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
 ![createUserInvalid](https://github.com/user-attachments/assets/d24c1d4d-e63c-49bc-a330-921989b2a43b)
-#### Get /api/users/:id - getting information about a user
+#### Get /api/users/:id - getting information about a user - including valid and invalid
 ![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
 ![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
-#### POST /api/tokens - check if a user is registered
+![invaliduser](https://github.com/user-attachments/assets/7c349fbe-e935-41d9-ab17-da7426d3178c)
+#### POST /api/tokens - check if a user is registered - including valid and invalid
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
 ### Categories appendix running
 ![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
@@ -265,10 +266,15 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![recommend3](https://github.com/user-attachments/assets/8f62ef29-3542-4dec-8258-b5ef1afe71ff)
 ![recommend4](https://github.com/user-attachments/assets/c41ede5e-eb2c-4c8a-b773-50fe15017baa)
 ![recommend5](https://github.com/user-attachments/assets/bdccb048-fb9a-4195-894f-917c16ff86da)
-### Movies - invalid check for Post /api/movies
+### Movies - invalid check
+#### Movies - invalid check for Post /api/movies
 ![invalidcheck](https://github.com/user-attachments/assets/665482ba-acb9-42b6-bf2d-9a3f06ba6e01)
-### Movies - invalid check for Get /api/movies/:id
+#### Movies - invalid check for Get /api/movies/:id
 ![invalididmovies](https://github.com/user-attachments/assets/09c9b174-d203-4994-9c7d-89c4341a0f4e)
+#### Movies - invalid check for Put /api/movies/:id
+![putinvlid](https://github.com/user-attachments/assets/b15d2997-7f72-44f7-aefb-65bc21955dff)
+#### Movies - invalid check for Delete /api/movies/:id
+![deleteinvalid](https://github.com/user-attachments/assets/a2f08dd9-801f-49d9-8daa-3e7a00b5f964)
 ### Images - Create and Delete
 ![imagesrun1](https://github.com/user-attachments/assets/b44141b9-a6b2-42a3-8cb3-675404523d96)
 ![imagesmongo1](https://github.com/user-attachments/assets/ade96664-4f00-45f6-9aca-5ff3ee3a3ce6)
