@@ -282,7 +282,8 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ### Movies - valid usage
 #### Movies - Get /api/movies/:id
 ![moviegetidvalid](https://github.com/user-attachments/assets/49e4d950-3066-4cac-8a65-db85bbd89064)
-#### Movies - Delete /api/movies/:id
+#### Movies - Put /api/movies/:id and Delete
+![validputmovies](https://github.com/user-attachments/assets/1b19006a-cedb-4af2-aae9-f74f4f48b496)
 ![deletemovie](https://github.com/user-attachments/assets/d8dbd864-4028-4198-b607-a5f08284cd3a)
 ### Categories - Invalid Check
 #### Categories - Invalid Check for Get /api/categories/:id
