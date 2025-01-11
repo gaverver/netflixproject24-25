@@ -287,6 +287,8 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
 #### Categories - Invalid Check for Delete /api/categories/:id
 ![deleteinvlalidcategory](https://github.com/user-attachments/assets/4243a72a-18ed-4ecf-8e20-13ed719d96bf)
+#### Categories - Invalid Check for Post /api/categories
+![postcategoriesinvalid](https://github.com/user-attachments/assets/d34663fb-654f-4f6b-8079-bb35226dca4f)
 ### Images - Create and Delete
 ![imagesrun1](https://github.com/user-attachments/assets/b44141b9-a6b2-42a3-8cb3-675404523d96)
 ![imagesmongo1](https://github.com/user-attachments/assets/ade96664-4f00-45f6-9aca-5ff3ee3a3ce6)
