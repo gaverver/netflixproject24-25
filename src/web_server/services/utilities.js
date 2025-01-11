@@ -51,8 +51,8 @@ async function addMovieToUser(userId, movieId) {
 
 // helper function to delete a watched movie - used by movies
 async function deleteMovieFromUser(userId, movieId) {
-    const user = await User.find({_id: userId})
-    user.watched_movies = watched_movies.filter(movie => movie !== movieId);
+    const user = await User.findById(userId)
+    user.watched_movies = user.watched_movies.filter(movie => !movie.equals(movieId));
     return await user.save();
 }
 
