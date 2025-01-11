@@ -100,12 +100,20 @@ const updateMovie = async (id, name, description, actors, published, age_limit, 
     if (!movie) return null;
     movie.name = name;
     movie.description = description;
-    movie.actors = actors;
+    if (actors !== undefined) {
+        movie.actors = actors;
+    } else {
+        movie.actors = [];
+    }
     if (published !== undefined) {
         movie.published = published;
+    } else {
+        movie.published = new Date();
     }
     if (age_limit !== undefined) {
         movie.age_limit = age_limit;
+    } else {
+        movie.age_limit = 0;
     }
     if (creators === undefined) {
         movie.creators = [];
