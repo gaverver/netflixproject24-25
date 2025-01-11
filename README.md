@@ -262,9 +262,14 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![appendix4](https://github.com/user-attachments/assets/a11e5171-7acb-4b63-803a-6e74b482d8af)
 ![appendix5](https://github.com/user-attachments/assets/883f8af3-39a1-4c7a-b326-de058b111127)
 ![mongoappendix5](https://github.com/user-attachments/assets/aa479987-fd04-42dd-b79b-f5ff7c229a13)
-
-
-
+## Movies - recommend Get and Post, movie and user creation
+![recommend1](https://github.com/user-attachments/assets/fbda8776-17b0-4da5-a5e5-83a79b9fc6e8)
+![recommendmongo1](https://github.com/user-attachments/assets/904827ac-46c8-40bd-9ab3-7915ffd38851)
+![recommend2](https://github.com/user-attachments/assets/33ac73f4-e03b-48e3-82bb-a61862cce61d)
+![recommendmongo2](https://github.com/user-attachments/assets/6ad97232-150d-4dd5-a7c3-b71accd12e18)
+![recommend3](https://github.com/user-attachments/assets/8f62ef29-3542-4dec-8258-b5ef1afe71ff)
+![recommend4](https://github.com/user-attachments/assets/c41ede5e-eb2c-4c8a-b773-50fe15017baa)
+![recommend5](https://github.com/user-attachments/assets/bdccb048-fb9a-4195-894f-917c16ff86da)
 
 
 
