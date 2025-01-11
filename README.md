@@ -252,6 +252,8 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![invaliduser](https://github.com/user-attachments/assets/7c349fbe-e935-41d9-ab17-da7426d3178c)
 #### POST /api/tokens - check if a user is registered - including valid and invalid
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
+**Note:** the next image doesn't use the same mongo and isn't related to the last one.
+![tokensasif](https://github.com/user-attachments/assets/f59cd750-e19d-4440-a7df-3368cf69a1ba)
 ### Categories appendix running
 ![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
 ![mongoappendix1](https://github.com/user-attachments/assets/b7e08edd-f8b9-417c-bdb1-7082bf7d4b07)
