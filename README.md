@@ -7,15 +7,9 @@ The application designed to be like Netflix, but without the view, just the func
 our server can handle many users at the same time.
 ## Separation of the Recommendation System from the Web Server
 First, the C++ server code from exercise 2 is located in a separate branch named "ex2". In this assignment, the src folder contains two subfolders. The first, "recommendation_system," includes the C++ server code from exercise 2, updated with the changes required for exercise 3. The second, "web_server," contains all the code for the web server, including the JavaScript code.
-## Server Execution
+## Recommendation System Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
-   1. **Create a new image:**  
-      `docker build -f Dockerfile.server -t server .`
-   2. **Create a new container:**
-      `docker run -d --name myappcontainer --network=host server <server_port>`
-
-If you want to access from remoted device also, run this:
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`
    2. **Create network:**  
@@ -25,11 +19,11 @@ If you want to access from remoted device also, run this:
 
 ## Web Server Execution
 In order to run the web server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
-
+**Note:** the serverContainer in the "CPP_IP=serverContainer" is the name of the container when you create it for the cpp server. You first need to run the Cpp server and only then the web server
    1. **create a new image:**  
-          `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_ip> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
+          `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=serverContainer --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t web_server .`  
    2. **create and run the container:**  
-          `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port> server`  
+          `docker run -d --name  myappcontainer --network=netflix_network -p 3000:3000 web_server`  
 ## Web Server Images Functionality
 - **Post /images**
   - **Description:** The operation creates an image which is stored in the database.
@@ -243,14 +237,15 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ### Web Server
 The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
-### Post /api/users - creating a user
+### /api/users commands examples
+#### Post /api/users - creating a user
 ![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
 ![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
 ![createUserInvalid](https://github.com/user-attachments/assets/d24c1d4d-e63c-49bc-a330-921989b2a43b)
-### Get /api/users/:id - getting information about a user
+#### Get /api/users/:id - getting information about a user
 ![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
 ![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
-### POST /api/tokens - check if a user is registered
+#### POST /api/tokens - check if a user is registered
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
 ### Categories appendix running
 ![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
