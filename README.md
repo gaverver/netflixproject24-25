@@ -73,7 +73,7 @@ In order to run the web server using Docker, you need to run the following comma
     curl -i -X POST http://localhost:<webServer_port>/api/users ^
      -H "Content-Type: application/json" ^
      -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":\"0512369874\"}"
-  
+     ```
 
 - **POST /api/tokens** 
   - **Description:** The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.  
@@ -297,6 +297,9 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![getmovies3](https://github.com/user-attachments/assets/c7fb7c33-3411-45ba-9f7d-050ad58d7ba7)
 ![getmovies4](https://github.com/user-attachments/assets/e4662c68-a7b4-4673-8d2a-3cd8de2544a4)
 ![getmovies5](https://github.com/user-attachments/assets/b51e55ad-a69b-459d-9871-924c336c38b9)
+#### Movies - Get /api/movies/search/:query
+![query1](https://github.com/user-attachments/assets/1c64eb7b-6d18-4df2-89a8-0094f693215b)
+![query2](https://github.com/user-attachments/assets/59567517-3b1e-415c-b132-ff5b5ffd1d35)
 ### Categories - Invalid Check
 #### Categories - Invalid Check for Get /api/categories/:id
 ![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
