@@ -3,48 +3,31 @@
 
 ## App Information
 ### what is the application about
-The application designed to add users to the database, add/delete movies from user's watched list, recommend movies to users etc. The recommendations are based on the movies that have been watched by other users, and it also rely on recommendation algorithms. It works by taking in user input (movie IDs and user IDs) and returning a list of recommended movies. you can also delete movies from your watched list, or patch an existing user's watched list. we work with a server and each client has his own thread in the server ready to work just for him (for now, until we will implement threadpool). in that way manu users could connect to the server and use our app at the same time. 
-### command that can be runned
-1. POST, arguments: [userid] [movieid1] [movieid2] ...
-     adds user to the system if he didn't exist with movies that he watched. If the users was registered before, it will print an error.
-2. PATCH, arguments: [userid] [movieid1] [movieid2] ...
-     adds movies to the user's watched list if he was already exist, if he didn't exist before, prints error.
-3. DELETE, arguments: [userid] [movieid1] [movieid2] ...
-     deletes movies from the user's watched list only if he's already exist and watched all the movies inserted. (if not, prints an error)
-4. GET, arguments: [userid] [movieid]
-     recommend to a certain user on 10 (at most) movies where the movies cannot be the movie inserted or movies that the user already watched.
-     it will recommend according to the algorithm stated at the first exercise.
-5. help
-     helps the end-user to learn about how to use the functionalities of the application
+The application is designed to be like Netflix, but without the view, just the functionality in the backend. using API, users can connect to our server, and run some commands through curl (CRUD operations, on different urls), they can add new users, movies, images or categories to the data base(mongoDB and users+movies to the database from last exercise), or get details on them or patch/put or delete them. (in the next exercise we will have to consider which kind of users can do all this commands and which are not allowed, but not in this exercise). there are more functionalities our app could do like recommend on some movies to some users using the algorithm from last exercise, and search for a movie which contains a field that contains a sub-string of the input from the user, what gives the user an option to search for a movie through his name or get all movies an actor play in etc...
+our server can handle many users at the same time.
 ## Separation of the Recommendation System from the Web Server
 First, the C++ server code from exercise 2 is located in a separate branch named "ex2". In this assignment, the src folder contains two subfolders. The first, "recommendation_system," includes the C++ server code from exercise 2, updated with the changes required for exercise 3. The second, "web_server," contains all the code for the web server, including the JavaScript code.
-## Server Execution
+## Recommendation System Execution
 In order to run the server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
 
    1. **Create a new image:**  
       `docker build -f Dockerfile.server -t server .`
-   2. **Create a new container:**
-      `docker run -d --name myappcontainer --network=host server <server_port>`
-
-If you want to access from remoted device also, run this:
-   1. **Create a new image:**  
-      `docker build -f Dockerfile.server -t server .`
    2. **Create network:**  
-      `docker network create  --subnet=<host-ip>/24  netflix_network`  
+      `docker network create netflix_network`  
    3. **Create and run a new container:**  
       `docker run -d --name serverContainer --network=netflix_network -p <server_port>:<server_port> server <server_port>`  
 
 ## Web Server Execution
 In order to run the web server using Docker, you need to run the following commands when you are in the directory of the Dockerfile:
-
+**Note:** the serverContainer in the "CPP_IP=serverContainer" is the name of the container when you create it for the cpp server. You first need to run the Cpp server and only then the web server
    1. **create a new image:**  
-          `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=<cppServer_ip> --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t server .`  
+          `docker build --build-arg CONNECTION_STRING=<mongoDBConnectionString> --build-arg PORT=<webServer_port> --build-arg CPP_IP=serverContainer --build-arg CPP_PORT=<cppServer_port> -f Dockerfile.web -t web_server .`  
    2. **create and run the container:**  
-          `docker run -d --name myappcontainer -p <webServer_port>:<webServer_port> server`  
+          `docker run -d --name  myappcontainer --network=netflix_network -p <webServer_port>:<webServer_port> web_server`  
 ## Web Server Images Functionality
 - **Post /images**
   - **Description:** The operation creates an image which is stored in the database.
-  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>", where "path_to_image" must end with *.png or *.jpg or ... according to the type of the file that contains the image.
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -81,16 +64,16 @@ In order to run the web server using Docker, you need to run the following comma
   - **Example Usage:**   
     for linux:  
     ```bash
-    curl -i -X POST http://localhost:<webServer_port>/api/users \  
-     -H "Content-Type: application/json" \  
+    curl -i -X POST http://localhost:<webServer_port>/api/users \
+     -H "Content-Type: application/json" \
      -d '{"username":"ozer","password":"12345","email":"itzik@gmail.com", "phoneNumber":"0512369874"}'
     ```
     for windows(cmd):  
     ```bash  
-    curl -i -X POST http://localhost:<webServer_port>/api/users ^  
-     -H "Content-Type: application/json" ^  
+    curl -i -X POST http://localhost:<webServer_port>/api/users ^
+     -H "Content-Type: application/json" ^
      -d "{\"username\":\"ozer\",\"password\":\"12345\",\"email\":\"itzik@gmail.com\", \"phoneNumber\":\"0512369874\"}"
-  
+     ```
 
 - **POST /api/tokens** 
   - **Description:** The user's username and password are provided in the request body. The system then verifies whether a user with the given information is registered.  
@@ -104,8 +87,8 @@ In order to run the web server using Docker, you need to run the following comma
     ```
     for windows(cmd):  
     ```bash  
-    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^  
-    -H "Content-Type: application/json" ^  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^
+    -H "Content-Type: application/json" ^
     -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"  
 
 ### Category API
@@ -186,6 +169,7 @@ In order to run the web server using Docker, you need to run the following comma
 - **Get /api/movies**
   - **Description:** The operation returns movies by category(only promoted ones). Promoted categories include 20 random unseen movies for the user. A special category lists the last 20 movies the user watched in random order.
   - **Required:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -226,6 +210,7 @@ In order to run the web server using Docker, you need to run the following comma
 - **Get /api/movies/:id/recommend/**
   - **Description:** Retrieves recommended movies from the recommendation system for the current user, based on the movie identified by the given id.
   - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)  
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -234,7 +219,8 @@ In order to run the web server using Docker, you need to run the following comma
 
 - **Post /api/movies/:id/recommend/**
   - **Description:** The operation adds to the recommendation system that the current user has watched the movie identified by the given id.  
-  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".  
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)  
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -254,11 +240,97 @@ The data is stored in files. Inside 'data' folder there are 2 txt files: users.t
 ### Web Server
 The data is mostly stored inside mongoDB. We have 4 collections in our database: users, movies, categories and images. In the users collection we save users with the following fields: username, password, email, phoneNumber, picture, movies_watched. In the categories collection we save categories with the following fields: name, promoted, movieIds. In the movies collection we save movies with the following fields: name, description, actors, published, age_limit, creators, categories, users, photo. In the images collection we save images with the following fields: data and contentType. Moreover, the avatars that the user can choose to be their picture are saved in an avatars folder which is loaded for the users in the beginning of the program. 
 ## running examples
-### POST and PATCH and DELETE
-![image1](https://github.com/user-attachments/assets/3c4a419c-9e99-4b5e-955d-101526b7ecc9)
-### GET and help and data is stored even after exiting and connecting again
-![img2](https://github.com/user-attachments/assets/05c394c8-2dbe-4456-ad91-d7b027d33489)
-### Running 2 clients simultaneously
-![image](https://github.com/user-attachments/assets/0777d62e-ed53-4402-9b2f-b3b3880b77b9)
+### /api/users commands examples
+#### Post /api/users - creating a user - including valid and invalid
+##### valid
+![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
+![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
+##### invalid
+![createUserInvalid](https://github.com/user-attachments/assets/d24c1d4d-e63c-49bc-a330-921989b2a43b)
+#### Get /api/users/:id - getting information about a user - including valid and invalid
+##### valid
+![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
+##### invalid
+![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
+![invaliduser](https://github.com/user-attachments/assets/7c349fbe-e935-41d9-ab17-da7426d3178c)
+#### POST /api/tokens - check if a user is registered - including valid and invalid
+![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
+**Note:** the next image doesn't use the same mongo and isn't related to the last one.
+![tokensasif](https://github.com/user-attachments/assets/f59cd750-e19d-4440-a7df-3368cf69a1ba)
+### Categories appendix running
+![appendix1](https://github.com/user-attachments/assets/35089eeb-8c71-43bb-8293-13f27c3f572c)
+![mongoappendix1](https://github.com/user-attachments/assets/b7e08edd-f8b9-417c-bdb1-7082bf7d4b07)
+![appendix2](https://github.com/user-attachments/assets/07ed9639-38ca-4628-8698-4500077b2cfd)
+![mongoappendix2](https://github.com/user-attachments/assets/a7d97c44-6a98-45da-bdcd-d2096fb9c68b)
+![appendix3](https://github.com/user-attachments/assets/e982a31f-3c72-47fc-b5c4-2bc42796415d)
+![mongoappendix3](https://github.com/user-attachments/assets/697dba8b-1194-4a13-ab6c-9d7ea84c5612)
+![appendix4](https://github.com/user-attachments/assets/a11e5171-7acb-4b63-803a-6e74b482d8af)
+![appendix5](https://github.com/user-attachments/assets/883f8af3-39a1-4c7a-b326-de058b111127)
+![mongoappendix5](https://github.com/user-attachments/assets/aa479987-fd04-42dd-b79b-f5ff7c229a13)
+### Movies - recommend Get and Post, movie and user creation
+![recommend1](https://github.com/user-attachments/assets/fbda8776-17b0-4da5-a5e5-83a79b9fc6e8)
+![recommendmongo1](https://github.com/user-attachments/assets/904827ac-46c8-40bd-9ab3-7915ffd38851)
+![recommend2](https://github.com/user-attachments/assets/33ac73f4-e03b-48e3-82bb-a61862cce61d)
+![recommendmongo2](https://github.com/user-attachments/assets/6ad97232-150d-4dd5-a7c3-b71accd12e18)
+![recommend3](https://github.com/user-attachments/assets/8f62ef29-3542-4dec-8258-b5ef1afe71ff)
+![recommend4](https://github.com/user-attachments/assets/c41ede5e-eb2c-4c8a-b773-50fe15017baa)
+![recommend5](https://github.com/user-attachments/assets/bdccb048-fb9a-4195-894f-917c16ff86da)
+### Movies - invalid check
+#### Movies - invalid check for Post /api/movies
+![invalidcheck](https://github.com/user-attachments/assets/665482ba-acb9-42b6-bf2d-9a3f06ba6e01)
+#### Movies - invalid check for Get /api/movies/:id
+![invalididmovies](https://github.com/user-attachments/assets/09c9b174-d203-4994-9c7d-89c4341a0f4e)
+#### Movies - invalid check for Put /api/movies/:id
+![putinvlid](https://github.com/user-attachments/assets/b15d2997-7f72-44f7-aefb-65bc21955dff)
+#### Movies - invalid check for Delete /api/movies/:id
+![deleteinvalid](https://github.com/user-attachments/assets/a2f08dd9-801f-49d9-8daa-3e7a00b5f964)
+#### Movies - invalid check for Get /api/movies/:id/recommend
+![recommendgetinvalid](https://github.com/user-attachments/assets/3e1e4183-4342-4436-bbce-4164c58692f4)
+#### Movies - invalid check for Post /api/movies/:id/recommend
+![recommendpostinvalid](https://github.com/user-attachments/assets/06ec45a1-90d2-455b-b51f-7dd103c0e327)
+### Movies - valid usage
+#### Movies - Get /api/movies/:id
+![moviegetidvalid](https://github.com/user-attachments/assets/49e4d950-3066-4cac-8a65-db85bbd89064)
+#### Movies - Put /api/movies/:id and Delete /api/movies/:id
+![validputmovies](https://github.com/user-attachments/assets/1b19006a-cedb-4af2-aae9-f74f4f48b496)
+![deletemovie](https://github.com/user-attachments/assets/d8dbd864-4028-4198-b607-a5f08284cd3a)
+#### Movies - Get /api/movies
+![getmovies1](https://github.com/user-attachments/assets/df2a470f-2a14-4ffc-aa73-901cb420a53e)
+![getmovies2](https://github.com/user-attachments/assets/f4053ccd-fefd-4674-a60f-a546e31931a1)
+![getmovies3](https://github.com/user-attachments/assets/c7fb7c33-3411-45ba-9f7d-050ad58d7ba7)
+![getmovies4](https://github.com/user-attachments/assets/e4662c68-a7b4-4673-8d2a-3cd8de2544a4)
+![getmovies5](https://github.com/user-attachments/assets/b51e55ad-a69b-459d-9871-924c336c38b9)
+#### Movies - Get /api/movies/search/:query
+![query1](https://github.com/user-attachments/assets/1c64eb7b-6d18-4df2-89a8-0094f693215b)
+![query2](https://github.com/user-attachments/assets/59567517-3b1e-415c-b132-ff5b5ffd1d35)
+### Categories - Invalid Check
+#### Categories - Invalid Check for Get /api/categories/:id
+![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
+#### Categories - Invalid Check for Delete /api/categories/:id
+![deleteinvlalidcategory](https://github.com/user-attachments/assets/4243a72a-18ed-4ecf-8e20-13ed719d96bf)
+#### Categories - Invalid Check for Patch /api/categories/:id
+![invalidpatchcategory](https://github.com/user-attachments/assets/fe2c8489-8cde-4c88-a4f3-68171b7956b0)
+#### Categories - Invalid Check for Post /api/categories
+![postcategoriesinvalid](https://github.com/user-attachments/assets/d34663fb-654f-4f6b-8079-bb35226dca4f)
+### Categories - Valid Check
+#### Categories - Patch, Delete, Get for categories
+![patchanddelete1](https://github.com/user-attachments/assets/214abd3a-0b58-4390-9e8c-f7668429a660)
+![patchanddelete2](https://github.com/user-attachments/assets/d2774381-1182-43db-9d61-bc69f4f6a036)
+### Images - Create(Post) and Delete
+![iamgegood1](https://github.com/user-attachments/assets/0a2fce8d-44e9-40e2-94fe-461296316f43)
+![imagegood2](https://github.com/user-attachments/assets/d32080c5-9cee-41f7-972e-1f3803ff3c64)
+![imagegood3](https://github.com/user-attachments/assets/31c4cd26-e538-4ca7-96d5-51bec3485fa6)
+![imagegood4](https://github.com/user-attachments/assets/f10ab26e-095e-4a61-812f-7c689c4823ab)
+
+
+
+
+
+
+
+
+
+
+
 
 

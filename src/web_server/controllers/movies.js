@@ -1,8 +1,11 @@
 const movieService = require('../services/movies');
 const mongoose = require('mongoose');
-
+const Category = require('../models/categories');
+const Image = require('../models/images');
+const User = require('../models/users');
+const Movie = require('../models/movies');
 //helper function for validation of input
-const validationCheck = (name, description, actors, published, age_limit, creators, categories, photo, res) => {
+const validationCheck = async (name, description, actors, published, age_limit, creators, categories, photo, res) => {
     
     //check the type of the arguments
     if (name !== undefined && typeof name !== 'string') {
@@ -15,7 +18,7 @@ const validationCheck = (name, description, actors, published, age_limit, creato
         return res.status(400).json({ error: 'Invalid data: creators must be an array' });
     }
     if (creators !== undefined && !creators.every(i => typeof i === 'string')) {
-        return res.status(400).json({ error: 'Invalid data: creators must contain valid ObjectIds' });
+        return res.status(400).json({ error: 'Invalid data: creators must contain strings' });
     }
     if (published !== undefined && isNaN(new Date(published).getTime())) {
         return res.status(400).json({ error: 'Invalid data: published must be a valid date' });
@@ -29,7 +32,7 @@ const validationCheck = (name, description, actors, published, age_limit, creato
             return res.status(400).json({ error: 'Invalid data: actors must be an array' });
         }
         if (!actors.every(actor => typeof actor === 'string')) {
-            return res.status(400).json({ error: 'Invalid data: actors must contain valid ObjectIds' });
+            return res.status(400).json({ error: 'Invalid data: actors must contain strings' });
         }
     }
 
@@ -40,10 +43,20 @@ const validationCheck = (name, description, actors, published, age_limit, creato
         if (!categories.every(id => mongoose.Types.ObjectId.isValid(id))) {
             return res.status(400).json({ error: 'Invalid data: categories must contain valid ObjectIds' });
         }
+        for (const id of categories) {
+            const categoryExists = await Category.exists({ _id: id });
+            if (!categoryExists) {
+                return res.status(400).json({ error: `Invalid data: category with id ${id} does not exist` });
+            }
+        }
     }
 
     if (photo !== undefined && !mongoose.Types.ObjectId.isValid(photo)) {
-        return res.status(400).json({ error: 'Invalid data: photo must contain valid ObjectId' })
+        return res.status(400).json({ error: 'Invalid data: photo must be valid ObjectId' })
+    }
+    const photoExists = await Image.exists({ _id: photo });
+    if (!photoExists) {
+        return res.status(400).json({ error: `Invalid data: image with id ${photo} does not exist` });
     }
     return true;
 }
@@ -72,7 +85,7 @@ const createMovie = async (req, res) => {
         }
         
         //validation of arguments
-        const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
+        const x = await validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
         if (x !== true) {
             return x;
         }
@@ -102,6 +115,10 @@ const getMovies = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ error: 'Invalid User ID format' });
     }
+    const isExists = await User.exists({ _id: userId });
+    if (!isExists) {
+        return res.status(400).json({ error: `Invalid data: user with id ${userId} does not exist` });
+    }
     try {
         movies = await movieService.getMovies(userId);
         if (!movies) {
@@ -121,6 +138,10 @@ const getMovieById = async (req, res) => {
         const id = req.params.id
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+        }
+        const isExists = await Movie.exists({ _id: id });
+        if (!isExists) {
+            return res.status(400).json({ error: `Invalid data: Movie with id ${id} does not exist` });
         }
         const movie = await movieService.getMovieById(id);
         
@@ -143,6 +164,10 @@ const deleteMovie = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
         }
+        const isExists = await Movie.exists({ _id: id });
+        if (!isExists) {
+            return res.status(400).json({ error: `Invalid data: Movie with id ${id} does not exist` });
+        }
         const movie = await movieService.deleteMovie(id);
         // deleteMovie in the services returns null if the category havn't found
         if (!movie) {
@@ -160,8 +185,16 @@ const getRecommendation = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.headers['userid'])) {
         return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
+    const isExists = await User.exists({ _id: req.headers['userid'] });
+    if (!isExists) {
+        return res.status(400).json({ error: `Invalid data: user with id ${req.headers['userid']} does not exist` });
+    }
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    const isExists2 = await Movie.exists({ _id: req.params.id });
+    if (!isExists2) {
+        return res.status(400).json({ error: `Invalid data: Movie with id ${req.params.id} does not exist` });
     }
     //get response from the server
     try {
@@ -169,7 +202,7 @@ const getRecommendation = async (req, res) => {
         const resStatus = response.substring(0, 3);
         if (resStatus === '200') {
             //return json of the ids
-            return res.status(resStatus).json(JSON.stringify(response.replace(/^200 Ok\n\n/, '').split(' ')))
+            return res.status(resStatus).json(response.replace(/^200 Ok\n\n/, '').replace(/\n/, "").split(' '))
         } else {
             //return why it failed
             return res.status(resStatus).json({ error : response })
@@ -186,8 +219,16 @@ const addMovieToUser = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.headers['userid'])) {
         return res.status(400).json({ error: 'Invalid data: userId must contain valid ObjectId' });
     }
+    const isExists = await User.exists({ _id: req.headers['userid'] });
+    if (!isExists) {
+        return res.status(400).json({ error: `Invalid data: user with id ${req.headers['userid']} does not exist` });
+    }
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
+    }
+    const isExists2 = await Movie.exists({ _id: req.params.id });
+    if (!isExists2) {
+        return res.status(400).json({ error: `Invalid data: Movie with id ${req.params.id} does not exist` });
     }
     try {
         const movie = await movieService.addMovieToUser(req.headers['userid'], req.params.id)
@@ -223,6 +264,10 @@ const updateMovie = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ error: 'Invalid data: id must contain valid ObjectId' });
     }
+    const isExists = await Movie.exists({ _id: id });
+    if (!isExists) {
+        return res.status(400).json({ error: `Invalid data: Movie with id ${id} does not exist` });
+    }
     //check that the required arguments passed
     if (name === undefined) {
         return res.status(400).json({ error:'Name is required' });
@@ -237,7 +282,7 @@ const updateMovie = async (req, res) => {
         return res.status(400).json({ error:'Photo is required' });
     }
     //validation check
-    const x = validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
+    const x = await validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
     if (x !== true) {
         return x;
     }

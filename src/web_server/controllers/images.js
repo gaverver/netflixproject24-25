@@ -28,7 +28,7 @@ async function uploadImage(req, res) {
                 // call the service to create the image in the database
                 const image = await imageServices.createImage(imageData, contentType);
                 // set the location header so the user could see the location to the new image
-                return res.status(201).set('Location', `/api/images/${image._id}`).end();
+                return res.status(201).set('Location', `/images/${image._id}`).end();
             } catch (error) {
                 return res.status(500).json({ error: 'Internal Server Error' });
             }

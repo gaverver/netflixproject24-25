@@ -1,7 +1,28 @@
 const Category = require('../models/categories');
+const Movie = require('../models/movies')
 const utilities = require('../services/utilities')
 
+// helper function that check if all movieIds were found in the database
+const checkMovies = async (movieIds) => {
+    // check if movieIds is defined and all of the movies are real, if not - return 404
+    if (movieIds !== undefined) {
+        if (Array.isArray(movieIds) && movieIds.length > 0) {
+            for (const movie of movieIds) {
+                // if I didn't found this id in the database
+                if (!await Movie.findById(movie)) {
+                    return false;
+                }
+            }
+        }
+    }
+    // else, all movies were found
+    return true;
+}
+
 const createCategory = async (name, promoted, movieIds) => {
+    // check if movieIds is defined and all of the movies are real, if not - return 404
+    const valid = await checkMovies(movieIds);
+    if (!valid) return "movie not found";
     // check if there is a category with this name
     if (await Category.findOne({ name: name })) return null;
     // create a new category with the name inserted
@@ -28,6 +49,9 @@ const getCategoryById = async (id) => { return await Category.findById(id); };
 const getCategories = async () => { return await Category.find({}); };
 
 const updateCategory = async (id, name, promoted, movieIds) => {
+    // check if movieIds is defined and all of the movies are real, if not - return 404
+    const valid = await checkMovies(movieIds);
+    if (!valid) return "movie not found";
     const category = await getCategoryById(id);
     if (!category) return null;
     // check if 'name' is explicitly passed

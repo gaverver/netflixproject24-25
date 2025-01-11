@@ -61,7 +61,7 @@ const createUser = async (req, res) => {
 
     // check if a phoneNumber was entered
     if (phoneNumber === undefined) {
-        return res.status(400).json({ error:'email is required' });
+        return res.status(400).json({ error:'phone number is required' });
     }
     // check if the phoneNumber is with the correct format.
     const phoneNumberRegex = /^\d{10}$/;
