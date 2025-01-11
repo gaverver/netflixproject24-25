@@ -250,8 +250,12 @@ std::vector<std::string> DBFile::getAllMovies() {
         stream.str(line);
         //read first word of the line
         stream >> mid;
-        //push the id to the line
-        mids.push_back(mid);
+        //check if there's another word
+        std::string temp;
+        if (stream >> temp) {
+            //push the id to the line
+            mids.push_back(mid);
+        }
     }
     //
     std::sort(mids.begin(), mids.end());

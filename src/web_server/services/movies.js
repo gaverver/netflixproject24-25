@@ -52,7 +52,8 @@ const deleteMovie = async (id) => {
     const recommendConString = process.env.RECOMMEND_CON_STRING
     const [ip, port] = recommendConString.split(':');
     for (const userId of movie.users) {
-        const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userId} ${id}`);
+        const userIdString = userId.toString();
+        const response = await sendMessageToServer(ip, parseInt(port), `DELETE ${userIdString} ${id}\n`);
         await utilities.deleteMovieFromUser(userId, id);
     }
     //delete from category
