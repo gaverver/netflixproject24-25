@@ -39,6 +39,10 @@ const createCategory = async (req, res) => {
         if (!newCategory) {
             return res.status(404).json({ error: 'A category with this name already exists' });
         }
+        // returned this because one of the movieIds wan not found in the data base
+        if (newCategory === "movie not found") {
+            return res.status(404).json({ error: 'one of the movies was not found in the data base' })
+        }
         // add Location to the http header for the new category that has been created
         return res.status(201).set('Location', `/api/categories/${newCategory._id}`).end();
     } catch (error) {
@@ -126,6 +130,10 @@ const updateCategory = async (req, res) => {
         // check what if a different category with the new name already exists
         if (category === "name already exists") {
             return res.status(404).json({ error: 'A category with the new name already exists'})
+        }
+        // returned this because one of the movieIds wan not found in the data base
+        if (category === "movie not found") {
+            return res.status(404).json({ error: 'one of the movies was not found in the data base' })
         }
         return res.status(204).end();
     } catch (error) {
