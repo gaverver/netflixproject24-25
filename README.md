@@ -33,7 +33,7 @@ In order to run the web server using Docker, you need to run the following comma
 ## Web Server Images Functionality
 - **Post /images**
   - **Description:** The operation creates an image which is stored in the database.
-  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>".
+  - **Requirments:** Pass the "Content-Type: application/octet-stream" as http header. Also, add to the request --data-binary "@<path_to_image>", where "path_to_image" must end with *.png or *.jpg or ... according to the type of the file that contains the image.
   - **Example Usage:**  
     for linux and windows:
     ```bash
