@@ -7,6 +7,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <chrono>
+#include "../../ThreadPool.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -123,10 +124,10 @@ TEST(ServerTesting, MultipleClientExecutionTest) {
     // checks that the output that every client got is correct.
     EXPECT_TRUE(passed);
     // checks that the data was inserted correctly.
-    std::vector<unsigned long int> users100 = data.findMovie(100);
-    EXPECT_EQ(users100, std::vector<unsigned long int>({1, 2}));
-    std::vector<unsigned long int> users101 = data.findMovie(101);
-    EXPECT_EQ(users101, std::vector<unsigned long int>({1, 2}));
+    std::vector<std::string> users100 = data.findMovie("100");
+    EXPECT_EQ(users100, std::vector<std::string>({"1", "2"}));
+    std::vector<std::string> users101 = data.findMovie("101");
+    EXPECT_EQ(users101, std::vector<std::string>({"1", "2"}));
 }
 
 // test a multiple clients connection to server using the following commands: POST, PATCH, GET
@@ -155,8 +156,8 @@ TEST(ServerTesting, POSTPATCHGETTest) {
     EXPECT_TRUE(passed);
     passed = true;
     // checks that the data was inserted correctly.
-    std::vector<unsigned long int> users1 = data.findMovie(1);
-    EXPECT_EQ(users1, std::vector<unsigned long int>({1, 2}));
+    std::vector<std::string> users1 = data.findMovie("1");
+    EXPECT_EQ(users1, std::vector<std::string>({"1", "2"}));
     expectedOutput1 = "200 Ok\n\n3 2\n";
     expectedOutput2 = "200 Ok\n\n3\n";
     expectedOutput3 = "200 Ok\n\n2\n";
@@ -201,10 +202,10 @@ TEST(ServerTesting, POSTPATCHDELETETest) {
     EXPECT_TRUE(passed);
     passed = true;
     // checks that the data was inserted correctly.
-    std::vector<unsigned long int> users1 = data.findMovie(1);
-    EXPECT_EQ(users1, std::vector<unsigned long int>({1, 2}));
-    std::vector<unsigned long int> movies1 = data.findUser(1);
-    EXPECT_EQ(movies1, std::vector<unsigned long int>({1, 5, 6, 8, 9, 70, 80, 90}));
+    std::vector<std::string> users1 = data.findMovie("1");
+    EXPECT_EQ(users1, std::vector<std::string>({"1", "2"}));
+    std::vector<std::string> movies1 = data.findUser("1");
+    EXPECT_EQ(movies1, std::vector<std::string>({"1", "5", "6", "8", "9", "70", "80", "90"}));
     std::string expectedDeleteOutput = "204 No Content\n204 No Content\n";
     inputClient1 = {"DELETE 1 1 5 8\n", "DELETE 2 1 3\n"};
     inputClient2 = {"DELETE 1 70 80\n", "DELETE 3 10\n"};
@@ -220,14 +221,14 @@ TEST(ServerTesting, POSTPATCHDELETETest) {
     // checks that the output that every client got is correct.
     EXPECT_TRUE(passed);
     // checks that the data was deleted correctly.
-    movies1 = data.findUser(1);
-    EXPECT_EQ(movies1, std::vector<unsigned long int>({6, 9, 90})); 
-    std::vector<unsigned long int> movies2 = data.findUser(2);
-    EXPECT_EQ(movies2, std::vector<unsigned long int>({}));
+    movies1 = data.findUser("1");
+    EXPECT_EQ(movies1, std::vector<std::string>({"6", "9", "90"})); 
+    std::vector<std::string> movies2 = data.findUser("2");
+    EXPECT_EQ(movies2, std::vector<std::string>({}));
     // all of his movies were deleted but he should still exist.
-    EXPECT_TRUE(data.isUserExists(2));
-    std::vector<unsigned long int> movies3 = data.findUser(3);
-    EXPECT_EQ(movies3, std::vector<unsigned long int>({2}));
+    EXPECT_TRUE(data.isUserExists("2"));
+    std::vector<std::string> movies3 = data.findUser("3");
+    EXPECT_EQ(movies3, std::vector<std::string>({"2"}));
 }
 
 // test a multiple clients connection to server using invalid commands.
@@ -242,7 +243,7 @@ TEST(ServerTesting, InvalidInputTest) {
     std::string expectedOutput2 = "404 Not Found\n201 Created\n404 Not Found\n";
     std::string expectedOutput3 = "404 Not Found\n404 Not Found\n400 Bad Request\n200 Ok\n\nDELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nhelp\n";
     std::string expectedOutput1 = "400 Bad Request\n400 Bad Request\n400 Bad Request\n400 Bad Request\n400 Bad Request\n";
-    std::vector<std::string> inputClient1 = {"foo\n", "help x\n", "PATCH 10\n", "post 20\n", "DELETE 4 C\n"};
+    std::vector<std::string> inputClient1 = {"foo\n", "help x\n", "PATCH 10\n", "post 20\n", "DELETE 4 w\n"};
     std::vector<std::string> inputClient2 = {"PATCH 1 2\n", "POST 1 2\n", "POST 1 3\n"};
     std::vector<std::string> inputClient3 = {"DELETE 1 2 3\n", "GET 2 1\n", "GET 1\n", "help\n"};
     std::thread thread1(clientFunction, inputClient1, std::ref(expectedOutput1));
@@ -255,11 +256,11 @@ TEST(ServerTesting, InvalidInputTest) {
     // checks that the output that every client got is correct.
     EXPECT_TRUE(passed);
     // checks that the data was inserted correctly.
-    std::vector<unsigned long int> movies1 = data.findUser(1);
-    EXPECT_EQ(movies1, std::vector<unsigned long int>({2})); 
+    std::vector<std::string> movies1 = data.findUser("1");
+    EXPECT_EQ(movies1, std::vector<std::string>({"2"})); 
 }
 int main(int argc, char **argv) {
-    ThreadFactory tf;
+    ThreadPool tf(2);
     executor& exec = tf;
     server test(server_port, exec);
     std::thread serverThread(&server::start, &test);

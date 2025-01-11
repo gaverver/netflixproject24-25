@@ -6,5 +6,5 @@ WORKDIR /usr/src/Netflix
 RUN mkdir build
 WORKDIR /usr/src/Netflix/build
 
-RUN g++ -pthread -o netflix ../src/*.cpp
+RUN g++ -pthread -o netflix ../src/recommendation_system/*.cpp
 ENTRYPOINT ["./netflix"]

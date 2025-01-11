@@ -104,15 +104,15 @@ TEST(DELETETesting, ExecuteTest) {
     EXPECT_EQ(output, s404);
     EXPECT_EQ(dbf.findUser("2"), (std::vector<std::string>{}));
     //userid isnt a number
-    output = captureCommandOutput(del, {"a", "101", "103", "102"});
+    output = captureCommandOutput(del, {"x", "101", "103", "102"});
     EXPECT_EQ(output, s400);
     EXPECT_EQ(dbf.findUser("1"), (std::vector<std::string>{"101","102","103","104"}));
     //one of the movie ids ins't a number
-    output = captureCommandOutput(del, {"1", "101", "103d", "102"});
+    output = captureCommandOutput(del, {"1", "101", "103g", "102"});
     EXPECT_EQ(output, s400);
     EXPECT_EQ(dbf.findUser("1"), (std::vector<std::string>{"101","102","103","104"}));
     //400 error should return even after seeing 404 error occur
-    output = captureCommandOutput(del, {"4", "c"});
+    output = captureCommandOutput(del, {"4", "y"});
     EXPECT_EQ(output, s400);
 
     // clear the files after the test

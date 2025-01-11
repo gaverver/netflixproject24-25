@@ -114,16 +114,16 @@ TEST(AppTests, POSTTest) {
     std::string expectedOutput = "201 Created\n201 Created\n201 Created\n201 Created\n204 No Content\n201 Created\n201 Created\n201 Created\n201 Created\n";
     EXPECT_EQ(expectedOutput, printedOutput);
     // get the movies from the database of user 4.
-    std::vector<unsigned long int> movies4 = data.findUser(4);
-    std::vector<unsigned long int> expectedMovies4 = {101, 105, 106, 107, 109, 110};
+    std::vector<std::string> movies4 = data.findUser("4");
+    std::vector<std::string> expectedMovies4 = {"101", "105", "106", "107", "109", "110"};
     // we check that the user was succefully registered inside the database
     EXPECT_EQ(movies4, expectedMovies4);
 }
 
 TEST(AppTests, NonVolatileDataTest) {
     // we didn't clear the database - we want to check that the data from last commands were saved even if we stopped running the program.
-    std::vector<unsigned long int> movies4 = data.findUser(4);
-    std::vector<unsigned long int> expectedMovies4 = {101, 105, 106, 107, 109, 110};
+    std::vector<std::string> movies4 = data.findUser("4");
+    std::vector<std::string> expectedMovies4 = {"101", "105", "106", "107", "109", "110"};
     // we check that the user was succefully registered inside the database
     EXPECT_EQ(movies4, expectedMovies4);
     // run other commands to complete the example from class
@@ -167,18 +167,18 @@ TEST(AppTests, InvalidInputTest1) {
     // clear the databse before usage so there will not be data that is not needed there.
     data.cleanUp();
     // enter some illegal commands and POST and GET and DELETE commands
-    std::vector<std::string> commands = {"DELETE 1 1", "POST 1 1", "POST 2 1 3", "POST 3 2", "PATCH 1 2 3 5 4 c", "PATCH 2 p 3 c", "POST f 1 1 1 2 2 2 3 3 3", "GET 1 2", "GET 1 c", "DELETE 1 1"};
+    std::vector<std::string> commands = {"DELETE 1 1", "POST 1 1", "POST 2 1 3", "POST 3 2", "PATCH 1 2 3 5 4 x", "PATCH 2 p 3 c", "POST z 1 1 1 2 2 2 3 3 3", "GET 1 2", "GET 1 x", "DELETE 1 1"};
     std::string expectedOutput = "404 Not Found\n201 Created\n201 Created\n201 Created\n400 Bad Request\n400 Bad Request\n400 Bad Request\n200 Ok\n\n3\n400 Bad Request\n204 No Content\n";
     // capture the output from the cout
     std::string printedOutput = captureOutput(commands);
     EXPECT_EQ(expectedOutput, printedOutput);
     // check that the movies that user 1 has watched were saved properly in the db (we delete his only movie) - we check that the invalid output didn't affect it
-    std::vector<unsigned long int> movies1 = data.findUser(1);
-    std::vector<unsigned long int> expectedMovies1 = {};
+    std::vector<std::string> movies1 = data.findUser("1");
+    std::vector<std::string> expectedMovies1 = {};
     EXPECT_EQ(movies1, expectedMovies1);
     // check that the users that watched movie 5 were saved properly in the db - we check that the invalid output didn't affect it
-    std::vector<unsigned long int> users5 = data.findMovie(5);
-    std::vector<unsigned long int> expectedUsers5 = {};
+    std::vector<std::string> users5 = data.findMovie("5");
+    std::vector<std::string> expectedUsers5 = {};
     EXPECT_EQ(users5, expectedUsers5);
 
     // clear the data for next usages
@@ -195,12 +195,12 @@ TEST(AppTests, InvalidInputTest2) {
     std::string printedOutput = captureOutput(commands);
     EXPECT_EQ(expectedOutput, printedOutput);
     // check that the movies that user 1 has watched were saved properly in the db - we check that the invalid output didn't affect it
-    std::vector<unsigned long int> movies = data.findUser(1);
-    std::vector<unsigned long int> expectedMovies = {2};
+    std::vector<std::string> movies = data.findUser("1");
+    std::vector<std::string> expectedMovies = {"2"};
     EXPECT_EQ(movies, expectedMovies);
     // check that the users that watched movie 2 were saved properly in the db - we check that the invalid output didn't affect it
-    std::vector<unsigned long int> users = data.findMovie(2);
-    std::vector<unsigned long int> expectedUser = {1};
+    std::vector<std::string> users = data.findMovie("2");
+    std::vector<std::string> expectedUser = {"1"};
     EXPECT_EQ(users, expectedUser);
     // clear the data for next usages
     data.cleanUp();
