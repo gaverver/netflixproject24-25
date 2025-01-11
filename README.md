@@ -169,6 +169,7 @@ In order to run the web server using Docker, you need to run the following comma
 - **Get /api/movies**
   - **Description:** The operation returns movies by category(only promoted ones). Promoted categories include 20 random unseen movies for the user. A special category lists the last 20 movies the user watched in random order.
   - **Required:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -209,6 +210,7 @@ In order to run the web server using Docker, you need to run the following comma
 - **Get /api/movies/:id/recommend/**
   - **Description:** Retrieves recommended movies from the recommendation system for the current user, based on the movie identified by the given id.
   - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)  
   - **Example Usage:**  
     for linux and windows:
     ```bash
@@ -217,7 +219,8 @@ In order to run the web server using Docker, you need to run the following comma
 
 - **Post /api/movies/:id/recommend/**
   - **Description:** The operation adds to the recommendation system that the current user has watched the movie identified by the given id.  
-  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".  
+  - **Requirments:** pass the user id as http header in like this: "userId: <user_id>".
+  - **Note:** this command requires you to be logged in(in the next exercise we will need to enforce that)  
   - **Example Usage:**  
     for linux and windows:
     ```bash
