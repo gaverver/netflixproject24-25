@@ -259,6 +259,7 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
 ### Get /api/users/:id - getting information about a user
 ![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
+![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
 ### POST /api/tokens - check if a user is registered
 ![tokens](https://github.com/user-attachments/assets/5a1e1923-231c-4377-ba06-317be3761599)
 
