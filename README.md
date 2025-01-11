@@ -239,11 +239,15 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ## running examples
 ### /api/users commands examples
 #### Post /api/users - creating a user - including valid and invalid
+##### valid
 ![createUser](https://github.com/user-attachments/assets/5f93dfa0-7f34-44a5-b435-663748d6bd53)
 ![createUser1](https://github.com/user-attachments/assets/41be80e2-ed53-40c8-950a-8a42e21aeb45)
+##### invalid
 ![createUserInvalid](https://github.com/user-attachments/assets/d24c1d4d-e63c-49bc-a330-921989b2a43b)
 #### Get /api/users/:id - getting information about a user - including valid and invalid
+##### valid
 ![getUser](https://github.com/user-attachments/assets/72eb21c6-c917-41b3-bc2f-3e0370bcd327)
+##### invalid
 ![getUserNotFound](https://github.com/user-attachments/assets/b726723f-61c2-4945-ae9e-f7fcb1f1d17f)
 ![invaliduser](https://github.com/user-attachments/assets/7c349fbe-e935-41d9-ab17-da7426d3178c)
 #### POST /api/tokens - check if a user is registered - including valid and invalid
@@ -282,9 +286,12 @@ The data is mostly stored inside mongoDB. We have 4 collections in our database:
 ### Movies - valid usage
 #### Movies - Get /api/movies/:id
 ![moviegetidvalid](https://github.com/user-attachments/assets/49e4d950-3066-4cac-8a65-db85bbd89064)
-#### Movies - Put /api/movies/:id and Delete
+#### Movies - Put /api/movies/:id and Delete /api/movies/:id
 ![validputmovies](https://github.com/user-attachments/assets/1b19006a-cedb-4af2-aae9-f74f4f48b496)
 ![deletemovie](https://github.com/user-attachments/assets/d8dbd864-4028-4198-b607-a5f08284cd3a)
+#### Movies - Get /api/movies
+![getmovies1](https://github.com/user-attachments/assets/df2a470f-2a14-4ffc-aa73-901cb420a53e)
+![getmovies2](https://github.com/user-attachments/assets/f4053ccd-fefd-4674-a60f-a546e31931a1)
 ### Categories - Invalid Check
 #### Categories - Invalid Check for Get /api/categories/:id
 ![categoriesidinvalid](https://github.com/user-attachments/assets/7fed5ff0-19de-46f8-84e5-f3b6b5a0a920)
