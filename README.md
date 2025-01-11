@@ -104,8 +104,8 @@ In order to run the web server using Docker, you need to run the following comma
     ```
     for windows(cmd):  
     ```bash  
-    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^  
-    -H "Content-Type: application/json" ^  
+    curl -i -X POST http://localhost:<webServer_port>/api/tokens ^
+    -H "Content-Type: application/json" ^
     -d "{\"username\":\"gavriel\", \"password\":\"5555\"}"  
 
 ### Category API
