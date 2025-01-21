@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
         return res.status(400).json({ error:'password length must be at least 8 characters' });
     }
     if (passwordRegex.test(password) === false) {
-        return res.status(400).json({ error:'password msut be a combination of letters and numbers and include at least one letter and one number. Also, it can include ?,!,@,-,_' })
+        return res.status(400).json({ error:'password must be a combination of letters and numbers and include at least one letter and one number. Also, it can include ?,!,@,-,_' })
     }
     // check if an email was entered
     if (email === undefined) {
