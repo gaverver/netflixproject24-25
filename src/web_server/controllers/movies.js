@@ -92,12 +92,13 @@ const createMovie = async (req, res) => {
         if (x !== true) {
             return x;
         }
-
+        if (video !== undefined && !mongoose.Types.ObjectId.isValid(video)) {
+            return res.status(400).json({ error: 'Invalid data: video must be valid ObjectId' })
+        }
         const videoExists = await Video.exists({ _id: video });
         if (!videoExists) {
             return res.status(400).json({ error: `Invalid data: video with id ${id} does not exist` });
         }
-
         const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories, video);
         if (newMovie === null) {
             return res.status(404).json({ error: 'name and/or photo and/or video already exists' })
