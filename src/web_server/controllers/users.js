@@ -1,30 +1,8 @@
 const userService = require("../services/users")
-const fs = require('fs')
 const mongoose = require('mongoose')
 
-async function countFilesInDirectory(directoryPath) {
-    try {
-      const files = await fs.promises.readdir(directoryPath); // Read the directory contents
-      const fileCount = await Promise.all(files.map(async (file) => {
-        try {
-          const stats = await fs.promises.stat(`${directoryPath}/${file}`); // Concatenate strings for the file path
-          return stats.isFile() ? 1 : 0; // Return 1 if it's a file, otherwise 0
-        } catch (err) {
-          return 0; // Return 0 in case of error with file stats
-        }
-      }));
-      return fileCount.reduce((total, count) => total + count, 0); // Sum up the counts
-    } catch (err) {
-      return 0; // Return 0 if there's an error reading the directory
-    }
-  }
 
 const createUser = async (req, res) => {
-    // count the files inside te avatars directory - this will be the collection of the avatars that the user can use
-    const MAX_IMAGES = await countFilesInDirectory("../../data/avatars")
-    if (MAX_IMAGES === 0) {
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
     // get all the necessary details.
     const username = req.body.username
     const email = req.body.email
@@ -48,7 +26,13 @@ const createUser = async (req, res) => {
     if (typeof password !== 'string') {
         return res.status(400).json({ error:'Invalid data: password must be a string' });
     }
-
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@!?_-]+$/
+    if (password.length < 8) {
+        return res.status(400).json({ error:'password length must be at least 8 characters' });
+    }
+    if (passwordRegex.test(password) === false) {
+        return res.status(400).json({ error:'password must be a combination of letters and numbers and include at least one letter and one number. Also, it can include ?,!,@,-,_' })
+    }
     // check if an email was entered
     if (email === undefined) {
         return res.status(400).json({ error:'email is required' });
@@ -68,16 +52,16 @@ const createUser = async (req, res) => {
     if (phoneNumberRegex.test(phoneNumber) === false) {
         return res.status(400).json({ error:'phone number is in an invalid format' });
     }
-    // check if a picture was entered
-    if (picture !== undefined) {
-        // check if the type is a number - as it represents the number of the picture in the folder
-        if (!Number.isInteger(picture)) {
-            return res.status(400).json({ error:'Invalid data: picture must be an int' });
-        }
-        // check if the number is valid
-        if (picture < 1 || picture > MAX_IMAGES) {
-            return res.status(400).json({ error:`picture must be between 1 and ${MAX_IMAGES}`})
-        }
+    // check if an existing picture was entered
+    if (picture === undefined) {
+        return res.status(400).json({ error:'Photo is required' });
+    }
+    if (!mongoose.Types.ObjectId.isValid(picture)) {
+            return res.status(400).json({ error: 'Invalid data: picture must be valid ObjectId' })
+    }
+    const pictureExists = await Image.exists({ _id: picture });
+    if (!pictureExists) {
+        return res.status(400).json({ error: `Invalid data: image with id ${picture} does not exist` });
     }
     
 
