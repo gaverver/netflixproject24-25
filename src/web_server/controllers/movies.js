@@ -97,7 +97,7 @@ const createMovie = async (req, res) => {
         }
         const videoExists = await Video.exists({ _id: video });
         if (!videoExists) {
-            return res.status(400).json({ error: `Invalid data: video with id ${id} does not exist` });
+            return res.status(400).json({ error: `Invalid data: video with id ${video} does not exist` });
         }
         const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories, video);
         if (newMovie === null) {
