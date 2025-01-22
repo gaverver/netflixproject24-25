@@ -100,7 +100,7 @@ const createMovie = async (req, res) => {
 
         const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories, video);
         if (newMovie === null) {
-            return res.status(404).json({ error: 'name and/or photo already exists' })
+            return res.status(404).json({ error: 'name and/or photo and/or video already exists' })
         }
         return res.status(201).set('Location', `/api/movies/${newMovie._id}`).end();
     } catch (error) {

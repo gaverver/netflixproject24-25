@@ -3,12 +3,13 @@ const utilities = require('./utilities')
 const net = require('net')
 const mongoose = require('mongoose');
 //functio to create a movie
-const createMovie = async (name, description, actors, published, age_limit, creators, photo, categories) => {
+const createMovie = async (name, description, actors, published, age_limit, creators, photo, categories, video) => {
     //check if there's a movie with the same name or photo
     const existingMovie = await Movie.find({
         $or: [
             { name: name },
-            { photo: photo }
+            { photo: photo },
+            { video: video }
         ]
     })
     if (existingMovie && existingMovie.length > 0) {
@@ -19,7 +20,8 @@ const createMovie = async (name, description, actors, published, age_limit, crea
         name: name,
         description: description,
         creators: creators,
-        photo: photo
+        photo: photo,
+        video: video
     })
     //check if 'actors' passed
     if (actors !== undefined) {

@@ -46,8 +46,7 @@ const Movie = new Schema({
     video: {
         type: Schema.Types.ObjectId,
         ref: 'videos',
-        required: true,
-        select: false
+        required: true
     }
 });
 
