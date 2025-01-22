@@ -1,7 +1,34 @@
 const categoryService = require('../services/categories');
+const tokenService = require('../services/tokens');
 const mongoose = require('mongoose')
 
+// helper function that check that the user is loggedin and he's admin
+const checkUser = async (req) => {
+    // gets the token from the header
+    const token = req.headers.authorization;
+    // if the token isn't there
+    if (token === undefined) return false
+    const admin = await tokenService.privilegeLevelByToken(token);
+    switch (admin) {
+        case false:
+            return false;
+        case 0:
+            // the user exist but he's not an admin
+            return false;
+        case 1:
+            // allow the user to post a category because he's an admin
+            return true;
+        default:
+            // not supposed to reach here anyway
+            return false;
+    }
+}
+
 const createCategory = async (req, res) => {
+    // check that the user is loggedin and he's admin first
+    if (!checkUser(req)) {
+        return res.status(400).json({ error: 'permission denied' });
+    }
     
     // avoid server crushes, by catching an error
     try {
@@ -63,7 +90,6 @@ const getCategories = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(404).json({ error:'Category not found' });
@@ -86,6 +112,10 @@ const getCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
+    // check that the user is loggedin and he's admin first
+    if (!checkUser(req)) {
+        return res.status(400).json({ error: 'permission denied' });
+    }
 
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -143,6 +173,10 @@ const updateCategory = async (req, res) => {
 }
 
 const deleteCategory = async (req, res) => {
+    // check that the user is loggedin and he's admin first
+    if (!checkUser(req)) {
+        return res.status(400).json({ error: 'permission denied' });
+    }
 
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
