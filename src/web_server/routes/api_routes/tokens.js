@@ -3,6 +3,6 @@ var router = express.Router();
 const tokensController = require('../../controllers/tokens');
 
 router.route('/')
-    .post(tokensController.doesUserExist);
+    .post(tokensController.createToken);
 
 module.exports = router;
