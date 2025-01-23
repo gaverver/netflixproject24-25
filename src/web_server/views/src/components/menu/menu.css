@@ -1,46 +1,89 @@
+/* General Menu Styles */
 .menu {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    background-color: #fff; /* Light mode background */
-    color: #333;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-  
-.menu.dark-mode {
-    background-color: #333; /* Dark mode background */
+    padding: 1rem 2rem;
+    background-color: #141414; /* Default background */
     color: #fff;
-}
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
   
-.logo {
-    margin-right: 20px;
-    color: #f00;
-}
+  /* Dark Mode */
+  .menu.dark-mode {
+    background-color: #333;
+    color: #fff;
+  }
   
-.user-info {
+  /* Logo Styling */
+  .logo img {
+    height: 40px;  /* Set a fixed height for the logo */
+    width: auto;   /* Keep the aspect ratio intact */
+  }
+  
+  /* User Info */
+  .user-info {
     display: flex;
     align-items: center;
-}
+  }
   
-.user-info img {
-    width: 30px;
-    height: 30px;
+  .user-info img {
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    margin-right: 5px;
-}
+    margin-right: 10px;
+  }
   
-.actions {
+  .user-info span {
+    font-size: 1rem;
+    color: #fff;
+  }
+  
+  /* Actions Section */
+  .actions {
     display: flex;
     align-items: center;
-}
+  }
   
-.actions button,
-.actions a {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+  .action-button {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
     text-decoration: none;
-    color: inherit;
-}
+    background-color: #e50914; /* Netflix red for buttons */
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  
+  .action-button:hover {
+    background-color: #f6121d; /* Lighter red on hover */
+  }
+  
+  /* Search Input and Button */
+  .search-input {
+    margin-left: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .search-button {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background-color: #f6121d;
+  }
+  

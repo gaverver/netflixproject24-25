@@ -2,9 +2,10 @@ import './menu.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const menu = ({ username, photo, isLoggedIn, isAdmin }) => {
+const Menu = ({ username, photo, isLoggedIn, isAdmin }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Load dark mode preference on initial render
   useEffect(() => {
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode === 'true') {
@@ -13,44 +14,61 @@ const menu = ({ username, photo, isLoggedIn, isAdmin }) => {
     }
   }, []);
 
+  // Toggle dark/light mode
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('darkMode', !isDarkMode);
-    document.body.classList.toggle('dark-mode');
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('darkMode', newMode);
+    document.body.classList.toggle('dark-mode', newMode);
   };
 
   return (
     <header className={`menu ${isDarkMode ? 'dark-mode' : ''}`}>
-      <div className="logo">Catflix</div>
+      {/* Logo as an Image */}
+      <div className="logo">
+        <Link to="/">
+          <img src="/path-to-your-logo.png" alt="MyApp Logo" />
+        </Link>
+      </div>
 
+      {/* User Info */}
       <div className="user-info">
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <>
-            <img src={photo} alt={username} />
+            <img src={photo} alt={`${username}'s avatar`} />
             <span>{username}</span>
           </>
-        ) : (
-          <Link to="/login">Login</Link>
         )}
       </div>
 
+      {/* Actions */}
       <div className="actions">
-        <input type="text" placeholder="Search" />
-        <button>Search</button>
-        <Link to="/api/homeForLoggedInUsers">Home</Link>
-        <Link to="/api/categories">Categories</Link>
+        <Link to="/" className="action-button">
+          Home
+        </Link>
+        <Link to="/api/categories" className="action-button">
+          Categories
+        </Link>
         {isLoggedIn && (
           <>
-            <button onClick={toggleDarkMode}>
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            <button onClick={toggleDarkMode} className="action-button">
+              {isDarkMode ? 'Light Mode' : 'Night Mode'}
             </button>
-            {isAdmin && <Link to="/admin">Administration</Link>}
-            <Link to="/logout">Sign Out</Link>
+            {isAdmin && (
+              <Link to="/admin" className="action-button">
+                Administration
+              </Link>
+            )}
+            <Link to="/logout" className="action-button">
+              Sign Out
+            </Link>
           </>
         )}
+        <input type="text" placeholder="Search" className="search-input" />
+        <button className="search-button">Search</button>
       </div>
     </header>
   );
-}
+};
 
-export default menu;
+export default Menu;
