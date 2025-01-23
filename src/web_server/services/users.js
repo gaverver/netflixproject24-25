@@ -15,13 +15,7 @@ const createUser = async (username, password, email, phoneNumber, picture) => {
     }
     
     // Create a new user with the given fields.
-    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber})
-    // update the picture if a picture was entered
-    if (picture) {
-        // create the picture ID of the image in the website
-        const pictureID=`${picture}`
-        user.picture = pictureID
-    }
+    const user = new User({ username: username, password: password, email: email, phoneNumber: phoneNumber, picture: picture})
     
     const savedUser = await user.save()
     // return the user that was created

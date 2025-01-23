@@ -25,9 +25,14 @@ const User = new Schema({
     },
     // the picture of the user, selected by a list of pictures
     picture: {
-        type: String,
-        default: "1"
+        type: Schema.Types.ObjectId,
+        ref: 'images',
+        required: true
     },
+    privilegeLevel: {
+        type: Number,
+        default: 0
+    }, 
     // list of movie id's that were watched by the user
     watched_movies: {
         type: [Schema.Types.ObjectId], 
