@@ -4,6 +4,7 @@ const Category = require('../models/categories');
 const Image = require('../models/images');
 const User = require('../models/users');
 const Movie = require('../models/movies');
+const Video = require('../models/videos')
 //helper function for validation of input
 const validationCheck = async (name, description, actors, published, age_limit, creators, categories, photo, res) => {
     
@@ -69,7 +70,7 @@ const validationCheck = async (name, description, actors, published, age_limit, 
 const createMovie = async (req, res) => {
     try {
         //get the required parameters
-        const {name, description, actors, published, age_limit, creators, categories, photo} = req.body;
+        const {name, description, actors, published, age_limit, creators, categories, photo, video} = req.body;
         //check that the required arguments passed
         if (name === undefined) {
             return res.status(400).json({ error:'Name is required' });
@@ -83,16 +84,24 @@ const createMovie = async (req, res) => {
         if (photo === undefined) {
             return res.status(400).json({ error:'Photo is required' });
         }
-        
+        if (video === undefined) {
+            return res.status(400).json({ error:'Video is required' });
+        }
         //validation of arguments
         const x = await validationCheck(name, description, actors, published, age_limit, creators, categories, photo, res);
         if (x !== true) {
             return x;
         }
-
-        const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories);
+        if (video !== undefined && !mongoose.Types.ObjectId.isValid(video)) {
+            return res.status(400).json({ error: 'Invalid data: video must be valid ObjectId' })
+        }
+        const videoExists = await Video.exists({ _id: video });
+        if (!videoExists) {
+            return res.status(400).json({ error: `Invalid data: video with id ${video} does not exist` });
+        }
+        const newMovie = await movieService.createMovie(name, description, actors, published, age_limit, creators, photo, categories, video);
         if (newMovie === null) {
-            return res.status(404).json({ error: 'name and/or photo already exists' })
+            return res.status(404).json({ error: 'name and/or photo and/or video already exists' })
         }
         return res.status(201).set('Location', `/api/movies/${newMovie._id}`).end();
     } catch (error) {
