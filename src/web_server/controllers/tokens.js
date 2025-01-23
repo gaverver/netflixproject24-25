@@ -43,13 +43,26 @@ const createToken = async (req, res) => {
     }
 };
 
-const isLoggedIn = (req, res, next) => {
+const isLoggedIn = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
         if (tokensServices.isLoggedIn(token)) {
             return next();
         } else {
             return res.status(401).send("Invalid Token");
+        }
+    } else
+        return res.status(403).send('Token required');
+}
+
+
+const isAdmin = async (req, res, next) => {
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1];
+        if (tokensServices.privilegeLevelByToken(token) === 1) {
+            return next();
+        } else {
+            return res.status(403).send("Blocked access");
         }
     } else
         return res.status(403).send('Token required');
