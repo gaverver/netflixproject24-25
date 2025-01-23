@@ -46,7 +46,7 @@ const createToken = async (req, res) => {
 const isLoggedIn = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        if (tokensServices.isLoggedIn(token)) {
+        if (await tokensServices.isLoggedIn(token)) {
             return next();
         } else {
             return res.status(401).send("Invalid Token");
@@ -59,7 +59,8 @@ const isLoggedIn = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        if (tokensServices.privilegeLevelByToken(token) === 1) {
+        x = await tokensServices.privilegeLevelByToken(token)
+        if (x === 1) {
             return next();
         } else {
             return res.status(403).send("Blocked access");
