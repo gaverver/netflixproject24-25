@@ -4,8 +4,10 @@ const mongoose = require('mongoose')
 
 // helper function that check that the user is loggedin and he's admin
 const checkUser = async (req) => {
+    // check that the header exists
+    if (!req.headers.authorization) return false;
     // gets the token from the header
-    const token = req.headers.authorization;
+    const token = req.headers.authorization.split(" ")[1];
     // if the token isn't there
     if (token === undefined) return false
     const admin = await tokenService.privilegeLevelByToken(token);
