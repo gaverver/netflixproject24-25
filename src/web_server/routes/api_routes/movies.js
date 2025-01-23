@@ -1,9 +1,9 @@
 const express = require('express');
 var router = express.Router();
 const movieController = require('../../controllers/movies');
-
+const tokenServices = require('../../services/tokens');
 router.route('/')
-    .get(movieController.getMovies)
+    .get(tokenServices.isLoggedIn, movieController.getMovies)
     .post(movieController.createMovie);
 
 router.route('/:id')
