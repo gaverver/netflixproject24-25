@@ -68,4 +68,4 @@ const isAdmin = async (req, res, next) => {
         return res.status(403).send('Token required');
 }
 
-module.exports = { createToken }
+module.exports = { createToken,  isLoggedIn, isAdmin}
