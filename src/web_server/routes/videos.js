@@ -10,4 +10,7 @@ router.post('/', videoService.upload.single('video'), videoController.uploadVide
 router.route('/:id')
     .get(videoController.getVideoById)
 
+router.route('/watch/:id')
+    .get(videoController.streamVideoById)
+
 module.exports = router;
