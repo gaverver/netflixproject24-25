@@ -47,7 +47,7 @@ const DeleteVideoById = async (id) => {
     }
     try {
         const video = await videoService.DeleteVideoById(id); 
-        // getvideoById in the services returns null if the category wasn't found
+        // DeleteVideoById in the services returns null if the category wasn't found
         if (!video) {
             return res.status(404).json({ error:'video not found' });
         }
