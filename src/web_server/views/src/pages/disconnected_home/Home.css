@@ -1,5 +1,5 @@
 .backgroundImage {
-    background-image: url('./background.jpg'); /* Replace with your actual background image URL */
+    background-image: url('../../../public/images_for_decoration/background.jpg'); /* Replace with your actual background image URL */
     background-size: cover;
     background-position: center;
     height: 100vh; /* make the image all over the screen */
