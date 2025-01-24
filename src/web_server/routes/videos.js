@@ -9,5 +9,6 @@ router.post('/', videoService.upload.single('video'), videoController.uploadVide
 
 router.route('/:id')
     .get(videoController.getVideoById)
+    .delete(videoController.DeleteVideoById)
 
 module.exports = router;
