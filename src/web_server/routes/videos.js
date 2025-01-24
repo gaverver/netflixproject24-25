@@ -9,6 +9,7 @@ router.post('/', videoService.upload.single('video'), videoController.uploadVide
 
 router.route('/:id')
     .get(videoController.getVideoById)
+    .delete(videoController.DeleteVideoById)
 
 router.route('/watch/:id')
     .get(videoController.streamVideoById)
