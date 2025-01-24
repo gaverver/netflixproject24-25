@@ -1,5 +1,4 @@
 const categoryService = require('../services/categories');
-const tokenService = require('../services/tokens');
 const mongoose = require('mongoose')
 
 const createCategory = async (req, res) => {
