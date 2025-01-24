@@ -27,7 +27,7 @@ const Menu = ({ username, photo, isLoggedIn, isAdmin }) => {
       {/* Logo as an Image */}
       <div className="logo">
         <Link to="/">
-          <img src="/path-to-your-logo.png" alt="MyApp Logo" />
+          <img src="../../../public/images_for_decoration" alt="Catflix" />
         </Link>
       </div>
 
@@ -46,7 +46,7 @@ const Menu = ({ username, photo, isLoggedIn, isAdmin }) => {
         <Link to="/" className="action-button">
           Home
         </Link>
-        <Link to="/api/categories" className="action-button">
+        <Link to="/" className="action-button">
           Categories
         </Link>
         {isLoggedIn && (
@@ -55,11 +55,11 @@ const Menu = ({ username, photo, isLoggedIn, isAdmin }) => {
               {isDarkMode ? 'Light Mode' : 'Night Mode'}
             </button>
             {isAdmin && (
-              <Link to="/admin" className="action-button">
+              <Link to="/" className="action-button">
                 Administration
               </Link>
             )}
-            <Link to="/logout" className="action-button">
+            <Link to="/" className="action-button">
               Sign Out
             </Link>
           </>
