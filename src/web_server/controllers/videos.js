@@ -1,4 +1,5 @@
 const videoService = require('../services/videos');
+const mongoose = require('mongoose')
 
 const uploadVideo = async (req, res) => {
     try {
@@ -39,7 +40,7 @@ const getVideoById = async (req, res) => {
     }
 }
 
-const DeleteVideoById = async (id) => {
+const DeleteVideoById = async (req, res) => {
     const id = req.params.id
     // check if the video's id is invalid
     if (!mongoose.Types.ObjectId.isValid(id)) {
