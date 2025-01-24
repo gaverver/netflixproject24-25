@@ -2,7 +2,7 @@
     background-image: url('./background.jpg'); /* Replace with your actual background image URL */
     background-size: cover;
     background-position: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; /* make the image all over the screen */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,6 +10,7 @@
   }
 
 #sign-in {
+    /*set all the font sizes and the position of the button*/
     font-size: 16px;
     padding: 10px 20px;
     position: absolute;
@@ -21,11 +22,11 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    cursor: pointer; /*the cursor changes when you hover on the botton*/
+    transition: background-color 0.3s ease; /*make the transition to the focus slower*/
 }
 button:hover {
-    background-color: darkred; /* Slightly darker red */
+    background-color: darkred; /* Slightly darker red when hovering on the button */
 }
 
 #register {

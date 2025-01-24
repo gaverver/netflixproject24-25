@@ -4,6 +4,7 @@ import DisconnectedHome from './pages/disconnected_home/Home';
 
 
 function App() {
+  // router for all the pages in the application
   return (
     <div className="App">
       <Routes> 
@@ -11,5 +12,5 @@ function App() {
       </Routes>
     </div>
   );
-
+}
 export default App;
