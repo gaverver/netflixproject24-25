@@ -36,8 +36,16 @@ const getVideoById = async (id) => {
     return video;
 };
 
+const DeleteVideoById = async (id) => {
+    // delete the video with the given id
+    const video = await Video.findByIdAndDelete(id);
+    if (!video) return null;
+    return video;
+};
+
 module.exports = {
     upload,
     createVideo,
-    getVideoById
+    getVideoById,
+    DeleteVideoById
 };
