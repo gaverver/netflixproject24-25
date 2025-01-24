@@ -36,8 +36,25 @@ const getVideoById = async (id) => {
     return video;
 };
 
+const DeleteVideoById = async (id) => {
+    try {
+        const helper = await getVideoById(id)
+        if (!helper) return null;
+        const path = helper.filePath
+        // delete the video with the given id
+        const video = await Video.findByIdAndDelete(id);
+        if (!video) return null;
+        // delete the file from the local fileSystem
+        fs.unlinkSync(path);
+        return video;
+    } catch(err) {
+        return 500
+    }
+};
+
 module.exports = {
     upload,
     createVideo,
-    getVideoById
+    getVideoById,
+    DeleteVideoById
 };
