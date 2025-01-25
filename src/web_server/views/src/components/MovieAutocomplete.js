@@ -19,8 +19,8 @@ const MovieAutocomplete = ({setId}) => {
   
       // Access the array of movies inside the JSON object
       if (data.movies && Array.isArray(data.movies)) {
-        const movieNames = data.movies.map((movie) => ({ name: movie.name, id: movie._id }));
-        setSuggestions(movieNames);
+        const movieData = data.movies.map((movie) => ({ name: movie.name, id: movie._id }));
+        setSuggestions(movieData);
       } else {
         console.warn('API response does not contain a valid movies array:', data);
         setSuggestions([]);
