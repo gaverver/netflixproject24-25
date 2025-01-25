@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import DisconnectedHome from './pages/disconnected_home/Home';
-
+import Admin from './pages/administration/Admin';
 
 function App() {
   // router for all the pages in the application
@@ -9,6 +9,7 @@ function App() {
     <div className="App">
       <Routes> 
         <Route path ="/home" element={<DisconnectedHome />} />
+        <Route path ="/admin" element={<Admin />} />
       </Routes>
     </div>
   );
