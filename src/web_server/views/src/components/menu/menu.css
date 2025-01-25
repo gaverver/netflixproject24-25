@@ -1,89 +1,114 @@
 /* General Menu Styles */
 .menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #141414; /* Default background */
-    color: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Dark Mode */
-  .menu.dark-mode {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  /* Logo Styling */
-  .logo img {
-    height: 40px;  /* Set a fixed height for the logo */
-    width: auto;   /* Keep the aspect ratio intact */
-  }
-  
-  /* User Info */
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-info img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .user-info span {
-    font-size: 1rem;
-    color: #fff;
-  }
-  
-  /* Actions Section */
-  .actions {
-    display: flex;
-    align-items: center;
-  }
-  
-  .action-button {
-    margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    background-color: #e50914; /* Netflix red for buttons */
-    color: #fff;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-  }
-  
-  .action-button:hover {
-    background-color: #f6121d; /* Lighter red on hover */
-  }
-  
-  /* Search Input and Button */
-  .search-input {
-    margin-left: 1rem;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .search-button {
-    margin-left: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #e50914;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .search-button:hover {
-    background-color: #f6121d;
-  }
-  
+  display: flex;
+  align-items: center;
+  padding: 1rem 0rem;
+  background-color: #141414; /* Default background */
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Mode */
+.menu.dark-mode {
+  background-color: #555;
+  color: #fff;
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+  margin-left: 1rem;
+}
+
+.user-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.username {
+  font-size: 1rem;
+  color: rgb(255, 255, 255);
+}
+
+/* Search Section */
+.search-section {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
+
+.search-input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #000;
+  color: #fff;
+}
+
+.search-icon {
+  width: 32px;
+  height: 32px;
+  margin-left: 0rem;
+  cursor: pointer;
+}
+
+/* Actions Section */
+.actions {
+  display: flex;
+  align-items: center;
+  margin-right: -20rem;
+}
+
+.action-button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  background-color: #e50914; /* Netflix red for buttons */
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9rem;  
+  transition: background-color 0.3s;
+}
+
+.action-button-nightMode {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  background-color: #e50914; /* Netflix red for buttons */
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9rem;  
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #f6121d; /* Lighter red on hover */
+}
+
+/* Logo Styling */
+.logo {
+  margin-left: 21rem; /* Push logo to the left */
+  font-size: 1rem;
+  font-weight: bold;
+  color: #e50914; /* Make logo text red */
+  text-align: left;
+  margin-right: 1rem;
+}
+
+.logo a {
+  color: inherit; /* Ensure the link inherits the red color */
+  text-decoration: none; /* Remove underline from link */
+}
+
+.logo a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
