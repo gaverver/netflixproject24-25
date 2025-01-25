@@ -1,0 +1,54 @@
+.backgroundImage {
+    background-image: url('../../../public/images_for_decoration/background.jpg'); /* background image */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.error-page-header {
+    background-color: rgba(0, 0, 0, .97);
+    height: 68px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 20;
+}
+
+.logo {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.home-button {
+    color: red;
+    font-size: 24px;
+    max-width: 200px; /* change the width of the button */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    border: 2px solid red;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #000000, #f35252); /*make the color of the button to change from black to red gradually*/
+    transition: all 0.3s ease-in-out; /*add a little delay to make it more smoother*/
+}
+
+.home-button:hover {
+    background: linear-gradient(45deg, #ff0000, #990000); /*make the color of the button to change from light red to dark red gradually*/
+    color: white;
+    border-color: white;
+    transform: scale(1.1); /*make the button bigger and 'jump out'*/
+    cursor: pointer;
+}
