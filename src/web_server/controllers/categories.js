@@ -63,7 +63,6 @@ const getCategories = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-
     // check if the category's id is invalid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(404).json({ error:'Category not found' });

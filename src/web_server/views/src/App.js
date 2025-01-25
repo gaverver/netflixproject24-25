@@ -1,12 +1,16 @@
 import './App.css';
-import './components/menu/menu'
+import { Routes, Route } from 'react-router-dom';
+import DisconnectedHome from './pages/disconnected_home/Home';
+
 
 function App() {
-    return (
-        <div>
-            <Menu userName="gavri" photo='../public/images_for_decoration/gavri.jpg' isLoggedIn={true} isAdmin={true} />
-        </div>
-    );
+  // router for all the pages in the application
+  return (
+    <div className="App">
+      <Routes> 
+        <Route path ="/home" element={<DisconnectedHome />} />
+      </Routes>
+    </div>
+  );
 }
-
 export default App;
