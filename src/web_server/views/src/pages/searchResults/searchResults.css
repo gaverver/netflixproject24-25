@@ -1,0 +1,17 @@
+.results-page {
+    background-color: #141414; /* Netflix-like dark background */
+    padding: 20px; /* Spacing around the content */
+  }
+  
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 movie pictures per row */
+    gap: 20px; /* Space between items */
+    justify-content: center; /* Center the grid horizontally */
+    padding: 20px; /* Spacing inside the grid */
+  }
+
+  .noMoviesText {
+    
+  }
+  
