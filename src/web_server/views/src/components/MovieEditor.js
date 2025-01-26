@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import MoviecatEditor from "./MoviecatEditor";
 
 const MovieEditor = ({id}) => {
     const [name, setName] = useState('');
@@ -67,7 +68,6 @@ const MovieEditor = ({id}) => {
     useEffect(() => {
         if (id) {
         fetchMovie();
-        console.log("hi")
         }
     }, [id]);
 
@@ -137,15 +137,7 @@ const MovieEditor = ({id}) => {
                 />
                 </div>
 
-                <div>
-                <label htmlFor="categories">Categories (comma-separated):</label>
-                <input
-                    type="text"
-                    id="categories"
-                    value={categories.join(", ")}
-                    onChange={(e) => setCategories(e.target.value.split(",").map((c) => c.trim()))}
-                />
-                </div>
+                <MoviecatEditor categories={ categories } setCategories={ setCategories } />
 
                 <div>
                 <label htmlFor="photo">Photo URL:</label>
