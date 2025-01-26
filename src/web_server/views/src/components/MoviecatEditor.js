@@ -15,20 +15,25 @@ const MoviecatEditor = ({ categories, setCategories }) => {
     const handleAdd = async () => {
         const categoryId = newCategory.trim();
         if (categoryId !== "") {
-        try {
-            const response = await fetch(`http://localhost:3001/api/categories/${categoryId}`);
-            if (response.status === 404) {
-            alert(`Category ID ${categoryId} does not exist.`);
-            return;
-            } else if (!response.ok) {
+            try {
+                if (categories.includes(categoryId)) {
+                    alert(`Category ID ${categoryId} already selected.`);
+                    return;
+                }
+                const response = await fetch(`http://localhost:3001/api/categories/${categoryId}`);
+                if (response.status === 404) {
+                alert(`Category ID ${categoryId} does not exist.`);
+                return;
+                } else if (!response.ok) {
+                    alert("An error occurred while checking the category.");
+                    return;
+                }
+        
+                setCategories([...categories, categoryId]);
+                setNewCategory("");
+            } catch (error) {
                 alert("An error occurred while checking the category.");
             }
-    
-            setCategories([...categories, categoryId]);
-            setNewCategory("");
-        } catch (error) {
-            alert("An error occurred while checking the category.");
-        }
         }
     };
 
