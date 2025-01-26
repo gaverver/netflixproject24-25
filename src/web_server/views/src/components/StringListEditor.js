@@ -21,7 +21,7 @@ const StringListEditor = ({ list, setList, label, placeholder, itemName }) => {
     };
 
   return (
-    <div className="moviecat-editor">
+    <div className="stringlist-editor">
       <label>{label}</label>
       <ul>
         {list.map((str, index) => (
