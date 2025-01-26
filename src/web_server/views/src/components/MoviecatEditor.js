@@ -49,6 +49,12 @@ const MoviecatEditor = ({ categories, setCategories }) => {
           placeholder="New category ID"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
+          onKeyPress={ (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                handleAdd();
+            }
+            }}
         />
         <button onClick={handleAdd}>Add Category</button>
       </div>
