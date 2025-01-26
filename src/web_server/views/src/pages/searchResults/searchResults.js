@@ -21,7 +21,7 @@ async function searchResults( {query} ) {
     navigate("/login");
   }
   // else, the user is connected and he can see the results
-  const res = await fetch(`http://localhost:3000/api/movies/search/${query}`);
+  const res = await fetch(`http://localhost:3000/movies/search/${query}`);
   // somthing failed
   if (!res.ok) {
     navigate("/serverError");

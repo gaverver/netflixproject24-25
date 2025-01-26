@@ -34,7 +34,7 @@ const Menu = ({ username, photo, isAdmin }) => {
     // gets the query
     const query = searchText;
     // navigate to see relevant moveis
-    navigate(`/api/movies/search/${query}`);
+    navigate(`/movies/search/${query}`);
   }
 
   // when the user enter text into the search input, this will be called
