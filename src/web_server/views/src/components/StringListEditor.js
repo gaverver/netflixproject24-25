@@ -12,7 +12,7 @@ const StringListEditor = ({ list, setList, label, placeholder, itemName }) => {
     setList(updatedlist);
   };
 
-    const handleAdd = async () => {
+    const handleAddSLE = async () => {
         const item = newItem.trim();
         if (item !== "") {
             setList([...list, item]);
@@ -40,11 +40,11 @@ const StringListEditor = ({ list, setList, label, placeholder, itemName }) => {
           onKeyPress={ (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
-                handleAdd();
+                handleAddSLE();
             }
             }}
         />
-        <button onClick={handleAdd}>Add {itemName}</button>
+        <button onClick={handleAddSLE}>Add {itemName}</button>
       </div>
     </div>
   );
