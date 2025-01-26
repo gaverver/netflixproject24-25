@@ -5,7 +5,7 @@
     font-family: Arial, sans-serif;
   }
   
-  input {
+  .movieautocomplete .SearchInput {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #d9d9d9;
@@ -16,7 +16,7 @@
     transition: border-color 0.2s ease-in-out;
   }
   
-  input:focus {
+  .movieautocomplete .SearchInput:focus {
     border-color: #4285f4;
     box-shadow: 0 4px 6px rgba(66, 133, 244, 0.3);
   }
