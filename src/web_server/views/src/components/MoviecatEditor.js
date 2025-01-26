@@ -22,7 +22,7 @@ const MoviecatEditor = ({ categories, setCategories }) => {
                 }
                 const response = await fetch(`http://localhost:3001/api/categories/${categoryId}`);
                 if (response.status === 404) {
-                alert(`Category ID ${categoryId} does not exist.`);
+                    alert(`Category ID ${categoryId} does not exist.`);
                 return;
                 } else if (!response.ok) {
                     alert("An error occurred while checking the category.");
