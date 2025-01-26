@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MoviecatEditor from "./MoviecatEditor";
 import StringListEditor from "./StringListEditor";
 import "./MovieEditor.css"
+import DBImage from "./DBImage";
 
 const MovieEditor = ({id}) => {
     const [name, setName] = useState('');
@@ -158,6 +159,7 @@ const MovieEditor = ({id}) => {
                     value={photo}
                     onChange={(e) => setPhoto(e.target.value)}
                 />
+                <DBImage photo={photo} />
                 </div>
 
                 <button type="submit">Save Changes</button>
