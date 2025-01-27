@@ -3,9 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Menu from '../../components/menu/menu';
 import MoviePic from '../../components/moviePic/moviePic'
-
-const tokensServices = require('../../../../services/tokens');
-const imagesServices = require('../../../../services/images');
+import { getUserFromToken, convertToURL } from '../../utils';
 
 const SearchResults = () => {
   // Get the query from the URL parameters
@@ -27,7 +25,7 @@ const SearchResults = () => {
       }
 
       // Get the user from the token
-      const user = tokensServices.getUserFromToken(userToken);
+      const user = getUserFromToken(userToken);
       if (!user) {
         return navigate("/login");
       }
@@ -61,7 +59,7 @@ const SearchResults = () => {
       {user && (
         <Menu
           username={user.username}
-          photo={imagesServices.convertToURL(user.picture)}
+          photo={convertToURL(user.picture)}
           isAdmin={user.privilegeLevel === 1}
         />
       )}

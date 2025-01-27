@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./moviePic.css";
 import { useNavigate } from 'react-router-dom';
-
-const imageService = require('../../../../services/images');
+import { getUserFromToken, convertToURL } from "../../utils";
 
 const MoviePic = ({ id }) => {
   // State for movie details
@@ -41,7 +40,7 @@ const MoviePic = ({ id }) => {
   }
 
   // convert the movie's image to a url s.t it will be easy to display it on the screen
-  const imageURL = imageService.convertToURL(movie.photo);
+  const imageURL = convertToURL(movie.photo);
 
   // the react component
   return (

@@ -21,16 +21,4 @@ async function deleteImage(id) {
     return null;
 }
 
-// helper function that get an image id and return a url for the image
-async function convertToURL(id) {
-    const image = await getImageById(id);
-    // if image not found return null
-    if (!image) {
-        return null;
-    }
-    const base64Image = image.data.toString("base64");
-    const imageURL = `data:image/${image.contentType};base64,${base64Image}`;
-    return imageURL;
-}
-
-module.exports = { createImage, getImageById, deleteImage, convertToURL }
+module.exports = { createImage, getImageById, deleteImage }

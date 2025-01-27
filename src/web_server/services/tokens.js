@@ -54,22 +54,4 @@ const privilegeLevelByToken = async (token) => {
     }
 }
 
-// this function will get a token and return the fields as a json of the user beind it or null if failed
-const getUserFromToken = async (token) => {
-    try {
-        // verifying the token
-        const decode = jwt.verify(token, process.env.JWT_SECRET);
-        // gets the user id
-        const userId = decode.userId;
-        // find him in the database
-        const user = await User.findById(userId);
-        // if the user is not found, return null
-        // else return his fields values in a json
-        return user || null;
-    } catch (error) {
-        // if there is no such user or the verification has failed
-        return null;
-    }
-}
-
-module.exports = {createToken, isLoggedIn ,privilegeLevelByToken, getUserFromToken}
+module.exports = {createToken, isLoggedIn ,privilegeLevelByToken}
