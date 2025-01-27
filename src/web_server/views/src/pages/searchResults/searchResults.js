@@ -1,59 +1,83 @@
 import './searchResults.css';
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Menu from '../../components/menu/menu'
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Menu from '../../components/menu/menu';
+import MoviePic from '../../components/moviePic/moviePic'
 
 const tokensServices = require('../../../../services/tokens');
 const imagesServices = require('../../../../services/images');
 
-async function searchResults() {
-  // gets the query from the params
+const SearchResults = () => {
+  // Get the query from the URL parameters
   const { query } = useParams();
-  let noMovies = false;
   const navigate = useNavigate();
-  // if there is no token in sessionStorage then, navigate to "/login" page
-  const userToken = sessionStorage.getItem('jwt');
-  if (!userToken) {
-    navigate("/login");
-  }
-  // get the user from the token
-  const user = tokensServices.getUserFromToken(userToken);
-  // if there is no such user beind that token, navigate to "/login" page
-  if (user === null) { 
-    navigate("/login");
-  }
-  // else, the user is connected and he can see the results
-  const res = await fetch(`http://localhost:3000/api/movies/search/${query}`);
-  // somthing failed
-  if (!res.ok) {
-    navigate("/serverError");
-  }
-  // gets the list of relevant movies
-  const listResults = res.json();
-  // if no movies were found, know it for showing text for the user
-  if (listResults.length() === 0) {
-    noMovies = true;
-  }
 
-  // the html of the page + components
+  // State to manage results and loading state
+  const [listResults, setListResults] = useState([]);
+  const [noMovies, setNoMovies] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Fetch data and handle user authentication
+  useEffect(() => {
+    const fetchData = async () => {
+      // Check if the user is authenticated
+      const userToken = sessionStorage.getItem('jwt');
+      if (!userToken) {
+        return navigate("/login");
+      }
+
+      // Get the user from the token
+      const user = tokensServices.getUserFromToken(userToken);
+      if (!user) {
+        return navigate("/login");
+      }
+      // Store the user in state
+      setUser(user);
+
+      // Fetch the movies based on the search query
+      try {
+        const res = await fetch(`http://localhost:3001/api/movies/search/${query}`);
+        if (!res.ok) {
+          return navigate("/serverError");
+        }
+        
+        // gets the list of results
+        const results = await res.json();
+        setListResults(results);
+        // Check if no movies were found
+        setNoMovies(results.length === 0);
+      } catch (error) {
+        console.error("Failed to fetch movies:", error);
+        navigate("/serverError");
+      }
+    };
+
+    fetchData();
+  }, [query, navigate]); // Dependency array
+
+  // Render the component
   return (
     <div className="results-page">
-      <Menu username={user.username} photo={imagesServices.convertToURL(user.picture)} isAdmin={user.privilegeLevel === 1} />
-      {/* if no movies were found, show that text on the screen */}
-      {noMovies && (
-          <div className="noMoviesText">
-            no movies were found
-          </div>
+      {user && (
+        <Menu
+          username={user.username}
+          photo={imagesServices.convertToURL(user.picture)}
+          isAdmin={user.privilegeLevel === 1}
+        />
       )}
+      {/* Display message if no movies are found */}
+      {noMovies && (
+        <div className="noMoviesText">No movies were found</div>
+      )}
+      {/* Display movies in a grid */}
       <div className="movies-grid">
         {listResults.map((movie) => (
-          <MoviePic id={movie} />
+          <MoviePic id={movie.id} />
         ))}
       </div>
     </div>
   );
-}
+};
 
 
-
-export default searchResults;
+export default SearchResults;
