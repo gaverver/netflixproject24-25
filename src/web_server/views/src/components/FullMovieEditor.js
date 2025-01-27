@@ -8,7 +8,7 @@ function FullMovieEditor() {
     return (
         <div>
             <MovieAutocomplete setId={setId}/>
-            <MovieEditor id={id}/>
+            <MovieEditor id={id} setId={setId}/>
         </div>
     );
 }
