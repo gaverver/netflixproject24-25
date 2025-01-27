@@ -69,11 +69,9 @@ const MovieEditor = ({id}) => {
                     const locationHeader = response.headers.get("Location");
                     if (locationHeader) {
                         const locationId = locationHeader.split("/").pop();
-                        console.log(locationId)
                         setPhoto(locationId)
-                        console.log(photo)
                         updatedMovie.photo = locationId
-                        console.log(updatedMovie.photo)
+                        setSelectedFile(null)
                     }
                 }
 
