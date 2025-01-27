@@ -2,6 +2,7 @@ const Movie = require('../models/movies')
 const utilities = require('./utilities')
 const net = require('net')
 const mongoose = require('mongoose');
+const videoService = require('./videos')
 //functio to create a movie
 const createMovie = async (name, description, actors, published, age_limit, creators, photo, categories, video) => {
     //check if there's a movie with the same name or photo
@@ -62,7 +63,8 @@ const deleteMovie = async (id) => {
     for (const categoryId of movie.categories) {
         await utilities.deleteMovieFromCategory(categoryId, id);
     }
-
+    //delete the video
+    await videoService.DeleteVideoById(movie.video);
     return movie;
 }
 //function to get a movie by its id
