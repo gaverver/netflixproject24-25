@@ -284,7 +284,7 @@ const updateMovie = async (req, res) => {
     if (description === undefined) {
         return res.status(400).json({ error:'Description is required' });
     }
-    if (creators === undefined) {
+    if (creators === undefined || creators.length <= 0) {
         return res.status(400).json({ error:'Creators is required' });
     }
     if (photo === undefined) {
