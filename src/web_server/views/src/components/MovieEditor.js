@@ -3,6 +3,7 @@ import MoviecatEditor from "./MoviecatEditor";
 import StringListEditor from "./StringListEditor";
 import "./MovieEditor.css"
 import DBImage from "./DBImage";
+import ImageUploader from "./ImageUploader";
 
 const MovieEditor = ({id}) => {
     const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const MovieEditor = ({id}) => {
     const [creators, setCreators] = useState([]);
     const [categories, setCategories] = useState([]);
     const [photo, setPhoto] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const fetchMovie = async () => {
         try {
@@ -38,6 +40,25 @@ const MovieEditor = ({id}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        //uploading image first
+        if (selectedFile) {
+            try {
+                const response = await fetch("http://localhost:3001/images", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/octet-stream",
+                },
+                body: new Blob([selectedFile]),
+                });
+        
+                if (!response.ok) {
+                    alert("Failed to upload the file.");
+                }
+            } catch (error) {
+                alert("Failed to upload the file.");
+            }
+        }
+
         const updatedMovie = {
             name,
             description,
@@ -160,6 +181,7 @@ const MovieEditor = ({id}) => {
                     onChange={(e) => setPhoto(e.target.value)}
                 />
                 <DBImage photo={photo} />
+                <ImageUploader selectedFile = {selectedFile} setSelectedFile = {setSelectedFile} />
                 </div>
 
                 <button type="submit">Save Changes</button>
