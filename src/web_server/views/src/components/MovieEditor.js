@@ -157,6 +157,7 @@ const MovieEditor = ({id, setId}) => {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                 />
                 </div>
 
@@ -166,6 +167,7 @@ const MovieEditor = ({id, setId}) => {
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
                 </div>
 
