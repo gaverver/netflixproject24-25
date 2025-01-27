@@ -1,21 +1,20 @@
 .movie-pic-container {
-    display: inline-block;
-    margin: 10px; /* Space between movies */
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .movie-pic {
-    width: 200px; /* Adjust to match Netflix's movie image size */
-    height: 300px; /* Aspect ratio of 2:3 */
-    object-fit: cover; /* Ensures the image fills the area */
-    border-radius: 10px; /* Smooth rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .movie-pic-container:hover .movie-pic {
-    transform: scale(1.1); /* Make it 10% larger */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Intensify the shadow */
-  }
-  
+  display: inline-block;
+  margin: 10px; /* Space between movies */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-pic {
+  width: 150px; /* Reduced width for smaller thumbnails */
+  height: 225px; /* Maintain aspect ratio (2:3) */
+  object-fit: cover; /* Ensures the image fills the area */
+  border-radius: 10px; /* Smooth rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-pic-container:hover .movie-pic {
+  transform: scale(1.1); /* Slight zoom on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Intensify the shadow */
+}

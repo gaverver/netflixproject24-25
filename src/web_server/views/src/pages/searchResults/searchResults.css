@@ -1,23 +1,23 @@
 .results-page {
-    background-color: #141414; /* Netflix-like dark background */
-    padding: 20px; /* Spacing around the content */
-  }
-  
-  .movies-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); /* 6 movie pictures per row */
-    gap: 20px; /* Space between items */
-    justify-content: center; /* Center the grid horizontally */
-    padding: 20px; /* Spacing inside the grid */
-  }
+  background-color: #000; /* Black background for the entire screen */
+  min-height: 100vh; /* Ensure it covers the full height */
+  padding-top: 70px; /* Avoid overlap with fixed menu */
+}
 
-  .noMoviesText {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Take up full height of the screen */
-    color: white; /* White color for text */
-    font-size: 24px; /* Adjust text size as needed */
-    text-align: center; /* Center text */
-  }
-  
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Dynamic resizing */
+  gap: 20px; /* Space between items */
+  justify-content: center; /* Center the grid horizontally */
+  padding: 20px; /* Padding inside the grid */
+}
+
+.noMoviesText {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Take up full height of the screen */
+  color: #e50914; /* Netflix red for the text */
+  font-size: 24px; /* Adjust text size as needed */
+  text-align: center; /* Center text */
+}

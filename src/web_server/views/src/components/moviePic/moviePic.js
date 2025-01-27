@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./moviePic.css";
 import { useNavigate } from 'react-router-dom';
-import { getUserFromToken, convertToURL } from "../../utils";
+
+// import helper functions
+const helper = require('../../utils').default;
 
 const MoviePic = ({ id }) => {
-  // State for movie details
-  const [movie, setMovie] = useState(null);
   // State for error handling
   const [error, setError] = useState(false);
+  const [photoURL, setPhotoURL] = useState(null);
   const navigate = useNavigate();
 
   // this function will be called everytime the 
@@ -17,10 +18,13 @@ const MoviePic = ({ id }) => {
         // Fetch movie details
         const res = await fetch(`http://localhost:3001/api/movies/${id}`);
         if (!res.ok) {
+          // will be catch later
           throw new Error("Failed to fetch movie");
         }
         const data = await res.json();
-        setMovie(data); // Update state with movie details
+        // set the photo into the state
+        const photo = await helper.convertToURL(data.photo);
+        setPhotoURL(photo);
       } catch (err) {
         console.error(err);
         setError(true); // Set error state if fetch fails
@@ -39,13 +43,10 @@ const MoviePic = ({ id }) => {
     navigate("/serverError");
   }
 
-  // convert the movie's image to a url s.t it will be easy to display it on the screen
-  const imageURL = convertToURL(movie.photo);
-
   // the react component
   return (
     <div className="movie-pic-container" onClick={whenClicked}>
-      <img src={imageURL} alt="Movie Poster" className="movie-pic" />
+      <img src={photoURL} alt="Movie Poster" className="movie-pic" />
     </div>
   );
 };

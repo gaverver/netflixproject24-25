@@ -1,6 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import DisconnectedHome from './pages/disconnected_home/Home';
+import SearchResults from './pages/searchResults/searchResults';
 import NotFound from './pages/page404/notFound';
 
 function App() {
