@@ -5,7 +5,7 @@ import "./MovieEditor.css"
 import DBImage from "./DBImage";
 import ImageUploader from "./ImageUploader";
 
-const MovieEditor = ({id}) => {
+const MovieEditor = ({id, setId}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('')
     const [actors, setActors] = useState([]);
@@ -114,6 +114,30 @@ const MovieEditor = ({id}) => {
         fetchMovie()
     };
 
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/api/movies/${id}`, {
+                method: "DELETE"
+            });
+            if (response.status === 404 || response.status === 400) {
+                const errorData = await response.json();
+                alert(errorData.error || `Error: ${response.status}`);
+                return;
+            }
+            if (!response.ok) {
+                alert("try again")
+                return
+            }
+            if (response.status === 204) {
+                alert("deleted successfully")
+                setId('')
+            }
+        
+        } catch (error) {
+            console.error("Error updating movie:", error);
+        }
+    }
+
     useEffect(() => {
         if (id) {
         fetchMovie();
@@ -179,7 +203,10 @@ const MovieEditor = ({id}) => {
                 <ImageUploader selectedFile = {selectedFile} setSelectedFile = {setSelectedFile} />
                 </div>
 
-                <button type="submit">Save Changes</button>
+                <div className="button-container">
+                    <button type="submit" className="save-button">Save Changes</button>
+                    <button type="button" className="delete-button" onClick={handleDelete}>Delete</button>
+                </div>
             </form>
         </div>
     )
