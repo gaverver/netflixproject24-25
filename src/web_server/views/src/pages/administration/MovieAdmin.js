@@ -1,6 +1,7 @@
 import './MovieAdmin.css'
 import React, { useState } from "react";
 import FullMovieEditor from '../../components/FullMovieEditor';
+import MovieCreator from '../../components/MovieCreator';
 
 function MovieAdmin() {
     const [activeTab, setActiveTab] = useState("tab1");
@@ -31,13 +32,7 @@ function MovieAdmin() {
             <FullMovieEditor/>
           )}
           {activeTab === "tab2" && (
-            <div>
-              <h2>Form 2</h2>
-              <form>
-                <label>Email: </label>
-                <input type="email" />
-              </form>
-            </div>
+            <MovieCreator/>
           )}
         </div>
       </div>
