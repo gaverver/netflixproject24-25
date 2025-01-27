@@ -150,7 +150,7 @@ const MovieEditor = ({id, setId}) => {
         return null;
 
     return (
-        <div className="movieeditor">
+        <div className="movieform">
             <form onSubmit={handleSubmit}>
                 <div>
                 <label htmlFor="name">Name:</label>

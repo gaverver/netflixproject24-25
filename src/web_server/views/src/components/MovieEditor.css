@@ -1,5 +1,5 @@
 /* General styling for the movie editor form */
-.movieeditor {
+.movieform {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -125,7 +125,7 @@ button[type="submit"]:active {
     background-color: #1d6b8b;
 }
 
-.movieeditor img {
+.movieform img {
     width: auto;
     height: auto;
     max-width: 100%;
