@@ -1,0 +1,9 @@
+.logo {
+    color: rgb(229, 9, 20);
+    font-weight: bold;
+    font-size: 40px;
+    position: absolute;
+    top: 5px;
+    left: 300px;
+    cursor: pointer;
+}
