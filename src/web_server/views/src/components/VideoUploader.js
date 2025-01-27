@@ -23,7 +23,7 @@ const VideoUploader = ({selectedVideo, setSelectedVideo}) => {
             controls
             src={URL.createObjectURL(selectedVideo)}/>
             <button onClick={() => {
-                const fileInput = document.querySelector('input[type="file" accept="video"]');
+                const fileInput = document.querySelector('input[type="file"][accept="video/*"]');
                 fileInput.value = null;
                 setSelectedVideo(null)
             }}>x</button>
