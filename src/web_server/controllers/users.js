@@ -1,6 +1,6 @@
 const userService = require("../services/users")
 const mongoose = require('mongoose')
-
+const Image = require('../models/images')
 
 const createUser = async (req, res) => {
     // get all the necessary details.
