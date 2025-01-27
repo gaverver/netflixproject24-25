@@ -15,7 +15,10 @@ mongoose.connect(process.env.CONNECTION_STRING,
 useUnifiedTopology: true });
 // Initialize the Express application
 var app = express();
-app.use(cors());
+const corsOptions = {
+    exposedHeaders: ['Location'], // Expose 'Location' header to the client
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.json());
 // Use the API router for all routes starting with /api
