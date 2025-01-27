@@ -147,15 +147,6 @@ const MovieEditor = ({id}) => {
                 />
                 </div>
 
-                {/* <div>
-                <label htmlFor="actors">Actors (comma-separated):</label>
-                <input
-                    type="text"
-                    id="actors"
-                    value={actors.join(", ")}
-                    onChange={(e) => setActors(e.target.value.split(",").map((a) => a.trim()))}
-                />
-                </div> */}
                 <StringListEditor list = {actors} setList = {setActors} label = {"Actors"} placeholder = {"New Actor"} itemName = {"actor"} />
 
                 <div>
@@ -179,15 +170,6 @@ const MovieEditor = ({id}) => {
                 />
                 </div>
 
-                {/* <div>
-                <label htmlFor="creators">Creators (comma-separated):</label>
-                <input
-                    type="text"
-                    id="creators"
-                    value={creators.join(", ")}
-                    onChange={(e) => setCreators(e.target.value.split(",").map((c) => c.trim()))}
-                />
-                </div> */}
 
                 <StringListEditor list = {creators} setList = {setCreators} label = {"Creators"} placeholder = {"New Creator"} itemName = {"creator"} />
 
