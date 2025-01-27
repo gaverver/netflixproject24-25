@@ -47,7 +47,7 @@ const MovieCreator = () => {
             });
     
             if (!response.ok) {
-                alert("Failed to upload the file.");
+                alert("Failed to upload the image.");
                 return;
             }
             if (response.status === 201) {
@@ -59,11 +59,38 @@ const MovieCreator = () => {
                 }
             }
         } catch (error) {
-            alert("Failed to upload the file.");
+            alert("Failed to upload the image.");
             return;
         }
         //uploading video
+        const formData = new FormData();
+        formData.append("video", selectedVideo);
 
+        try {
+            const response = await fetch("http://localhost:3001/videos", {
+                method: "POST",
+                body: formData,
+                headers: {
+                },
+            });
+
+            if (!response.ok) {
+                alert("Failed to upload the video.");
+                return;
+            }
+            if (response.status === 201) {
+                const locationHeader = response.headers.get("Location");
+                if (locationHeader) {
+                    const locationId = locationHeader.split("/").pop();
+                    updatedMovie.video = locationId
+                    setSelectedVideo(null)
+                }
+            }
+
+        } catch (error) {
+            alert("Failed to upload the video.");
+            return
+        }
         //send POST
         try {
             const response = await fetch(`http://localhost:3001/api/movies`, {
