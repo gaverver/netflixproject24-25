@@ -16,13 +16,13 @@ function MovieAdmin() {
             className={`tab ${activeTab === "tab1" ? "active" : ""}`}
             onClick={() => handleTabClick("tab1")}
           >
-            Tab 1
+            Edit/Delete Movie
           </span>
           <span
             className={`tab ${activeTab === "tab2" ? "active" : ""}`}
             onClick={() => handleTabClick("tab2")}
           >
-            Tab 2
+            Add Movie
           </span>
         </div>
   
