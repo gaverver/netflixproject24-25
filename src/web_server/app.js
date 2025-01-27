@@ -1,5 +1,6 @@
 // Import all the required libraries
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -25,15 +26,18 @@ app.use('/api', api);
 app.use('/images', imagesRouter);
 app.use('/videos', videoRouter);
 
-// Catch-all route for everything that doesn't start with /api
-app.all('*', (req, res) => {
-    res.status(404).json({ error: 'Not Found: invalid url request' });
-});
-
 // a variable with the ip and port of the recommendation system
 const recommendConString = process.env.RECOMMEND_CON_STRING
 // load the avatars for the clients.
 app.use(express.static('../../data/avatars'))
+// Serve the React app from the build directory
+app.use(express.static(path.join(__dirname, './views/build')));
+
+// Handle all unmatched routes and serve index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './views/build', 'index.html'));
+});
+
 // run the server on the port from the configuration file
 app.listen(process.env.PORT);
 

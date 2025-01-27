@@ -6,7 +6,9 @@ import Menu from '../../components/menu/menu'
 const tokensServices = require('../../../../services/tokens');
 const imagesServices = require('../../../../services/images');
 
-async function searchResults( {query} ) {
+async function searchResults() {
+  // gets the query from the params
+  const { query } = useParams();
   let noMovies = false;
   const navigate = useNavigate();
   // if there is no token in sessionStorage then, navigate to "/login" page
@@ -21,7 +23,7 @@ async function searchResults( {query} ) {
     navigate("/login");
   }
   // else, the user is connected and he can see the results
-  const res = await fetch(`http://localhost:3000/movies/search/${query}`);
+  const res = await fetch(`http://localhost:3000/api/movies/search/${query}`);
   // somthing failed
   if (!res.ok) {
     navigate("/serverError");
