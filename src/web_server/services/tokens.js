@@ -18,6 +18,23 @@ const createToken = async (user_name, pass) => {
     return token;
 };
 
+// gets a token and return the id of the user beind it
+const getIdFromToken = async (token) => {
+    try {
+        // verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // check if the userId we got from the token is really exists
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        // if not return null
+        if (!user) return null;
+        // else return his id
+        return userId;
+    } catch (error) {
+        return null;
+    }
+};
+
 // helper functions
 
 // this function is boolean and checks if a user is loggedIn
@@ -54,4 +71,4 @@ const privilegeLevelByToken = async (token) => {
     }
 }
 
-module.exports = {createToken, isLoggedIn ,privilegeLevelByToken}
+module.exports = {createToken, isLoggedIn ,privilegeLevelByToken, getIdFromToken}
