@@ -71,6 +71,8 @@ const MovieEditor = ({id, setId}) => {
                         const locationId = locationHeader.split("/").pop();
                         setPhoto(locationId)
                         updatedMovie.photo = locationId
+                        const fileInput = document.querySelector('input[type="file"]');
+                        fileInput.value = null;
                         setSelectedFile(null)
                     }
                 }

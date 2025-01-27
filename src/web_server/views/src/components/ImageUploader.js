@@ -19,7 +19,11 @@ const ImageUploader = ({selectedFile, setSelectedFile}) => {
             <div>
             <p>Selected File: {selectedFile.name}</p>
             <img src = {URL.createObjectURL(selectedFile)}/>
-            <button onClick={() => {setSelectedFile(null)}}>x</button>
+            <button onClick={() => {
+                const fileInput = document.querySelector('input[type="file"]');
+                fileInput.value = null;
+                setSelectedFile(null)
+              }}>x</button>
             </div>
             )}
     </div>
