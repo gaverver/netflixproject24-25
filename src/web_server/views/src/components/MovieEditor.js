@@ -12,7 +12,7 @@ const MovieEditor = ({id}) => {
     const [age_limit, setAge_limit] = useState('');
     const [creators, setCreators] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [photo, setPhoto] = useState('');
+    const [photo, setPhoto] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
     const fetchMovie = async () => {
@@ -40,7 +40,17 @@ const MovieEditor = ({id}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const updatedMovie = {
+            name,
+            description,
+            actors,
+            age_limit,
+            creators,
+            categories,
+            photo
+        };
         //uploading image first
+        const previousPhoto = photo;
         if (selectedFile) {
             try {
                 const response = await fetch("http://localhost:3001/images", {
@@ -53,21 +63,26 @@ const MovieEditor = ({id}) => {
         
                 if (!response.ok) {
                     alert("Failed to upload the file.");
+                    return;
                 }
+                if (response.status === 201) {
+                    const locationHeader = response.headers.get("Location");
+                    if (locationHeader) {
+                        const locationId = locationHeader.split("/").pop();
+                        console.log(locationId)
+                        setPhoto(locationId)
+                        console.log(photo)
+                        updatedMovie.photo = locationId
+                        console.log(updatedMovie.photo)
+                    }
+                }
+
             } catch (error) {
                 alert("Failed to upload the file.");
+                return;
             }
         }
-
-        const updatedMovie = {
-            name,
-            description,
-            actors,
-            age_limit,
-            creators,
-            categories,
-            photo,
-        };
+        //send put
     
         try {
             const response = await fetch(`http://localhost:3001/api/movies/${id}`, {
@@ -77,7 +92,6 @@ const MovieEditor = ({id}) => {
                 },
                 body: JSON.stringify(updatedMovie),
             });
-            console.log(response);
             if (response.status === 404 || response.status === 400) {
                 const errorData = await response.json();
                 alert(errorData.error || `Error: ${response.status}`);
@@ -87,12 +101,19 @@ const MovieEditor = ({id}) => {
                 alert("try again")
                 return
             }
-            if (response.status === 204)
+            if (response.status === 204) {
+                if (selectedFile) {
+                    const response2 = await fetch(`http://localhost:3001/images/${previousPhoto}`, {
+                        method: "DELETE"
+                    })   
+                }
                 alert("update successfully")
+            }
         
         } catch (error) {
             console.error("Error updating movie:", error);
         }
+        fetchMovie()
     };
 
     useEffect(() => {
@@ -173,13 +194,7 @@ const MovieEditor = ({id}) => {
                 <MoviecatEditor categories={ categories } setCategories={ setCategories } />
 
                 <div>
-                <label htmlFor="photo">Photo URL:</label>
-                <input
-                    type="text"
-                    id="photo"
-                    value={photo}
-                    onChange={(e) => setPhoto(e.target.value)}
-                />
+                <label htmlFor="photo">Photo:</label>
                 <DBImage photo={photo} />
                 <ImageUploader selectedFile = {selectedFile} setSelectedFile = {setSelectedFile} />
                 </div>
