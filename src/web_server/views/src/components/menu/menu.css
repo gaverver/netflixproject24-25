@@ -1,4 +1,5 @@
-/* General Menu Styles */
+/* STYLING OF THE MENU COMPONENT */
+
 .menu {
   display: flex;
   justify-content: space-between; /* Space out sections */
@@ -16,7 +17,7 @@
 
 /* Dark Mode */
 .menu.dark-mode {
-  background-color: #555;
+  background-color: #c4baba;
   color: #fff;
 }
 
@@ -68,7 +69,7 @@
   display: flex;
   align-items: center;
   gap: 1rem; /* Space between buttons */
-  margin-left: -4rem; /* Move the buttons more to the left */
+  margin-left: -6rem; /* Move the buttons more to the left */
 }
 
 /* Red Buttons */
@@ -92,15 +93,15 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #e50914;
-  margin-left: -7.5rem; /* Move the logo slightly more to the left */
+  margin-left: -8rem; /* Move the logo more to the left */
   margin-right: 2rem; /* Keep some space to the right of the logo */
-  margin-top: -0.5rem; /* Move the logo slightly upwards */
+  margin-top: -1rem; /* Move the logo more upwards */
   position: relative; /* Add position relative for fine-tuning */
-  top: -2px; /* Fine-tune vertical position */
+  top: -0.7rem; /* Fine-tune vertical position */
+  left: -0.5rem;
 }
 
 .logo a {
   color: inherit; /* Ensure the link inherits the red color */
   text-decoration: none;
 }
-

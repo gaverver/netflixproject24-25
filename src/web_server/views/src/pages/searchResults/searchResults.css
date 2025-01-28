@@ -1,7 +1,14 @@
+/* STYLING OF THE SEARCHRESULTS PAGE */
+
 .results-page {
   background-color: #000; /* Black background for the entire screen */
   min-height: 100vh; /* Ensure it covers the full height */
   padding-top: 70px; /* Avoid overlap with fixed menu */
+}
+
+/* Dark Mode Styles */
+body.dark-mode .results-page {
+  background-color: #c4baba; /* Dark background for the results page */
 }
 
 .movies-grid {
@@ -16,8 +23,12 @@
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  height: 100vh; /* Take up full height of the screen */
-  color: #e50914; /* Netflix red for the text */
+  height: 70vh; /* Take up full height of the screen */
+  color: #fff; /* Netflix red for the text */
   font-size: 24px; /* Adjust text size as needed */
   text-align: center; /* Center text */
+}
+
+body.dark-mode .noMoviesText {
+  color: #000 /* Dark background for the text that shown if no movies were found */
 }

@@ -8,6 +8,7 @@ const helper = require('../../utils').default;
 const MoviePic = ({ id }) => {
   // State for error handling
   const [error, setError] = useState(false);
+  // State for the URL (after convert) of the photo of the movie
   const [photoURL, setPhotoURL] = useState(null);
   const navigate = useNavigate();
 
