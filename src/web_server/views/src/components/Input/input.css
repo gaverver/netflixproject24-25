@@ -11,8 +11,26 @@
     transition: all 0.3s ease; /*make the transition to the focus slower*/
 }
 
-/* Optional: Add styles for when the input is focused */
+
 .email-input:focus {
     border-color: #000000; /* Changes the border color on focus */
     box-shadow: 0 0 8px rgba(255, 255, 255, 255); /* Adds a blue glow on focus */
+}
+
+.label-input {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f8f9fa; /* Slightly softer white */
+    text-transform: capitalize;
+    letter-spacing: 0.75px;
+    opacity: 0.95;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* hover effect for an interactive feel */
+.label-input:hover {
+    opacity: 1;
+    transform: translateY(-1px);
 }
