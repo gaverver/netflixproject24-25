@@ -10,6 +10,7 @@ function CategoryAdmin() {
     const [categoryId, setCategoryId] = useState(null);
     const handleTabClick = (tab) => {
       setActiveTab(tab);
+      setCategoryId(null);
     };
   
     return (
@@ -37,7 +38,6 @@ function CategoryAdmin() {
                 <input
                     type="text"
                     id="category-id"
-                    value={categoryId}
                 />
                 <button 
                     type="button" 
@@ -46,7 +46,7 @@ function CategoryAdmin() {
                     search category
                 </button>
                 </div>
-            <CategoryEditor categoryId={categoryId}/>
+            <CategoryEditor categoryId={categoryId} setCategoryId={setCategoryId}/>
             </div>
           )}
           {activeTab === "tab2" && (

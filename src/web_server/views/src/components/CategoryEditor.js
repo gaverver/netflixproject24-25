@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MovieAutocomplete from "./MovieAutocomplete";
 
-const CategoryEditor = ( {categoryId} ) => {
+const CategoryEditor = ( {categoryId, setCategoryId} ) => {
     const [name, setName] = useState(null);
     const [promoted, setPromoted] = useState(false)
     const [movieIds, setMovieIds] = useState([]);
@@ -19,19 +19,19 @@ const CategoryEditor = ( {categoryId} ) => {
             setName(data.name)
             setPromoted(data.promoted)
             setMovieIds(data.movieIds)
-            const nameList = [];
+            let nameList = [];
             for (const id of data.movieIds) {
                 const response = await fetch(`http://localhost:3001/api/movies/${id}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const movieData = await response.json();
                 nameList = [...nameList, movieData.name];
             }
             setMovieNames(nameList)
 
         } catch (error) {
+            setName(null)
             // console.error('Error fetching movies:', error);
         }
 
@@ -52,6 +52,7 @@ const CategoryEditor = ( {categoryId} ) => {
                 return
             }
             if (response.status === 204) {
+                setCategoryId(null);
                 alert("deleted successfully")
             }
         
@@ -74,7 +75,7 @@ const CategoryEditor = ( {categoryId} ) => {
         };
         //send POST
         try {
-            const response = await fetch(`http://localhost:3001/api/categories`, {
+            const response = await fetch(`http://localhost:3001/api/categories/${categoryId}`, {
                 method: "PATCH",
                 headers: {
                 "Content-Type": "application/json",
@@ -90,8 +91,8 @@ const CategoryEditor = ( {categoryId} ) => {
                 alert("try again")
                 return
             }
-            if (response.status === 201) {
-                alert("created successfully")
+            if (response.status === 204) {
+                alert("updated successfully")
             }
         
         } catch (error) {
@@ -134,8 +135,10 @@ const CategoryEditor = ( {categoryId} ) => {
         updateMovies()
     }, [currentId]);
 
-
-    fetchCategory();
+    useEffect(() => {
+        fetchCategory();
+    }, [categoryId]);
+    
     if (!name) {
         return null;
     }
