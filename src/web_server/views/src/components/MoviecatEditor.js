@@ -44,7 +44,7 @@ const MoviecatEditor = ({ categories, setCategories }) => {
         {categories.map((category, index) => (
           <li key={index}>
             {category} 
-            <button onClick={() => handleDelete(index)}>Delete</button>
+            <button type="button" onClick={() => handleDelete(index)}>Delete</button>
           </li>
         ))}
       </ul>
@@ -61,7 +61,7 @@ const MoviecatEditor = ({ categories, setCategories }) => {
             }
             }}
         />
-        <button onClick={handleAdd}>Add Category</button>
+        <button type="button" onClick={handleAdd}>Add Category</button>
       </div>
     </div>
   );

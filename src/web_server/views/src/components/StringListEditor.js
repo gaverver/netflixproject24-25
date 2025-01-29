@@ -27,7 +27,7 @@ const StringListEditor = ({ list, setList, label, placeholder, itemName }) => {
         {list.map((str, index) => (
           <li key={index}>
             {str} 
-            <button onClick={() => handleDelete(index)}>Delete</button>
+            <button type="button" onClick={() => handleDelete(index)}>Delete</button>
           </li>
         ))}
       </ul>
@@ -44,7 +44,7 @@ const StringListEditor = ({ list, setList, label, placeholder, itemName }) => {
             }
             }}
         />
-        <button onClick={handleAddSLE}>Add {itemName}</button>
+        <button type="button" onClick={handleAddSLE}>Add {itemName}</button>
       </div>
     </div>
   );
