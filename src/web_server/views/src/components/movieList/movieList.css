@@ -1,0 +1,57 @@
+.movies-line {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.category-name {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.movies-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.movies-wrapper {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 10px; /* Space between movies */
+    white-space: nowrap; /* Prevents wrapping */
+    width: calc(100% - 100px); /* Adjust according to button sizes */
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+.movies-wrapper::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Webkit browsers */
+}
+
+.scroll-left-button, .scroll-right-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.scroll-left-button {
+    left: 0;
+}
+
+.scroll-right-button {
+    right: 0;
+}
+
+.scroll-left-button:disabled,
+.scroll-right-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
