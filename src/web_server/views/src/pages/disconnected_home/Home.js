@@ -1,7 +1,7 @@
 import './Home.css';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../../components/input"
+import Input from "../../components/Input/input"
 
 function Home() {
   const navigate = useNavigate();
@@ -31,8 +31,7 @@ function Home() {
       <button id="sign-in" onClick={handleSignInClick}>Sign In</button>
       <h1>Unlimited Movies</h1>
       <form onSubmit={handleFormSubmission}>
-        <h4>Ready to watch? Enter your email to create an account and start watching movies</h4>
-        <Input className="email-input" autoComplete="email" type="email" placeHolder="Email Address" value={email} onChange={handleEmailChange} required="required"/>
+        <Input text="Ready to watch? Enter your email to create an account and start watching movies" className="email-input" type="email" placeHolder="Email Address" value={email} onChange={handleEmailChange} required="required"/>
         <button id="register">Get Started {'>'}</button>
       </form>
     </div>

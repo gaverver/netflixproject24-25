@@ -1,4 +1,3 @@
-// Import all the required libraries
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,9 +5,11 @@ const mongoose = require('mongoose');
 const path = require('path'); // For serving static files
 
 // Import the router for handling API routes and images router
+
 const api = require('./routes/api');
 const imagesRouter = require('./routes/images');
 const videoRouter = require('./routes/videos');
+
 
 // Load environment variables from the configuration file based on the current environment
 require('custom-env').env(process.env.NODE_ENV, './config');
@@ -21,7 +22,11 @@ mongoose.connect(process.env.CONNECTION_STRING, {
 
 // Initialize the Express application
 const app = express();
-app.use(cors());
+const corsOptions = {
+    exposedHeaders: ['Location'], // Expose 'Location' header to the client
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 

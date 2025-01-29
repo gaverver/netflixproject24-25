@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import DisconnectedHome from './pages/disconnected_home/Home';
 import SearchResults from './pages/searchResults/searchResults';
+import Register from './pages/registration/Register';
 import NotFound from './pages/page404/notFound';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes> 
         <Route path ="/home" element={<DisconnectedHome />} />
         <Route path="/movies/search/:query" element={<SearchResults />} />
+        <Route path ="/register" element={<Register />} />
         <Route path ="/*" element={<NotFound />} />
       </Routes>
     </div>
