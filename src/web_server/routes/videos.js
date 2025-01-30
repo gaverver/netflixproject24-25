@@ -1,7 +1,7 @@
 const express = require('express');
 const videoController = require('../controllers/videos');
 const videoService = require('../services/videos');
-const tokenController = require('../../controllers/tokens');
+const tokenController = require('../controllers/tokens');
 
 const router = express.Router();
 
