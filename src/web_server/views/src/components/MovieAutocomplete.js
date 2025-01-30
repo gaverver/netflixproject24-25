@@ -54,7 +54,7 @@ const MovieAutocomplete = ({setId}) => {
 
   return (
     <div className="movieautocomplete">
-      <input
+      <input className="SearchInput"
         type="text"
         value={query}
         onChange={handleChange}
