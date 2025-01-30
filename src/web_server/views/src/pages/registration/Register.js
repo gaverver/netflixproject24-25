@@ -83,7 +83,7 @@ function Register () {
         const blob = new Blob([binaryArray], { type: "application/octet-stream" });
         try {
             // fetch a POST request to the web-server for creating an image with the entered image
-            const imageResponse = await fetch("http://localhost:3001/images", {
+            const imageResponse = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images`, {
                 method: 'POST',
                 body: blob,
                 headers: {
@@ -110,7 +110,7 @@ function Register () {
                 picture
             };
             // create a user with the entered information
-            const userResponse = await fetch('http://localhost:3001/api/users', {
+            const userResponse = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ function Register () {
                 password
             };
 
-            const tokenResponse = await fetch('http://localhost:3001/api/tokens', {
+            const tokenResponse = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
