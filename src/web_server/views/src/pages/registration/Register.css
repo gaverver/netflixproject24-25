@@ -136,4 +136,14 @@ button[type="button"] {
     transform: translateY(-1px);
 }
 
+.loginLink {
+    color: #e50914;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}
+
 

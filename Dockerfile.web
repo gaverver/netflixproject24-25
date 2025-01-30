@@ -14,7 +14,7 @@ RUN npm install
 COPY . /usr/src/Netflix
 
 # Set the working directory for your application
-WORKDIR /usr/src/Netflix/src/web_server
+WORKDIR /usr/src/Netflix/src/web_server/views
 
 # Accept three arguments during the build process
 ARG CONNECTION_STRING
@@ -23,12 +23,20 @@ ARG CPP_IP
 ARG CPP_PORT
 ARG JWT_SECRET
 
+RUN echo "REACT_APP_PORT=${PORT}" > .env.local
+RUN npm install
+RUN npm run build
+
+WORKDIR /usr/src/Netflix/src/web_server
+RUN npm install
 # Create a .env.local file with the passed arguments
 RUN mkdir -p ./config && \
     echo "CONNECTION_STRING=${CONNECTION_STRING}" > ./config/.env.local && \
     echo "PORT=${PORT}" >> ./config/.env.local && \
     echo "RECOMMEND_CON_STRING=${CPP_IP}:${CPP_PORT}" >> ./config/.env.local && \
     echo "JWT_SECRET=${JWT_SECRET}" >> ./config/.env.local
+
+
 
 # Expose the port your app runs on (adjust if necessary)
 EXPOSE 8080
