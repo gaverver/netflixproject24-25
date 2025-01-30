@@ -1,5 +1,6 @@
 const videoService = require('../services/videos');
 const mongoose = require('mongoose')
+const fs = require('fs');
 
 const uploadVideo = async (req, res) => {
     try {
@@ -40,6 +41,31 @@ const getVideoById = async (req, res) => {
     }
 }
 
+
+const streamVideoById = async (req, res) => {
+    const videoId = req.params.id;
+    // Get the video’s actual location and size
+    x = await videoService.getVideoById(videoId);
+    const videoPath = (await videoService.getVideoById(videoId)).filePath;
+    const leSize = fs.statSync(videoPath).size;
+    // Extract the range requested by the browser
+    const range = req.headers.range;
+    const parts = range.substring(6).split('-');
+    const start = parseInt(parts[0]);
+    const chunk_size = 10 ** 6; // 1MB
+    const end = Math.min(start + chunk_size, leSize - 1);
+    const le = fs.createReadStream(videoPath, { start, end });
+    // Stream requested chunk
+    const head = {
+        'Content-Range': `bytes ${start}-${end}/${leSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunk_size,
+        'Content-Type': 'video/mp4',
+    };
+    res.writeHead(206, head);
+    le.pipe(res);
+}
+
 const DeleteVideoById = async (req, res) => {
     const id = req.params.id
     // check if the video's id is invalid
@@ -63,5 +89,6 @@ const DeleteVideoById = async (req, res) => {
 module.exports = {
     getVideoById,
     uploadVideo,
+    streamVideoById
     DeleteVideoById
 };
