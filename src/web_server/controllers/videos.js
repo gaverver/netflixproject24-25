@@ -89,6 +89,6 @@ const DeleteVideoById = async (req, res) => {
 module.exports = {
     getVideoById,
     uploadVideo,
-    streamVideoById
+    streamVideoById,
     DeleteVideoById
 };
