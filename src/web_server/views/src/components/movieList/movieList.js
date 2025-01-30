@@ -1,70 +1,4 @@
 import './movieList.css';
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import MoviePic from '../moviePic/moviePic'
-
-const MovieList = ({ list, contentType }) => {
-    const [List, setList] = useState([]);
-    const [isScroll, setScroll] = useState(false);
-    const [howMatchLeftScrolls, setLeftScrollsAmount] = useState(0);
-    const [howMatchRightScrolls, setRightScrollsAmount] = useState(0);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        // setting the list of movies from the input to this function
-        setList(list);
-        // only if there are more then 7 movies, scroll button is needed because the screen is too small
-        // (according to my screen size at least)
-        setScroll(list.length > 7);
-    }, []);
-
-    // this function will be called everytime the amount of right/left scrolls changes
-    useEffect(() => {
-        // actual scroll
-
-    }, [howMatchLeftScrolls, howMatchRightScrolls])
-
-    // a function to scroll between movies
-    const scroll = async () => {
-
-    }
-
-    return (
-        <div className='movies-line'>
-          <div className='category-name'>
-            {contentType}
-          </div>
-          <div>
-            {List.map((movieId) => (
-                <MoviePic key={movieId} id={movieId} />
-            ))}
-          </div>
-          <div>
-            {isScroll && (
-                <><button className='scroll-left-button' onClick={scroll("left")}>
-                    <img src='images_for_decoration/scroll_icon.jpg' />
-                </button>
-                <button className='scroll-right-button' onClick={scroll("right")}>
-                    <img src='images_for_decoration/scroll_icon.jpg' />
-                </button></>
-            )}
-          </div>
-        </div>
-    );
-};
-
-export default MovieList;
-
-
-
-
-
-
-
-
-/* ANOTHER VERSION:
-
-import './movieList.css';
 import React, { useState, useEffect, useRef } from 'react';
 import MoviePic from '../moviePic/moviePic';
 
@@ -128,5 +62,3 @@ const MovieList = ({ list, contentType }) => {
 };
 
 export default MovieList;
-
-*/

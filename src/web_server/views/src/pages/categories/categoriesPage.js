@@ -1,4 +1,4 @@
-import './searchResults.css';
+import './categoriesPage.css';
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Menu from '../../components/menu/menu';
@@ -66,7 +66,7 @@ const CategoriesPage = () => {
 
   // Render the component
   return (
-    <div className="results-page">
+    <div className="categories-page">
       {/* the top menu component */}
       {user && (
         <Menu
