@@ -1,20 +1,23 @@
-import './MovieAdmin.css'
+import './CategoryAdmin.css'
 import React, { useState } from "react";
 import FullMovieEditor from '../../components/FullMovieEditor';
 import MovieCreator from '../../components/MovieCreator';
 import CategoryCreator from '../../components/CategoryCreator'
 import CategoryEditor from '../../components/CategoryEditor';
+import { useNavigate } from "react-router-dom";
 
 function CategoryAdmin() {
     const [activeTab, setActiveTab] = useState("tab1");
     const [categoryId, setCategoryId] = useState(null);
+    const navigate = useNavigate();
     const handleTabClick = (tab) => {
       setActiveTab(tab);
       setCategoryId(null);
     };
   
     return (
-      <div>
+      <div className="movie-admin-container">
+        <button className="admin-page-button" onClick={() => navigate("/admin")}>Admin Page</button>
         <div className="tabs">
           <span
             className={`tab ${activeTab === "tab1" ? "active" : ""}`}

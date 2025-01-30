@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MovieAutocomplete from "./MovieAutocomplete";
+import "./CategoryEditor.css"
 
 const CategoryEditor = ( {categoryId, setCategoryId} ) => {
     const [name, setName] = useState(null);

@@ -2,16 +2,19 @@ import './MovieAdmin.css'
 import React, { useState } from "react";
 import FullMovieEditor from '../../components/FullMovieEditor';
 import MovieCreator from '../../components/MovieCreator';
+import { useNavigate } from "react-router-dom";
 
 function MovieAdmin() {
     const [activeTab, setActiveTab] = useState("tab1");
+    const navigate = useNavigate();
 
     const handleTabClick = (tab) => {
       setActiveTab(tab);
     };
   
     return (
-      <div>
+      <div className="movie-admin-container">
+        <button className="admin-page-button" onClick={() => navigate("/admin")}>Admin Page</button>
         <div className="tabs">
           <span
             className={`tab ${activeTab === "tab1" ? "active" : ""}`}
