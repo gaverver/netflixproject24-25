@@ -12,8 +12,10 @@ const Menu = ({ username, photo, isAdmin }) => {
   useEffect(() => {
     // gets the mode (dark/light) from the localStorage and save it
     const savedMode = localStorage.getItem('darkMode');
+    // if darkmode is applied, set it
     if (savedMode === 'true') {
       setIsDarkMode(true);
+      // this line is creating a subclass of the body tag, used to decorate the components-darkmode
       document.body.classList.add('dark-mode');
     }
   }, []);
@@ -29,22 +31,21 @@ const Menu = ({ username, photo, isAdmin }) => {
     document.body.classList.toggle('dark-mode', newMode);
   };
 
-  // this will search for moveis with the current query
-  const searchForMovies = () => {
-    // gets the query
-    const query = searchText;
-    // navigate to see relevant moveis
-    navigate(`/api/movies/search/${query}`);
-  }
+  // Trigger search navigation when searchText changes (only when it changes, then navigate)
+  useEffect(() => {
+    // trim is for checking that the text isn't empty because then, navigate could lead to notFoundPage  
+    if (searchText.trim()) {
+      navigate(`/movies/search/${searchText}`);
+    }
+  }, [searchText, navigate]); // Whenever searchText changes, activate this function
 
   // when the user enter text into the search input, this will be called
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     // getting the text
     const text = e.target.value;
     // set it to the global variable
     setSearchText(text);
-    // search for movies using search query
-    searchForMovies();
+    /* Now, ONLY! when the set is done, the useEffect above will be called, and navigate will be used */
   }
 
   // this will be called if the signout button is pushed
@@ -65,8 +66,7 @@ const Menu = ({ username, photo, isAdmin }) => {
 
       {/* Search Section */}
       <div className="search-section">
-        <input type="text" placeholder="Search" onChange={(e) => handleSearch(e)}
-        onKeyDown={(e) => handleSearch(e)} className="search-input" />
+        <input type="text" placeholder="Search" onChange={handleSearch} className="search-input" />
         <img
           src="/images_for_decoration/search_icon.jpg"
           alt="Search"
@@ -90,7 +90,7 @@ const Menu = ({ username, photo, isAdmin }) => {
         )}
 
         {/* Categories page button */}
-        <Link to="/api/categories" className="action-button">
+        <Link to="/categories" className="action-button">
           Categories
         </Link>
 

@@ -21,12 +21,14 @@ ARG CONNECTION_STRING
 ARG PORT
 ARG CPP_IP
 ARG CPP_PORT
+ARG JWT_SECRET
 
 # Create a .env.local file with the passed arguments
 RUN mkdir -p ./config && \
     echo "CONNECTION_STRING=${CONNECTION_STRING}" > ./config/.env.local && \
     echo "PORT=${PORT}" >> ./config/.env.local && \
-    echo "RECOMMEND_CON_STRING=${CPP_IP}:${CPP_PORT}" >> ./config/.env.local
+    echo "RECOMMEND_CON_STRING=${CPP_IP}:${CPP_PORT}" >> ./config/.env.local && \
+    echo "JWT_SECRET=${JWT_SECRET}" >> ./config/.env.local
 
 # Expose the port your app runs on (adjust if necessary)
 EXPOSE 8080

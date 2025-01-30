@@ -1,9 +1,11 @@
-/* General Menu Styles */
+/* STYLING OF THE MENU COMPONENT */
+
 .menu {
   display: flex;
+  justify-content: space-between; /* Space out sections */
   align-items: center;
-  padding: 1rem 0rem;
-  background-color: #141414; /* Default background */
+  padding: 1rem 2rem; /* Add horizontal padding */
+  background-color: #141414; /* Netflix-like black background */
   color: #fff;
   position: fixed;
   top: 0;
@@ -15,7 +17,7 @@
 
 /* Dark Mode */
 .menu.dark-mode {
-  background-color: #555;
+  background-color: #c4baba;
   color: #fff;
 }
 
@@ -23,13 +25,11 @@
 .user-info {
   display: flex;
   align-items: center;
-  margin-right: 2rem;
-  margin-left: 1rem;
 }
 
 .user-photo {
-  width: 50px;
-  height: 50px;
+  width: 40px; /* Smaller photo */
+  height: 40px;
   border-radius: 50%;
   margin-right: 1rem;
 }
@@ -41,23 +41,26 @@
 
 /* Search Section */
 .search-section {
+  margin-left: -8rem; /* Adjusted to balance the layout */
   display: flex;
   align-items: center;
-  margin-right: auto;
+  flex-grow: 1; /* Let it expand */
+  justify-content: center;
 }
 
 .search-input {
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 6px;
-  background-color: #000;
+  background-color: #333;
   color: #fff;
+  width: 40%; /* Make search bar wider */
 }
 
 .search-icon {
-  width: 32px;
-  height: 32px;
-  margin-left: 0rem;
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
   cursor: pointer;
 }
 
@@ -65,29 +68,20 @@
 .actions {
   display: flex;
   align-items: center;
-  margin-right: -20rem;
+  gap: 1rem; /* Space between buttons */
+  margin-left: -6rem; /* Move the buttons more to the left */
 }
 
-.action-button {
-  margin-left: 1rem;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  background-color: #e50914; /* Netflix red for buttons */
-  color: #fff;
-  border-radius: 4px;
-  font-size: 0.9rem;  
-  transition: background-color 0.3s;
-}
-
+/* Red Buttons */
+.action-button,
 .action-button-nightMode {
-  margin-left: 1rem;
   padding: 0.5rem 1rem;
-  text-decoration: none;
-  background-color: #e50914; /* Netflix red for buttons */
+  background-color: #e50914; /* Netflix red */
   color: #fff;
   border-radius: 4px;
-  font-size: 0.9rem;  
-  transition: background-color 0.3s;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
 .action-button:hover {
@@ -96,19 +90,18 @@
 
 /* Logo Styling */
 .logo {
-  margin-left: 21rem; /* Push logo to the left */
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #e50914; /* Make logo text red */
-  text-align: left;
-  margin-right: 1rem;
+  color: #e50914;
+  margin-left: -8rem; /* Move the logo more to the left */
+  margin-right: 2rem; /* Keep some space to the right of the logo */
+  margin-top: -1rem; /* Move the logo more upwards */
+  position: relative; /* Add position relative for fine-tuning */
+  top: -0.7rem; /* Fine-tune vertical position */
+  left: -0.5rem;
 }
 
 .logo a {
   color: inherit; /* Ensure the link inherits the red color */
-  text-decoration: none; /* Remove underline from link */
-}
-
-.logo a:hover {
-  text-decoration: underline; /* Add underline on hover */
+  text-decoration: none;
 }
