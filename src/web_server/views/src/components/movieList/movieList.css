@@ -21,16 +21,26 @@
     overflow-x: auto;
     scroll-behavior: smooth;
     gap: 10px; /* Space between movies */
-    white-space: nowrap; /* Prevents wrapping */
-    width: calc(100% - 100px); /* Adjust according to button sizes */
+    padding: 10px; /* Prevent movies from sticking to edges */
     scrollbar-width: none; /* Hide scrollbar */
+    flex-wrap: nowrap; /* Prevents wrapping */
+    justify-content: flex-start; /* Align movies to the left */
 }
 
 .movies-wrapper::-webkit-scrollbar {
     display: none; /* Hide scrollbar for Webkit browsers */
 }
 
-.scroll-left-button, .scroll-right-button {
+/* Ensure each movie keeps its fixed size */
+.movies-wrapper > * {
+    flex: 0 0 auto; /* Prevent shrinking */
+}
+
+.scroll-left-button,
+.scroll-right-button {
+    font-size: 40px; /* Increase size of < and > */
+    font-weight: bold; /* Make them thicker */
+    color: white; /* Match the theme */
     background: none;
     border: none;
     cursor: pointer;
@@ -40,6 +50,24 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.dark-mode .scroll-left-button,
+body.dark-mode .scroll-right-button {
+    color: black;
+}
+
+.scroll-left-button,
+.scroll-right-button {
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease;
+}
+
+.movies-container:hover .scroll-left-button,
+.movies-container:hover .scroll-right-button {
+    opacity: 1; /* Show on hover */
 }
 
 .scroll-left-button {
@@ -54,4 +82,9 @@
 .scroll-right-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.scroll-left-button:hover,
+.scroll-right-button:hover {
+    background: none; /* Removes background on hover */
 }

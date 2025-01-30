@@ -14,3 +14,7 @@
     gap: 20px;
     padding: 20px;
 }
+
+body.dark-mode .categories-page{
+    background-color: #c4baba;
+}

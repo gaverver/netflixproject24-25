@@ -41,7 +41,7 @@ const MovieList = ({ list, contentType }) => {
             <div className="movies-container">
                 {canScrollLeft && (
                     <button className="scroll-left-button" onClick={() => scroll("left")}>
-                        <img src="images_for_decoration/scroll_icon.jpg" alt="Left" />
+                        &lt;
                     </button>
                 )}
 
@@ -53,7 +53,7 @@ const MovieList = ({ list, contentType }) => {
 
                 {canScrollRight && (
                     <button className="scroll-right-button" onClick={() => scroll("right")}>
-                        <img src="images_for_decoration/scroll_icon.jpg" alt="Right" />
+                        &gt;
                     </button>
                 )}
             </div>
