@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import DisconnectedHome from './pages/disconnected_home/Home';
 import Register from './pages/registration/Register';
 import NotFound from './pages/page404/notFound';
-
+import Login from './pages/login/Login'
 
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
       <Routes> 
         <Route path ="/home" element={<DisconnectedHome />} />
         <Route path ="/register" element={<Register />} />
+        <Route path ="/login" element={<Login />} />
         <Route path ="/*" element={<NotFound />} />
       </Routes>
     </div>
