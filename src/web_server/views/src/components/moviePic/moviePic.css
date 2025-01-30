@@ -1,0 +1,60 @@
+/* STYLING OF THE MOVIEPIC COMPONENT */
+
+.movie-pic-container {
+  display: inline-block;
+  margin: 10px; /* Space between movies */
+  cursor: pointer;
+  width: 150px; /* Set a fixed width to match the image */
+  height: 225px; /* Set a fixed height to match the image */
+  position: relative; /* Add positioning context */
+  overflow: hidden; /* Hide overflow when image scales */
+  border-radius: 10px; /* Smooth rounded corners */
+}
+
+.movie-pic {
+  width: 100%; /* Fill the container */
+  height: 100%; /* Fill the container */
+  object-fit: cover; /* Ensures the image fills the area */
+  border-radius: 10px; /* Smooth rounded corners */
+  transition: transform 0.3s ease;
+}
+
+.movie-pic-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1); /* Slight overlay for depth */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.movie-pic-container:hover::before {
+  opacity: 1;
+}
+
+.movie-pic-container:hover .movie-pic {
+  transform: scale(1.1);
+}
+
+.movie-pic-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+  pointer-events: none; /* Ensures clicks go through to the image */
+}
+
+.movie-pic-container:hover::after {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Intensify the shadow */
+}
+

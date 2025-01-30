@@ -1,0 +1,16 @@
+.register-line {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%; /* Ensure the line takes full width */
+  }
+  
+  .register-line > div {
+    flex: 1; /* Make each input container take equal space */
+    width: 50%; /* Ensure each container takes exactly half the space */
+  }
+  
+  .register-line input {
+    width: 100%; /* Make inputs fill their containers */
+  }
+  

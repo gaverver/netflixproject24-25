@@ -1,0 +1,139 @@
+.backgroundImage {
+    background-image: url('../../../public/images_for_decoration/background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Full screen height */
+    display: flex;
+    flex-direction: column;
+    /*align everything to the center*/
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-family: 'Roboto', sans-serif; /* Special font */
+}
+
+
+
+
+.register-place {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.6);
+    max-width: 600px;
+    width: 100%;
+}
+
+.reg {
+    margin: 0;
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.register-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between fields */
+}
+
+.register-fields input,
+.register-fields button {
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.register-fields input {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+
+.register-fields button {
+    background-color: #e50914;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0px 4px 8px rgba(229, 9, 20, 0.6);
+}
+
+.register-fields button:hover {
+    background-color: #f30b1b;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(229, 9, 20, 0.8);
+}
+/*decoration for toast messages - show them in the top part of the screen in different colors*/
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    z-index: 1000;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(10px);
+}
+
+img[alt="Preview"] {
+    display: block;
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+    object-fit: cover;
+}
+
+button[type="button"] {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.image-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f8f9fa; /* Slightly softer white */
+    text-transform: capitalize;
+    letter-spacing: 0.75px;
+    opacity: 0.95;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover effect for a slight interactive feel */
+.image-label:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+

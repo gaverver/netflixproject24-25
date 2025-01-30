@@ -4,7 +4,9 @@ import DisconnectedHome from './pages/disconnected_home/Home';
 import Admin from './pages/administration/Admin';
 import MovieAdmin from './pages/administration/MovieAdmin';
 import CategoryAdmin from './pages/administration/CategoryAdmin';
-
+import SearchResults from './pages/searchResults/searchResults';
+import Register from './pages/registration/Register';
+import NotFound from './pages/page404/notFound';
 function App() {
   // router for all the pages in the application
   return (
@@ -14,8 +16,13 @@ function App() {
         <Route path ="/admin" element={<Admin />} />
         <Route path="/admin/movies" element={<MovieAdmin/>}/>
         <Route path="/admin/categories" element={<CategoryAdmin/>}/>
+        <Route path="/movies/search/:query" element={<SearchResults />} />
+        <Route path ="/register" element={<Register />} />
+        <Route path ="/*" element={<NotFound />} />
       </Routes>
     </div>
   );
 }
+
+
 export default App;
