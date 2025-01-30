@@ -79,12 +79,12 @@ const Menu = ({ username, photo, isAdmin }) => {
 
         {/* Night/Light mode button */}
         <button onClick={toggleDarkMode} className="action-button-nightMode">
-          {isDarkMode ? 'Light Mode' : 'Night Mode'}
+          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
         
         {/* Administration button (only if he's admin) */}
         {isAdmin && (
-          <Link to="/administration" className="action-button">
+          <Link to="/admin" className="action-button">
             Administration
           </Link>
         )}
@@ -106,7 +106,7 @@ const Menu = ({ username, photo, isAdmin }) => {
       </div>
 
       {/* Logo (when clicked, rout to the home page (for logged-in users) ) */}
-      <div className="logo">
+      <div className="logo2">
         <Link to="/">Catflix</Link>
       </div>
     </header>

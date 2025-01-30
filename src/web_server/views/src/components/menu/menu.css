@@ -89,19 +89,19 @@
 }
 
 /* Logo Styling */
-.logo {
+.logo2 {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #e50914;
-  margin-left: -8rem; /* Move the logo more to the left */
+  color: #e50914; /* Ensure Netflix-red color */
+  margin-left: 2rem; /* Move the logo slightly right */
   margin-right: 2rem; /* Keep some space to the right of the logo */
-  margin-top: -1rem; /* Move the logo more upwards */
-  position: relative; /* Add position relative for fine-tuning */
-  top: -0.7rem; /* Fine-tune vertical position */
-  left: -0.5rem;
+  margin-top: -1rem; /* Move the logo upwards */
+  position: relative;
+  top: 0.4rem; /* Fine-tune vertical position */
+  left: -1rem;
 }
 
-.logo a {
+.logo2 a {
   color: inherit; /* Ensure the link inherits the red color */
   text-decoration: none;
 }
