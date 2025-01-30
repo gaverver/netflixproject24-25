@@ -161,7 +161,7 @@ function Register () {
     return (
         <div>
             <div className="backgroundImage">
-                <Logo />
+                <Logo className="logo"/>
                 <div className = "register-place">
                     <header>
                         <h1 className ="reg">Register</h1>
@@ -180,7 +180,7 @@ function Register () {
                             onChangeFirst={handleEmailChange} onChangeSecond={handlePhoneNumberChange} />
                             <label className="image-label">Profile Picture</label>
                            <ImageUploader onImageUpload={setImageData} />
-                            <p>Already have an account? <Link to="/login">Sign in</Link></p>
+                            <p>Already have an account? <Link to="/login" className="loginLink">Sign in</Link></p>
                             <button type="submit">Register</button> 
                         </div>
                     </form>

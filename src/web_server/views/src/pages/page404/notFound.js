@@ -1,6 +1,6 @@
 import "./notFound.css"
 import { useNavigate } from "react-router-dom";
-
+import Logo from "../../components/Logo/Logo";
 function NotFound() {
     const navigate = useNavigate();
     // function to navigate to the home page
@@ -10,8 +10,8 @@ function NotFound() {
     // return the view of the home.
     return(
         <div>
-            <div class="error-page-header">
-                <p class="logo" onClick={navHome}>Redflix</p>
+            <div className="error-page-header">
+                <Logo className="logo404"/>
             </div>
             <div class="backgroundImage">
                 <h1>Lost Your Way?</h1>
