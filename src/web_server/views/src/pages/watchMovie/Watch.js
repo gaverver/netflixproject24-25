@@ -7,7 +7,7 @@ import Menu from "../../components/menu/menu";
 function Watch() {
     const {id} = useParams();
     return (
-        <div>
+        <div className="watchPage">
             <Menu />
             <VideoStreamer videoId={id} />
         </div>
