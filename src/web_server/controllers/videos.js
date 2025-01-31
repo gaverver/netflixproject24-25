@@ -48,14 +48,12 @@ const streamVideoById = async (req, res) => {
     try {
         x = await videoService.getVideoById(videoId);
     } catch (error) {
-        return res.status(404);
+        return res.status(404).json({ error: 'video not found' });
     }
     const videoPath = (await videoService.getVideoById(videoId)).filePath;
-    try {
-        // Extract the range requested by the browser
-        const range = req.headers.range;
-    } catch (error) {
-        return res.status(400);
+    const range = req.headers.range;
+    if (!range) {
+        return res.status(400).json( {error: 'no requested range'} );
     }
     try {
         const leSize = fs.statSync(videoPath).size;
@@ -74,6 +72,7 @@ const streamVideoById = async (req, res) => {
         res.writeHead(206, head);
         le.pipe(res);
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
