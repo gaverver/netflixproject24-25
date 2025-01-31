@@ -1,0 +1,20 @@
+/* Overall page styling */
+.home-page-logged-in {
+    background-color: #141414; /* Netflix dark background */
+    color: white;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    padding-top: 60px; /* Space for the menu */
+}
+
+/* Styling for the category rows */
+.categories-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+body.dark-mode .home-page-logged-in{
+    background-color: #c4baba;
+}

@@ -34,6 +34,11 @@ const MovieList = ({ list, contentType }) => {
         setTimeout(updateScrollButtons, 300); // Wait for scroll animation to update buttons
     };
 
+    // if the list of movies is empty, then there is no need to show it
+    if (list.length === 0) {
+        return null;
+    }
+
     return (
         <div className="movies-line">
             <div className="category-name">{contentType}</div>

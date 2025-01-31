@@ -1,20 +1,22 @@
-import './categoriesPage.css';
+import './logged_in_home.css';
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Menu from '../../components/menu/menu';
 import MovieList from '../../components/movieList/movieList'
 
 // import helper functions
 const helper = require('../../utils').default;
 
-const CategoriesPage = () => {
+const HomeForLoggedIn = () => {
   const navigate = useNavigate();
 
-  // State for all exsiting categories in a list 
+  // State for all promoted categories in a list 
   const [categoryList, setCategoryList] = useState([]);
+  // State for the 20 last movies the user watched
+  const [watchedMovies, SetWatchedMovies] = useState([]);
   // State for the user that use this page
   const [user, setUser] = useState(null);
-  // state for the URL (after convert) of the photo of the user
+  // State for the URL (after convert) of the photo of the user
   const [photoURL, setPhotoURL] = useState(null);
 
   // Fetch data and handle user authentication
@@ -39,6 +41,8 @@ const CategoriesPage = () => {
       const json = await user_res.json();
       // Store the user in state
       setUser(json);
+      // Store the last watched movies in state
+      SetWatchedMovies(json.watched_movies);
       // Fetch the photo URL asynchronously
       const photoURL = await helper.convertToURL(json.picture);
       // set it to the state
@@ -53,8 +57,10 @@ const CategoriesPage = () => {
         
         // gets the list of categories
         const categories = await list_res.json();
+        // take only the promoted categories
+        const promotedCategories = categories.filter(category => category.promoted);
         // set it to the state
-        setCategoryList(categories);
+        setCategoryList(promotedCategories);
       } catch (error) {
         // if the server crushed
         navigate("/serverError");
@@ -66,7 +72,7 @@ const CategoriesPage = () => {
 
   // Render the component
   return (
-    <div className="categories-page">
+    <div className="home-page-logged-in">
       {/* the top menu component */}
       {user && (
         <Menu
@@ -77,14 +83,16 @@ const CategoriesPage = () => {
       )}
       {/* display different categories in different lines */}
       <div className="categories-lines">
-        {categoryList.map((category) =>
-          // show categories
-          <MovieList key={category._id} list={category.movieIds} contentType={category.name} />
-        )}
+        { /* watched movies */ }
+          <MovieList key={"watched movies"} list={watchedMovies} contentType={"Watched Movies"}/>
+
+        {categoryList.map((category) => (
+          <MovieList key={category._id} list={category.movieIds} contentType={category.name}/>
+        ))}
       </div>
     </div>
   );
 };
 
 
-export default CategoriesPage;
+export default HomeForLoggedIn;
