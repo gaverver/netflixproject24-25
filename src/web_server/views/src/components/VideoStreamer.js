@@ -45,6 +45,7 @@ import React, { useEffect, useState, useRef } from "react";
             ref={videoRef}
             id="player"
             autoPlay
+            controls
             src= {videoSrc}
           >
           </video>

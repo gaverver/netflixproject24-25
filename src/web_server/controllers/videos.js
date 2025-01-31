@@ -57,10 +57,11 @@ const streamVideoById = async (req, res) => {
     }
     try {
         const leSize = fs.statSync(videoPath).size;
-        const parts = range.substring(6).split('-');
-        const start = parseInt(parts[0]);
-        const chunk_size = 10 ** 6; // 1MB
-        const end = Math.min(start + chunk_size, leSize - 1);
+        const parts = range.replace(/bytes=/, "").split('-');
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? Math.min(parseInt(parts[1], 10), leSize - 1) : leSize - 1;
+        // const chunk_size = 10 ** 6; // 1MB
+        const chunk_size = start - end + 1;
         const le = fs.createReadStream(videoPath, { start, end });
         // Stream requested chunk
         const head = {
