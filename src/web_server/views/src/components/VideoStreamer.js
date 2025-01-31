@@ -25,7 +25,7 @@ import React, { useEffect, useState, useRef } from "react";
               }
 
               const contentLength = response.headers.get("Content-Length");
-              if (contentLength) {
+              if (contentLength > 0) {
                   setVideoSrc(`http://localhost:3001/videos/watch/${videoId}`)
               }
           } catch (error) {
