@@ -11,5 +11,5 @@ public interface UserWebServiceAPI {
     Call<Void> createUser(@Body User user);
 
     @GET("/api/users/{id}")
-    Call<User> getUser(@Path("id") int id);
+    Call<User> getUser(@Path("id") String id);
 }
