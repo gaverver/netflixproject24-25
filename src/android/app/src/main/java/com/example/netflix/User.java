@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class User {
    @PrimaryKey
@@ -11,7 +14,7 @@ public class User {
    private String id;
    private String username;
    private String password;
-
+   private ArrayList<String> movies_watched;
    private String email;
    private String phoneNumber;
    private int privilegeLevel;
@@ -23,6 +26,7 @@ public class User {
        this.password = password;
        this.email = email;
        this.phoneNumber = phoneNumber;
+       this.movies_watched = new ArrayList<>();
        this.privilegeLevel = privilegeLevel;
        this.picture = picture;
     }
@@ -78,6 +82,14 @@ public class User {
 
    public void setId(@NonNull String id) {
       this.id = id;
+   }
+
+   public ArrayList<String> getMovies_watched() {
+      return movies_watched;
+   }
+
+   public void setMovies_watched(ArrayList<String> movies_watched) {
+      this.movies_watched = movies_watched;
    }
 }
 
