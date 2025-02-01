@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Netflix</string>
+    <string name="catflix">Catflix</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>
