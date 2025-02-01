@@ -81,6 +81,10 @@ const getMovies = async (userId) => {
     const categories = await utilities.getCategories()
     //list of all the movies that will be returned
     const allMovies = {};
+    //add the special category
+    const lastMovies = watchedMovies.slice(-20);
+    const randomLastMovies = lastMovies.sort((a,b) => Math.random() - 0.5);
+    allMovies["Recent watched movies"] = randomLastMovies;
     //iterating over the categories
     for (const category of categories) {
         if (category.promoted) {
@@ -92,10 +96,6 @@ const getMovies = async (userId) => {
             allMovies[category.name] = movies;
         }
     }
-    //add the special category
-    const lastMovies = watchedMovies.slice(-20);
-    const randomLastMovies = lastMovies.sort((a,b) => Math.random() - 0.5);
-    allMovies["Recent watch movies"] = randomLastMovies;
     return allMovies;
 }
 //function to update a movie

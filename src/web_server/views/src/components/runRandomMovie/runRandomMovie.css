@@ -1,0 +1,27 @@
+/* runRandomMovie.css */
+
+/* Style for the button (play-random-movie) */
+.play-random-movie {
+    background-color: #e50914; /* Red background color (Netflix-like) */
+    color: white; /* White text */
+    font-size: 18px; /* Set font size */
+    font-weight: bold; /* Make the text bold */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px 24px; /* Add padding for better button size */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: all 0.3s ease-in-out; /* Add a transition for hover effects */
+    outline: none; /* Remove outline on focus */
+  }
+  
+  /* Hover effect for the button */
+  .play-random-movie:hover {
+    background-color: #f40612; /* Darken the background color */
+    transform: scale(1.05); /* Slightly enlarge the button */
+  }
+  
+  /* Focus effect for the button */
+  .play-random-movie:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* Add a subtle focus ring */
+  }
+  
