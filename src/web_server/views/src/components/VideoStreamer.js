@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-    const VideoStreamer = ({ videoId }) => {
+const VideoStreamer = ({ videoId, controls }) => {
     const [videoSrc, setVideoSrc] = useState("");
     const videoRef = useRef(null);
 
@@ -17,7 +17,7 @@ import React, { useEffect, useState, useRef } from "react";
                   method: "GET",
                   headers: {
                       Authorization: `Bearer ${token}`,
-                      range: `bytes=0-1`
+                      range: `bytes=0-`
                   },
               });
               if (!response.ok) {
@@ -41,14 +41,24 @@ import React, { useEffect, useState, useRef } from "react";
     return (
       <div className="movie">
         {videoSrc ? (
-          <video
+          controls ? (
+            <video
             ref={videoRef}
             id="player"
             autoPlay
             controls
-            src= {videoSrc}
           >
+            <source src={videoSrc} />
           </video>
+          ) : (
+            <video
+            ref={videoRef}
+            id="player"
+            autoPlay
+          >
+            <source src={videoSrc} />
+          </video>
+          )
         ) : (
           <p>Loading video...</p>
         )}

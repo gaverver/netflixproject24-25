@@ -17,7 +17,7 @@ function Watch() {
             >
             <i className="bi bi-arrow-left"></i>
             </button>
-            <VideoStreamer videoId={id}/>
+            <VideoStreamer videoId={id} controls={true}/>
         </div>
     );
 }
