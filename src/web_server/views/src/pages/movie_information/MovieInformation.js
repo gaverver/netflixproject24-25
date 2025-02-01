@@ -17,7 +17,8 @@ function MovieInformation() {
       // navigate("/home")
       return;
     }
-    setUserID(response.userId)
+    const data = await response.json();
+    setUserID(data.userId)
   }
 
   useEffect(() => {
