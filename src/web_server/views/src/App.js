@@ -9,6 +9,7 @@ import Register from './pages/registration/Register';
 import NotFound from './pages/page404/notFound';
 import CategoriesPage from './pages/categories/categoriesPage';
 import Login from './pages/login/Login'
+import Watch from './pages/watchMovie/Watch';
 
 function App() {
   // router for all the pages in the application
@@ -23,6 +24,7 @@ function App() {
         <Route path ="/register" element={<Register />} />
         <Route path ="/categories" element={<CategoriesPage />} />
         <Route path ="/login" element={<Login />} />
+        <Route path="/movies/watch/:id" element={<Watch />} />
         <Route path ="/*" element={<NotFound />} />
       </Routes>
     </div>
