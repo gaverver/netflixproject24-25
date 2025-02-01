@@ -12,6 +12,7 @@ const MovieInfoDisplay = ({id, userId}) => {
     const [creators, setCreators] = useState([]);
     const [categories, setCategories] = useState([]);
     const [video, setVideo] = useState(null);
+    const [recommendMovies,setRecommendMovies] = useState([]);
 
     const fetchMovie = async () => {
         try {
@@ -43,13 +44,46 @@ const MovieInfoDisplay = ({id, userId}) => {
 
     };
 
+    const fetchRecommendation = async () => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            if (!token) {
+            console.error("No token found");
+            //navigate home
+            // navigate("/home")
+            return;
+            }
+            console.log(userId)
+            const response = await fetch(`http://localhost:3001/api/movies/${id}/recommend`, {
+                method: "GET",
+                headers: {
+                "userid": `${userId}`,
+                'Authorization': `Bearer ${token}`
+                },
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
+            const data = await response.json();
+            console.log(data)
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            // navigate("/serverError");
+        }
+    }
 
     useEffect(() => {
         if (id) {
         fetchMovie();
         }
     }, [id]);
+
+    useEffect(() => {
+        if (userId) {
+        fetchRecommendation();
+        }
+    }, [userId]);
 
     if (id === '')
         return null;
