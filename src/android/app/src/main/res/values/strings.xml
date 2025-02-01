@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Netflix</string>
+    <string name="unlimited_films">Unlimited Films</string>
+    <string name="ready_to_watch_create_an_account_and_start_watching_movies">Ready to watch? create an account and start watching movies!</string>
+    <string name="get_started">Get started</string>
+    <string name="catflix">Catflix</string>
+    <string name="sign_in">Sign In</string>
 </resources>
