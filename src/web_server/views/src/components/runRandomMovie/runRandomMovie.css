@@ -1,20 +1,24 @@
+/* STYLING OF THE RUNRANDOMMOVIE COMPONENT */
+
 .random-movie-component {
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
   }
-  
+
+  /* styling of the streaming of the random movie */
   .stream-random-movie {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 56.25vw; /* 16:9 aspect ratio */
+    height: 56.25vw;
     max-height: 75vh;
     object-fit: cover;
   }
   
+  /* styling of the information of the random movie */
   .random-movie-info {
     position: absolute;
     top: 50%;
@@ -26,23 +30,26 @@
     text-align: right;
   }
   
+  /* styling of the name */
   .random-movie-name {
     font-size: 3vw;
     font-weight: bold;
     margin-bottom: 0.5em;
   }
   
+  /* styling of the age-limit */
   .age-limit {
     position: absolute;
-    bottom: 30%;
-    left: 4%;
+    bottom: 50%;
+    left: 0%;
     background-color: rgba(51, 51, 51, 0.6);
     color: white;
-    padding: 0.2em 0.5em;
+    padding: 0.2em 5em;
     border-radius: 3px;
     font-size: 1.2vw;
   }
   
+  /* styling of the buttons */
   .random-movie-buttons {
     display: flex;
     justify-content: flex-end;
@@ -50,6 +57,7 @@
     margin-top: 1.5em;
   }
   
+  /* styling of the buttons */
   .play-random-movie,
   .random-movie-details {
     padding: 0.8em 2em;
@@ -61,6 +69,7 @@
     transition: background-color 0.3s ease;
   }
   
+  /* styling of the play buttom */
   .play-random-movie {
     background-color: white;
     color: black;
@@ -70,6 +79,7 @@
     background-color: rgba(255, 255, 255, 0.75);
   }
   
+  /* styling of the moreInfo buttom */
   .random-movie-details {
     background-color: rgba(109, 109, 110, 0.7);
     color: white;
@@ -79,12 +89,13 @@
     background-color: rgba(109, 109, 110, 0.4);
   }
   
+  /* more styling */
   @media (max-width: 768px) {
-    .random-movie-info {
+    .random-movie-info {    
       width: 80%;
       right: 10%;
     }
-  
+    
     .random-movie-name {
       font-size: 6vw;
     }

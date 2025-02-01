@@ -37,7 +37,7 @@
           return navigate("/login");
         }
         // gets the user by fetching to api/user/:id
-        const user_res = await fetch (`http://localhost:3001/api/users/${currentUser}`);
+        const user_res = await fetch (`http://localhost:${process.env.REACT_APP_PORT}/api/users/${currentUser}`);
         // convert to json
         const json = await user_res.json();
         // Store the user in state
@@ -48,7 +48,7 @@
         setPhotoURL(photoURL);
 
         // gets the movies from "/api/movies"
-        const movies = await fetch ('http://localhost:3001/api/movies', {
+        const movies = await fetch (`http://localhost:${process.env.REACT_APP_PORT}/api/movies`, {
           // the headers needed for this fetch
           headers: {
             'userId': json._id,
@@ -88,7 +88,7 @@
           />
         )}
         {/* random movie on background */}
-        {(
+        { randomMovieId && (
           <RunRandomMovie id={randomMovieId} className="random-movie" />
         )}
         {/* display different categories in different lines */}

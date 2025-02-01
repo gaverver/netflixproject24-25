@@ -28,9 +28,8 @@
 }
 
 .user-photo {
-  width: 40px; /* Smaller photo */
-  height: 40px;
-  border-radius: 50%;
+  width: 50px; /* Smaller photo */
+  height: 50px;
   margin-right: 1rem;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .search-input {
-  padding: 0.5rem;
+  padding: 0.3rem;
   border: none;
   border-radius: 6px;
   background-color: #333;
@@ -58,10 +57,11 @@
 }
 
 .search-icon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   margin-left: 10px;
   cursor: pointer;
+  margin-top: 8px;
 }
 
 /* Actions Section */
@@ -98,7 +98,7 @@
   margin-top: -1rem; /* Move the logo upwards */
   position: relative;
   top: 0.4rem; /* Fine-tune vertical position */
-  left: -1rem;
+  left: 2rem;
 }
 
 .logo2 a {

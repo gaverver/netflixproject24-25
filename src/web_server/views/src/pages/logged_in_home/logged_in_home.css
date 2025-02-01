@@ -1,18 +1,18 @@
 /* random-movie class to position it under the menu */
 .random-movie {
-    position: absolute; /* Use absolute positioning to place it directly below the menu */
+    position: absolute;
     top: 0; /* Align it with the top of the screen */
     left: 0; /* Align it with the left edge of the screen */
     width: 100%; /* Make it span the full width of the screen */
-    height: 100vh; /* Take up 25% of the viewport height */
-    background-size: cover; /* Make the background image cover the area */
-    background-position: center; /* Center the background image */
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
     z-index: -1; /* Ensure the random movie section is behind other content */
 }
 
 /* Overall page styling */
 .home-page-logged-in {
-    background-color: #141414; /* Netflix dark background */
+    background-color: #141414; /* dark background */
     color: white;
     min-height: 100vh;
     position: relative;
@@ -28,6 +28,7 @@
     padding: 20px;
 }
 
+/* dark mode */
 body.dark-mode .home-page-logged-in{
     background-color: #c4baba;
 }
