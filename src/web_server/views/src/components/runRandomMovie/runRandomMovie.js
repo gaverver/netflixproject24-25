@@ -1,45 +1,57 @@
-import './runRandomMovie.css';
-import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import "./runRandomMovie.css"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import VideoStreamer from "../VideoStreamer"
 
 const RunRandomMovie = ({ id }) => {
-  const [movieDetails, setMovieDetails] = useState(null);
-  
-  const navigate = useNavigate();
+  const [movieDetails, setMovieDetails] = useState(null)
 
-  // this function will be called everytime the 
+  const navigate = useNavigate()
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        // fetching to get movie details
-        const movie_res = await fetch (`http://localhost:3001/api/movies/${id}`);
-        // convert to json
-        const json = await movie_res.json();
-        setMovieDetails(json);
+        const movie_res = await fetch(`http://localhost:3001/api/movies/${id}`)
+        const json = await movie_res.json()
+        setMovieDetails(json)
       } catch (err) {
-        navigate('/serverError');
+        navigate("/serverError")
       }
-    };
+    }
 
-    fetchMovie();
-  }, [id]); // Run the effect only when `id` changes
+    fetchMovie()
+  }, [id, navigate])
 
-  const whenClicked = () => {
-    navigate(`/movies/${id}`); // Navigate to movie details page
-  };
+  const play = () => {
+    navigate(`/movies/watch/${id}`)
+  }
 
-  // the react component
+  const moreDetails = () => {
+    navigate(`/movies/${id}`)
+  }
+
   return (
-    <div>
+    <div className="random-movie-component">
       {movieDetails && (
-        <div>
-            <div>{movieDetails.description}</div>
-            <div>{movieDetails.actors}</div>
-        </div>
+        <>
+          <VideoStreamer videoId={movieDetails.video} controls={false} className="stream-random-movie" />
+          <div className="age-limit">{movieDetails.age_limit}</div>
+          <div className="random-movie-info">
+            <div className="random-movie-name">{movieDetails.name}</div>
+            <div className="random-movie-buttons">
+              <button className="play-random-movie" onClick={play}>
+                Play
+              </button>
+              <button className="random-movie-details" onClick={moreDetails}>
+                More Info
+              </button>
+            </div>
+          </div>
+        </>
       )}
-      <button className="play-random-movie" onClick={whenClicked} >Play</button>
     </div>
-  );
-};
+  )
+}
 
-export default RunRandomMovie;
+export default RunRandomMovie
+
