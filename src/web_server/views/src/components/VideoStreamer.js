@@ -41,7 +41,7 @@ const VideoStreamer = ({ videoId, controls }) => {
     return (
       <div className="movie">
         {videoSrc ? (
-          <video ref={videoRef} id="player" autoPlay controls={controls} controlsList="nodownload">
+          <video ref={videoRef} id="player" autoPlay controls={controls} controlsList="nodownload" muted="muted">
               <source src={videoSrc} />
           </video>
         ) : (
