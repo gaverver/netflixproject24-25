@@ -65,10 +65,11 @@ const MovieInfoDisplay = ({id, userId}) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
             const data = await response.json();
             // console.log(data)
-            setRecommendMovies(data);
+            if (!(data.length === 0 || (data.length === 1 && data[0] === ''))) {
+                setRecommendMovies(data);
+            }
         } catch (error) {
             console.error('Error fetching movies:', error);
             // navigate("/serverError");
