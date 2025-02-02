@@ -1,10 +1,12 @@
-package com.example.netflix;
+package com.example.netflix.repositories;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.netflix.entities.User;
 
 @Dao
 public interface UserDao {

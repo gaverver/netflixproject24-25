@@ -1,4 +1,4 @@
-package com.example.netflix.tokens;
+package com.example.netflix;
 
 public class TokenRequest {
     private String username;

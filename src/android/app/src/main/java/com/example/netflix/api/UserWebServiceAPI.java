@@ -1,4 +1,6 @@
-package com.example.netflix;
+package com.example.netflix.api;
+
+import com.example.netflix.entities.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

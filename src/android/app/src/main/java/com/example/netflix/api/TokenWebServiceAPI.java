@@ -1,4 +1,6 @@
-package com.example.netflix.tokens;
+package com.example.netflix.api;
+import com.example.netflix.TokenRequest;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
