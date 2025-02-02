@@ -13,17 +13,15 @@ public class User {
    @NonNull
    private String id;
    private String username;
-   private String password;
    private ArrayList<String> movies_watched;
    private String email;
    private String phoneNumber;
    private int privilegeLevel;
    private String picture;
 
-    public User(@NonNull String id, String username, String password, String email, String phoneNumber, int privilegeLevel, String picture) {
+    public User(@NonNull String id, String username, String email, String phoneNumber, int privilegeLevel, String picture) {
        this.id = id;
        this.username = username;
-       this.password = password;
        this.email = email;
        this.phoneNumber = phoneNumber;
        this.movies_watched = new ArrayList<>();
