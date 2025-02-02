@@ -43,42 +43,42 @@ const getVideoById = async (req, res) => {
 
 
 const streamVideoById = async (req, res) => {
-    const videoId = req.params.id;
-    // Get the video’s actual location and size
-    try {
-        x = await videoService.getVideoById(videoId);
-    } catch (error) {
-        return res.status(404).json({ error: 'video not found' });
-    }
-    const videoPath = (await videoService.getVideoById(videoId)).filePath;
+  const videoId = req.params.id;
+  
+  try {
+    const video = await videoService.getVideoById(videoId);
+    const videoPath = video.filePath;
+    const stat = fs.statSync(videoPath);
+    const fileSize = stat.size;
     const range = req.headers.range;
-    if (!range) {
-        return res.status(400).json( {error: 'no requested range'} );
+
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunksize = (end - start) + 1;
+      const file = fs.createReadStream(videoPath, {start, end});
+      const head = {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'video/mp4',
+      };
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      const head = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(videoPath).pipe(res);
     }
-    try {
-        const leSize = fs.statSync(videoPath).size;
-        const parts = range.replace(/bytes=/, "").split('-');
-        console.log(parts)
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? Math.min(parseInt(parts[1], 10), leSize - 1) : Math.min(start + 10**6,leSize - 1);
-        console.log(end)
-        // const chunk_size = 10 ** 6; // 1MB
-        const chunk_size = start - end + 1;
-        const le = fs.createReadStream(videoPath, { start, end });
-        // Stream requested chunk
-        const head = {
-            'Content-Range': `bytes ${start}-${end}/${leSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunk_size,
-            'Content-Type': 'video/mp4',
-        };
-        res.writeHead(206, head);
-        le.pipe(res);
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
-}
+  } catch (error) {
+    console.error('Error streaming video:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 const DeleteVideoById = async (req, res) => {
     const id = req.params.id
