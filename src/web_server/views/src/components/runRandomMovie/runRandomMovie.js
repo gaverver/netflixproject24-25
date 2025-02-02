@@ -7,7 +7,8 @@ import VideoStreamer from "../VideoStreamer"
 const RunRandomMovie = ({ id }) => {
   // State for the movie as a json
   const [movieDetails, setMovieDetails] = useState(null)
-
+  // State that will change every 20 seconds s.t the video will refresh every 20 seconds
+  const [key, setKey] = useState(0);
   const navigate = useNavigate()
 
   // gets the movie details
@@ -26,6 +27,17 @@ const RunRandomMovie = ({ id }) => {
     fetchMovie()
   }, [id, navigate]) // called every time the id changes
 
+  // this function will be called in loops every 20 seconds to make the VideoStreaming component refresh
+  useEffect(() => {
+    // set timeout to make video refresh every 20 senods (adding 1 to the value of key)
+    const timer = setTimeout(() => {
+      setKey((prevKey) => prevKey + 1)
+    }, 20000)
+
+    // clearing the timeout
+    return () => clearTimeout(timer)
+  }, [key])
+
   // play button functionality
   const play = () => {
     navigate(`/movies/watch/${id}`)
@@ -42,7 +54,8 @@ const RunRandomMovie = ({ id }) => {
       {/* render this component ONLY IF! movieDetails State has seted */}
       {movieDetails && (
         <>
-          <VideoStreamer videoId={movieDetails.video} controls={false} className="stream-random-movie" />
+          {/* the key here is for refreshing the component every 20 seconds to make the video restart */}
+          <VideoStreamer key={key} videoId={movieDetails.video} controls={false} className="stream-random-movie" />
           <div className="age-limit">+{movieDetails.age_limit}</div>
           <div className="random-movie-info">
             <div className="random-movie-name">{movieDetails.name}</div>
