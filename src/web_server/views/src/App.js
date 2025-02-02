@@ -11,6 +11,7 @@ import CategoriesPage from './pages/categories/categoriesPage';
 import Login from './pages/login/Login'
 import Watch from './pages/watchMovie/Watch';
 import MovieInformation from './pages/movie_information/MovieInformation'
+import HomeForLoggedIn from './pages/logged_in_home/logged_in_home';
 
 function App() {
   // router for all the pages in the application
@@ -27,6 +28,7 @@ function App() {
         <Route path ="/login" element={<Login />} />
         <Route path="/movies/watch/:id" element={<Watch />} />
         <Route path="/movies/information/:id" element={<MovieInformation />} />
+        <Route path ="/" element={<HomeForLoggedIn />} />
         <Route path ="/*" element={<NotFound />} />
       </Routes>
     </div>
