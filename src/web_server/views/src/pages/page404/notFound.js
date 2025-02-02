@@ -13,10 +13,10 @@ function NotFound() {
             <div className="error-page-header">
                 <Logo className="logo404"/>
             </div>
-            <div class="backgroundImage">
+            <div className="backgroundImage">
                 <h1>Lost Your Way?</h1>
                 <p>Sorry, we can't find that page. You'll find lots to explore on the home page. </p>
-                <button class="home-button" onClick={navHome}>Return Home</button>
+                <button className="home-button" onClick={navHome}>Return Home</button>
             </div>
         </div>
         
