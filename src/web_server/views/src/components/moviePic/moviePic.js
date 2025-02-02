@@ -36,7 +36,7 @@ const MoviePic = ({ id }) => {
   }, [id]); // Run the effect only when `id` changes
 
   const whenClicked = () => {
-    navigate(`/movies/${id}`); // Navigate to movie details page
+    navigate(`/movies/information/${id}`); // Navigate to movie details page
   };
 
   // Show a placeholder or error message if the movie is not yet loaded

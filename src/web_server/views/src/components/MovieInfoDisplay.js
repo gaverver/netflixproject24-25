@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import VideoStreamer from './VideoStreamer'
 import "./MovieInfoDisplay.css"
+import MoviePic from "./moviePic/moviePic"
 
 const MovieInfoDisplay = ({id, userId}) => {
     const navigate = useNavigate();
@@ -66,7 +67,8 @@ const MovieInfoDisplay = ({id, userId}) => {
             }
 
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
+            setRecommendMovies(data);
         } catch (error) {
             console.error('Error fetching movies:', error);
             // navigate("/serverError");
@@ -110,6 +112,13 @@ const MovieInfoDisplay = ({id, userId}) => {
             <ul>
                 {categories.map((category, index) => (
                     <li key={index}>{category}</li>
+                ))}
+            </ul>
+            <ul>
+                {recommendMovies.map((recommendation, index) => (
+                    <li key={index}>
+                        <MoviePic id={recommendation} />
+                    </li>
                 ))}
             </ul>
         </div>

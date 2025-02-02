@@ -30,12 +30,12 @@ function MovieInformation() {
       return;
     }
     fetchUserId(token)
-  }, []);
+  }, [id, fetchUserId]);
 
   return (
     <div>
         <Menu />
-        <MovieInfoDisplay id={id} userId={userId} />
+        <MovieInfoDisplay key={id} id={id} userId={userId} />
     </div>
   );
 }
