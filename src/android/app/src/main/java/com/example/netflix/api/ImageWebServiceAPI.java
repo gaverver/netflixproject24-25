@@ -24,9 +24,11 @@ public interface ImageWebServiceAPI {
             @Header("Content-Type") String contentType
     );
 
+    // getting image details
     @GET("/images/{id}")
     Call<Image> getImage(@Path("id") String id);
 
+    // deleting image by id
     @DELETE("/images/{id}")
     Call<Void> deleteImage(@Path("id") String id);
 }
