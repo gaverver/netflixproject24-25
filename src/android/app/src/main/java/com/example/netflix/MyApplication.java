@@ -3,6 +3,8 @@ package com.example.netflix;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.netflix.data.LocalDatabase;
+
 public class MyApplication extends Application {
     private static MyApplication instance;
 
@@ -10,6 +12,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        LocalDatabase.initInstance(this);
     }
 
     public static MyApplication getInstance() {
