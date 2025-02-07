@@ -17,13 +17,13 @@ public class Movie {
     private String id;
     private String name;
     private String description;
-    private String actors;
+    private String[] actors;
     private int age_limit;
     private String[] creators;
     private String[] categories;
     private String photoId;
 
-    public Movie(@NonNull String id, String name, String description, String actors, int age_limit, String[] creators, String[] categories, String photoId) {
+    public Movie(@NonNull String id, String name, String description, String[] actors, int age_limit, String[] creators, String[] categories, String photoId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -59,11 +59,11 @@ public class Movie {
         this.description = description;
     }
 
-    public String getActors() {
+    public String[] getActors() {
         return actors;
     }
 
-    public void setActors(String actors) {
+    public void setActors(String[] actors) {
         this.actors = actors;
     }
 
