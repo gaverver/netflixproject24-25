@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface MovieDao {
     @Query("SELECT * FROM movie")
-    List<Movie> index();
+    List<Movie> getMovies();
 
     @Query("SELECT * FROM movie WHERE id = :id")
     Movie get(int id);
