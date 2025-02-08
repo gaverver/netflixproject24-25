@@ -27,4 +27,7 @@ public interface MovieDao {
     @Delete
     void delete(Movie... movies);
 
+    @Query("DELETE FROM movie WHERE id = :movieId")
+    void deleteById(String movieId);
+
 }

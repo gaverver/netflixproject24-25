@@ -3,6 +3,7 @@ package com.example.netflix.api;
 import com.example.netflix.entities.Movie;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,7 +22,7 @@ public interface MovieWebServiceAPI {
     Call<Void> createMovie(@Header("Authorization") String token, @Body Movie movie);
 
     @PUT("/api/movies/{id}")
-    Call<Void> putMovie(@Header("Authorization") String token, @Path("id") String id);
+    Call<Void> putMovie(@Header("Authorization") String token, @Path("id") String id, @Body Movie movie);
 
     @DELETE("/api/movies/{id}")
     Call<Void> deleteMovie(@Header("Authorization") String token, @Path("id") String id);
@@ -36,5 +37,5 @@ public interface MovieWebServiceAPI {
     Call<List<Movie>> searchMovies(@Path("query") String query);
 
     @GET("/api/movies")
-    Call<List<Movie>> getMovies(@Header("Authorization") String token, @Header("userId") String userId);
+    Call<Map<String, List<String>>> getMovies(@Header("Authorization") String token, @Header("userId") String userId);
 }
