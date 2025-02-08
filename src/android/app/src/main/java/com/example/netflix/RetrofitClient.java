@@ -1,5 +1,7 @@
 package com.example.netflix;
 
+import java.util.concurrent.Executors;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -10,6 +12,7 @@ public class RetrofitClient {
     private RetrofitClient() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(MyApplication.getAppContext().getString(R.string.BaseUrl))
+                .callbackExecutor(Executors.newSingleThreadExecutor())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
