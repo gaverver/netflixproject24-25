@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.netflix.WebResponse;
 import com.example.netflix.api.CategoryAPI;
-import com.example.netflix.api.ImagesAPI;
 import com.example.netflix.entities.Category;
-import com.example.netflix.entities.Image;
-import com.example.netflix.repositories.ImageDao;
+import com.example.netflix.repositories.CategoryDao;
 import com.example.netflix.data.LocalDatabase;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,11 +24,30 @@ public class CategoryRepository {
     private final ExecutorService executorService;
 
     public CategoryRepository() {
-        LocalDatebase db = LocalDatebase.getInstance();
+        LocalDatabase db = LocalDatabase.getInstance();
         dao = db.categoryDao();
         dataList = new CategoryListData();
         api = new CategoryAPI(dao, dataList);
-        executorService = Executors.newSingleThreadExecutor(); // Background thread
+        executorService = Executors.newSingleThreadExecutor(); // new thread for each task
+    }
+
+    class CategoryListData extends MutableLiveData<List<Category>> {
+        // constructor
+        public CategoryListData() {
+            super();
+            setValue(new LinkedList<Category>());
+        }
+
+        // this method will be called every time the dataList changes in the api to update the dataList
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            // run it on a background thread
+            executorService.execute(() -> {
+                dataList.postValue(dao.getAll());
+            });
+        }
     }
 
     public void addCategory(Category category, String token, WebResponse res) {
@@ -37,16 +56,17 @@ public class CategoryRepository {
         });
     }
 
-    public LiveData<Image> getCategory(String id, WebResponse res) {
-        // get image from Room (returns LiveData for automatic updates)
-        LiveData<Image> liveData = imageDao.getLiveData(id);
+    public LiveData<Category> getCategory(String id, WebResponse res) {
+        // get category from Room (returns LiveData for automatic updates)
+        MutableLiveData<Category> liveData = new MutableLiveData<Category>();
+        liveData.setValue(dao.get(id));
 
         executorService.execute(() -> {
-            // first, check if the image exists in the local Room database
-            Image localImage = imageDao.get(id);
-            if (localImage == null) {
-                // If not in Room, fetch from the API and insert it
-                imagesAPI.getImage(id, res);
+            // first, check if the category exists in the local Room database
+            Category localCategory = dao.get(id);
+            if (localCategory == null) {
+                // if not in Room, fetch from the API and insert it
+                api.getCategory(id, res);
                 // Room LiveData will update automatically when inserted
             }
         });
@@ -54,9 +74,25 @@ public class CategoryRepository {
         return liveData;
     }
 
-    public void deleteCategory(String id, WebResponse res) {
+    public void updateCategory(Category category, String token, WebResponse res) {
         executorService.execute(() -> {
-            imagesAPI.deleteImage(id, res);
+            api.updateCategory(category, token, res);
         });
+    }
+
+    public void deleteCategory(String id, String token, WebResponse res) {
+        executorService.execute(() -> {
+            api.deleteCategory(id, token, res);
+        });
+    }
+
+    // method to get all existing categories in the ROOM database
+    public LiveData<List<Category>> getAll() {
+        return dataList;
+    }
+
+    // method to reload all categories (gets all categories from the server into the ROOM)
+    public void reload(WebResponse res) {
+        api.reload(res);
     }
 }
