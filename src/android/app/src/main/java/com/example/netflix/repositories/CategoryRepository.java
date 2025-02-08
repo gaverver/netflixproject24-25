@@ -58,16 +58,17 @@ public class CategoryRepository {
 
     public LiveData<Category> getCategory(String id, WebResponse res) {
         // get category from Room (returns LiveData for automatic updates)
-        MutableLiveData<Category> liveData = new MutableLiveData<Category>();
-        liveData.setValue(dao.get(id));
+        MutableLiveData<Category> liveData = new MutableLiveData<>();
 
         executorService.execute(() -> {
             // first, check if the category exists in the local Room database
             Category localCategory = dao.get(id);
             if (localCategory == null) {
                 // if not in Room, fetch from the API and insert it
-                api.getCategory(id, res);
-                // Room LiveData will update automatically when inserted
+                api.getCategory(id, liveData, res);
+            } else {
+                // already in ROOM, no need for fetching from server
+                liveData.postValue(localCategory);
             }
         });
 
@@ -93,6 +94,8 @@ public class CategoryRepository {
 
     // method to reload all categories (gets all categories from the server into the ROOM)
     public void reload(WebResponse res) {
-        api.reload(res);
+        executorService.execute(() -> {
+            api.reload(res);
+        });
     }
 }

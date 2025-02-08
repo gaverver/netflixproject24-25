@@ -62,7 +62,8 @@ public class CategoryAPI {
                             dao.insert(category);
                         }
                         // updates the live data that contains all the categories in the ROOM right now
-                        categoryListData.postValue(dao.getAll());
+                        List<Category> allCategories = dao.getAll();
+                        categoryListData.postValue(allCategories);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Category Created");
@@ -85,7 +86,7 @@ public class CategoryAPI {
         });
     }
 
-    public void getCategory(String id, WebResponse res) {
+    public void getCategory(String id, MutableLiveData<Category> data, WebResponse res) {
         Call<Category> call = categoryWebServiceAPI.getCategory(id);
         call.enqueue(new Callback<Category>() {
             @Override
@@ -98,8 +99,11 @@ public class CategoryAPI {
 
                         // insert the category into the Room database
                         dao.insert(category);
+                        // updates the MutableLiveData got from arguments
+                        data.postValue(category);
                         // updates the live data that contains all the categories in the ROOM right now
-                        categoryListData.postValue(dao.getAll());
+                        List<Category> allCategories = dao.getAll();
+                        categoryListData.postValue(allCategories);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Ok");
@@ -131,7 +135,8 @@ public class CategoryAPI {
                         // update the category in the Room database
                         dao.update(category);
                         // updates the live data that contains all the categories in the ROOM right now
-                        categoryListData.postValue(dao.getAll());
+                        List<Category> allCategories = dao.getAll();
+                        categoryListData.postValue(allCategories);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Category Updated");
@@ -169,7 +174,8 @@ public class CategoryAPI {
                             dao.delete(category);
                         }
                         // updates the live data that contains all the categories in the ROOM right now
-                        categoryListData.postValue(dao.getAll());
+                        List<Category> allCategories = dao.getAll();
+                        categoryListData.postValue(allCategories);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Category Deleted");
@@ -205,7 +211,8 @@ public class CategoryAPI {
                         // inserts all the categories from the response to the ROOM
                         dao.insert(response.body().toArray(new Category[0]));
                         // updating the CategoryListData s.t it will be the live data from the ROOM
-                        categoryListData.postValue(dao.getAll());
+                        List<Category> allCategories = dao.getAll();
+                        categoryListData.postValue(allCategories);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Ok");
