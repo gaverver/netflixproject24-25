@@ -1,0 +1,69 @@
+package com.example.netflix.repositories;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.netflix.WebResponse;
+import com.example.netflix.api.MovieAPI;
+import com.example.netflix.data.LocalDatabase;
+import com.example.netflix.entities.Movie;
+
+import java.util.List;
+import java.util.Map;
+
+public class MovieRepository {
+    private MovieDao dao;
+    private MovieAPI api;
+
+    public MovieRepository() {
+        LocalDataBase db = LocalDataBase.getInstance();
+        this.dao = db.movieDao();
+        this.api = new MovieAPI(dao);
+    }
+
+    public MutableLiveData<Movie> getMovie(String id, WebResponse webRes) {
+        MutableLiveData<Movie> res = new MutableLiveData<>();
+        api.getMovie(id, webRes, res);
+        return res;
+    }
+
+    public MutableLiveData<Movie> getReloadedMovie(String id, WebResponse webRes) {
+        MutableLiveData<Movie> res = new MutableLiveData<>();
+        api.getReloadedMovie(id, webRes, res);
+        return res;
+    }
+
+    public void createMovie(Movie movie, WebResponse res) {
+        api.createMovie(movie, res);
+    }
+
+    public void putMovie(Movie movie, WebResponse res) {
+        api.putMovie(movie, res);
+    }
+
+    public void deleteMovie(String movieId, WebResponse res) {
+        api.deleteMovie(movieId, res);
+    }
+
+    public MutableLiveData<List<String>> getRecommendationIds(String id, WebResponse res) {
+        MutableLiveData<List<String>> movieIds = new MutableLiveData<>();
+        api.getRecommendationIds(id, res, movieIds);
+        return movieIds;
+    }
+
+    public void addWatchedMovie(String id, WebResponse res) {
+        api.addWatchedMovie(id, res);
+    }
+
+    public MutableLiveData<List<Movie>> searchMovies(String query, WebResponse res) {
+        MutableLiveData<List<Movie>> moviesMutableLiveData = new MutableLiveData<>();
+        api.searchMovies(query, res, moviesMutableLiveData);
+        return moviesMutableLiveData;
+    }
+
+    public MutableLiveData<Map<String, List<String>>> getMovies(WebResponse res) {
+        MutableLiveData<Map<String, List<String>>> moviesMutableLiveData = new MutableLiveData<>();
+        api.getMovies(res, moviesMutableLiveData);
+        return moviesMutableLiveData;
+    }
+
+}

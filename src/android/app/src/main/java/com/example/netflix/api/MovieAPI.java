@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.netflix.MyApplication;
 import com.example.netflix.RetrofitClient;
 import com.example.netflix.Utils;
 import com.example.netflix.WebResponse;
@@ -20,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import android.os.AsyncTask;
 
 public class MovieAPI {
     private MovieDao dao;
@@ -29,20 +31,41 @@ public class MovieAPI {
     private String userId;
     private String token;
 
-    public MovieAPI(MovieDao movieDao, Context context) {
+    public MovieAPI(MovieDao movieDao) {
         this.dao = movieDao;
 
         retrofit = RetrofitClient.getInstance().getRetrofit();
 
         movieWebServiceAPI = retrofit.create(MovieWebServiceAPI.class);
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         this.token = sharedPreferences.getString("token", null);
         this.userId = sharedPreferences.getString("userId", null);
 
     }
 
     public void getMovie(String id, WebResponse res, MutableLiveData<Movie> movieMutableLiveData) {
+        new AsyncTask<Void, Void, Movie>() {
+            @Override
+            protected Movie doInBackground(Void... voids) {
+                return dao.get(id);
+            }
+
+            @Override
+            protected void onPostExecute(Movie movie) {
+                if (movie != null) {
+                    movieMutableLiveData.postValue(movie);
+                    res.setResponseCode(200);
+                    res.setResponseMsg("Movie fetched from local database");
+                } else {
+                    // If the movie is not in the local database, fetch it from the server
+                    getReloadedMovie(id, res, movieMutableLiveData);
+                }
+            }
+        }.execute();
+    }
+
+    public void getReloadedMovie(String id, WebResponse res, MutableLiveData<Movie> movieMutableLiveData) {
         Call<Movie> call = movieWebServiceAPI.getMovie(id);
         call.enqueue(new Callback<Movie>() {
             @Override
