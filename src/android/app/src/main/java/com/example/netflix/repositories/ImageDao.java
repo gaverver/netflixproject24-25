@@ -14,10 +14,6 @@ public interface ImageDao {
     @Query("SELECT * FROM images WHERE id = :id")
     Image get(String id);
 
-    // doing get query but returning a live data
-    @Query("SELECT * FROM images WHERE id = :id")
-    LiveData<Image> getLiveData(String id);
-
     // doing post/insert query
     @Insert
     void insert(Image... images);

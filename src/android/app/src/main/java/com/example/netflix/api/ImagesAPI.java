@@ -1,6 +1,7 @@
 package com.example.netflix.api;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.netflix.WebResponse;
 import com.example.netflix.Utils;
@@ -75,7 +76,7 @@ public class ImagesAPI {
         });
     }
 
-    public void getImage(String id, WebResponse res) {
+    public void getImage(String id, MutableLiveData<Image> data, WebResponse res) {
         Call<Image> call = imageWebServiceAPI.getImage(id);
         call.enqueue(new Callback<Image>() {
             @Override
@@ -88,6 +89,8 @@ public class ImagesAPI {
 
                         // insert the image into the Room database
                         dao.insert(image);
+                        // insert to the mutableLiveData got in the arguments
+                        data.postValue(image);
                     }).start();
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Ok");

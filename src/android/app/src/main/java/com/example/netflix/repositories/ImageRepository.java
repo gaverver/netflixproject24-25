@@ -25,22 +25,22 @@ public class ImageRepository {
     }
 
     public void uploadImage(Image image, WebResponse res) {
-        executorService.execute(() -> {
-            imagesAPI.insertImage(image, res);
-        });
+        imagesAPI.insertImage(image, res);
     }
 
     public LiveData<Image> getImage(String id, WebResponse res) {
         // get image from Room (returns LiveData for automatic updates)
-        LiveData<Image> liveData = imageDao.getLiveData(id);
+        MutableLiveData<Image> liveData = new MutableLiveData<>();
 
         executorService.execute(() -> {
             // first, check if the image exists in the local Room database
             Image localImage = imageDao.get(id);
             if (localImage == null) {
-                // If not in Room, fetch from the API and insert it
-                imagesAPI.getImage(id, res);
-                // Room LiveData will update automatically when inserted
+                // if not in Room, fetch from the API and insert it
+                imagesAPI.getImage(id, liveData, res);
+            } else {
+                // found in ROOM, no need for API fetch
+                liveData.postValue(localImage);
             }
         });
 
@@ -48,8 +48,6 @@ public class ImageRepository {
     }
 
     public void deleteImage(String id, WebResponse res) {
-        executorService.execute(() -> {
-            imagesAPI.deleteImage(id, res);
-        });
+        imagesAPI.deleteImage(id, res);
     }
 }
