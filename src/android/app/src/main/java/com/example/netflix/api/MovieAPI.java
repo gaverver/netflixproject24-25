@@ -31,6 +31,12 @@ public class MovieAPI {
     private String userId;
     private String token;
 
+    private void updateTokens() {
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        this.token = sharedPreferences.getString("token", null);
+        this.userId = sharedPreferences.getString("userId", null);
+    }
+
     public MovieAPI(MovieDao movieDao) {
         this.dao = movieDao;
 
@@ -38,9 +44,7 @@ public class MovieAPI {
 
         movieWebServiceAPI = retrofit.create(MovieWebServiceAPI.class);
 
-        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        this.token = sharedPreferences.getString("token", null);
-        this.userId = sharedPreferences.getString("userId", null);
+        updateTokens();
 
     }
 
@@ -93,6 +97,7 @@ public class MovieAPI {
     }
 
     public void createMovie(Movie movie, WebResponse res) {
+        updateTokens();
         Call<Void> call = movieWebServiceAPI.createMovie(token, movie);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -132,6 +137,7 @@ public class MovieAPI {
     }
 
     public void putMovie(Movie movie, WebResponse res) {
+        updateTokens();
         Call<Void> call = movieWebServiceAPI.putMovie(token, movie.getId(), movie);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -159,6 +165,7 @@ public class MovieAPI {
     }
 
     public void deleteMovie(String movieId, WebResponse res) {
+        updateTokens();
         Call<Void> call = movieWebServiceAPI.deleteMovie(token, movieId);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -186,6 +193,7 @@ public class MovieAPI {
     }
 
     public void getRecommendationIds(String id, WebResponse res, MutableLiveData<List<String>> movieIds) {
+        updateTokens();
         Call<List<String>> call = movieWebServiceAPI.getRecommendation(token, userId, id);
         call.enqueue(new Callback<List<String>>() {
             @Override
@@ -212,6 +220,7 @@ public class MovieAPI {
     }
 
     public void addWatchedMovie(String id, WebResponse res) {
+        updateTokens();
         Call<List<String>> call = movieWebServiceAPI.addWatchedMovie(token, userId, id);
         call.enqueue(new Callback<List<String>>() {
             @Override
@@ -261,6 +270,7 @@ public class MovieAPI {
     }
 
     public void getMovies(WebResponse res,  MutableLiveData<Map<String, List<String>>> moviesMutableLiveData) {
+        updateTokens();
         Call<Map<String, List<String>>> call = movieWebServiceAPI.getMovies(token, userId);
         call.enqueue(new Callback<Map<String, List<String>>>() {
             @Override

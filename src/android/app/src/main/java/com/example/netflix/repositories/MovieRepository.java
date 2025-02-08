@@ -20,13 +20,13 @@ public class MovieRepository {
         this.api = new MovieAPI(dao);
     }
 
-    public MutableLiveData<Movie> getMovie(String id, WebResponse webRes) {
+    public LiveData<Movie> getMovie(String id, WebResponse webRes) {
         MutableLiveData<Movie> res = new MutableLiveData<>();
         api.getMovie(id, webRes, res);
         return res;
     }
 
-    public MutableLiveData<Movie> getReloadedMovie(String id, WebResponse webRes) {
+    public LiveData<Movie> getReloadedMovie(String id, WebResponse webRes) {
         MutableLiveData<Movie> res = new MutableLiveData<>();
         api.getReloadedMovie(id, webRes, res);
         return res;
@@ -44,7 +44,7 @@ public class MovieRepository {
         api.deleteMovie(movieId, res);
     }
 
-    public MutableLiveData<List<String>> getRecommendationIds(String id, WebResponse res) {
+    public LiveData<List<String>> getRecommendationIds(String id, WebResponse res) {
         MutableLiveData<List<String>> movieIds = new MutableLiveData<>();
         api.getRecommendationIds(id, res, movieIds);
         return movieIds;
@@ -54,13 +54,13 @@ public class MovieRepository {
         api.addWatchedMovie(id, res);
     }
 
-    public MutableLiveData<List<Movie>> searchMovies(String query, WebResponse res) {
+    public LiveData<List<Movie>> searchMovies(String query, WebResponse res) {
         MutableLiveData<List<Movie>> moviesMutableLiveData = new MutableLiveData<>();
         api.searchMovies(query, res, moviesMutableLiveData);
         return moviesMutableLiveData;
     }
 
-    public MutableLiveData<Map<String, List<String>>> getMovies(WebResponse res) {
+    public LiveData<Map<String, List<String>>> getMovies(WebResponse res) {
         MutableLiveData<Map<String, List<String>>> moviesMutableLiveData = new MutableLiveData<>();
         api.getMovies(res, moviesMutableLiveData);
         return moviesMutableLiveData;
