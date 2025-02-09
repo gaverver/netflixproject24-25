@@ -48,26 +48,6 @@ public class MovieAPI {
 
     }
 
-    public void getMovie(String id, WebResponse res, MutableLiveData<Movie> movieMutableLiveData) {
-        new AsyncTask<Void, Void, Movie>() {
-            @Override
-            protected Movie doInBackground(Void... voids) {
-                return dao.get(id);
-            }
-
-            @Override
-            protected void onPostExecute(Movie movie) {
-                if (movie != null) {
-                    movieMutableLiveData.postValue(movie);
-                    res.setResponseCode(200);
-                    res.setResponseMsg("Movie fetched from local database");
-                } else {
-                    // If the movie is not in the local database, fetch it from the server
-                    getReloadedMovie(id, res, movieMutableLiveData);
-                }
-            }
-        }.execute();
-    }
 
     public void getReloadedMovie(String id, WebResponse res, MutableLiveData<Movie> movieMutableLiveData) {
         Call<Movie> call = movieWebServiceAPI.getMovie(id);
