@@ -10,15 +10,20 @@ public class Image {
 
     @PrimaryKey
     @NonNull
-    private String id;
+    private String id = ""; // temporary placeholder, will be updated later
 
-    // convert to BLOB object in the ROOM
     @ColumnInfo(name = "data", typeAffinity = ColumnInfo.BLOB)
-    private byte[] data; // Store image as byte array
+    private byte[] data; // store image as byte array
 
     private String contentType; // MIME type (e.g., "image/png")
 
-    // Constructor
+    // constructor without id (for new images before MongoDB assigns an ID)
+    public Image(byte[] data, String contentType) {
+        this.data = data;
+        this.contentType = contentType;
+    }
+
+    // constructor with id (for when MongoDB assigns an ID)
     public Image(@NonNull String id, byte[] data, String contentType) {
         this.id = id;
         this.data = data;
