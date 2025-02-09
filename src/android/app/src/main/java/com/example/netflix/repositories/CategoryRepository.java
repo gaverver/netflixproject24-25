@@ -51,15 +51,14 @@ public class CategoryRepository {
     }
 
     public void addCategory(Category category, String token, WebResponse res) {
-        executorService.execute(() -> {
-            api.insertCategory(category, token, res);
-        });
+        api.insertCategory(category, token, res);
     }
 
     public LiveData<Category> getCategory(String id, WebResponse res) {
         // get category from Room (returns LiveData for automatic updates)
         MutableLiveData<Category> liveData = new MutableLiveData<>();
 
+        // run in background thread because there are ROOM accesses
         executorService.execute(() -> {
             // first, check if the category exists in the local Room database
             Category localCategory = dao.get(id);
@@ -76,15 +75,11 @@ public class CategoryRepository {
     }
 
     public void updateCategory(Category category, String token, WebResponse res) {
-        executorService.execute(() -> {
-            api.updateCategory(category, token, res);
-        });
+        api.updateCategory(category, token, res);
     }
 
     public void deleteCategory(String id, String token, WebResponse res) {
-        executorService.execute(() -> {
-            api.deleteCategory(id, token, res);
-        });
+        api.deleteCategory(id, token, res);
     }
 
     // method to get all existing categories in the ROOM database
@@ -94,8 +89,6 @@ public class CategoryRepository {
 
     // method to reload all categories (gets all categories from the server into the ROOM)
     public void reload(WebResponse res) {
-        executorService.execute(() -> {
-            api.reload(res);
-        });
+        api.reload(res);
     }
 }
