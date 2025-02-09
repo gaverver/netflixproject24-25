@@ -56,8 +56,15 @@ public class MovieAPI {
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
-                        dao.insert(response.body());
-                        movieMutableLiveData.postValue(response.body());
+                        Movie movie = dao.get(response.body().getId());
+                        if (movie == null) {
+                            dao.insert(response.body());
+                        } else {
+                            dao.update(response.body());
+                        }
+                        if (movieMutableLiveData != null) {
+                            movieMutableLiveData.postValue(response.body());
+                        }
                     }).start();
                     // set the response status to the returned response status - the operation was successful
                     res.setResponseCode(response.code());
@@ -257,11 +264,19 @@ public class MovieAPI {
             public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
+                        dao.clear();
+                        Map<String, List<String>> responseBody = response.body();
+                        for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
+                            List<String> values = entry.getValue();
+                            for (String value : values) {
+                                getReloadedMovie(value,res,null);
+                            }
+                        }
+                        // set the response status to the returned response status - the operation was successful
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("ok");
                         moviesMutableLiveData.postValue(response.body());
                     }).start();
-                    // set the response status to the returned response status - the operation was successful
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("ok");
                 } else {
                     Utils.handleError(response, res);
                 }
