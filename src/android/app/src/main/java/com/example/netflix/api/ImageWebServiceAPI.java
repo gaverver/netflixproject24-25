@@ -1,0 +1,32 @@
+package com.example.netflix.api;
+
+import com.example.netflix.entities.Image;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.DELETE;
+import retrofit2.http.Path;
+
+public interface ImageWebServiceAPI {
+    // upload image as raw binary data with dynamic content type based on file extension
+    @POST("/images")
+    // default content type for the body
+    @Headers("Content-Type: application/octet-stream")
+    Call<Void> uploadImage(
+            // the data of the image as RequestBody object
+            @Body RequestBody image,
+            // add content type dynamically (jpg, png, ...)
+            @Header("Content-Type") String contentType
+    );
+
+    @GET("/images/{id}")
+    Call<Image> getImage(@Path("id") String id);
+
+    @DELETE("/images/{id}")
+    Call<Void> deleteImage(@Path("id") String id);
+}

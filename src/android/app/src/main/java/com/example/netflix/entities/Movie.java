@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
         parentColumns = "id",
         childColumns = "photoId",
         onDelete = ForeignKey.SET_NULL
-))
+), tableName = "movies")
 public class Movie {
     @PrimaryKey
     @NonNull
