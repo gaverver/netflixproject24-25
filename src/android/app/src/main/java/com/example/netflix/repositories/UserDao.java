@@ -11,7 +11,7 @@ import com.example.netflix.entities.User;
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user WHERE id = :id")
-    User get(int id);
+    User get(String id);
     @Insert
     void insert(User... users);
 

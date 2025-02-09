@@ -56,4 +56,3 @@ public class Image {
         this.contentType = contentType;
     }
 }
-
