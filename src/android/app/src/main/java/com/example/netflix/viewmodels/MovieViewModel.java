@@ -6,6 +6,9 @@ import com.example.netflix.entities.Movie;
 import com.example.netflix.repositories.MovieRepository;
 import com.example.netflix.WebResponse;
 
+import java.util.List;
+import java.util.Map;
+
 public class MovieViewModel {
 
     private MovieRepository movieRepository;
