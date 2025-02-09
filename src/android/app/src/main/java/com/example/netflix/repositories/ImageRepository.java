@@ -7,6 +7,7 @@ import com.example.netflix.WebResponse;
 import com.example.netflix.api.ImagesAPI;
 import com.example.netflix.entities.Image;
 import com.example.netflix.repositories.ImageDao;
+import com.example.netflix.data.LocalDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,8 +19,9 @@ public class ImageRepository {
     private final ImagesAPI imagesAPI;
     private final ExecutorService executorService;
 
-    public ImageRepository(ImageDao imageDao) {
-        this.imageDao = imageDao;
+    public ImageRepository() {
+        LocalDatabase db = LocalDatabase.getInstance();
+        this.imageDao = db.imageDao();
         this.imagesAPI = new ImagesAPI(imageDao);
         this.executorService = Executors.newSingleThreadExecutor(); // Background thread
     }
@@ -32,6 +34,7 @@ public class ImageRepository {
         // get image from Room (returns LiveData for automatic updates)
         MutableLiveData<Image> liveData = new MutableLiveData<>();
 
+        // run in a background thread because there are ROOM accesses
         executorService.execute(() -> {
             // first, check if the image exists in the local Room database
             Image localImage = imageDao.get(id);
