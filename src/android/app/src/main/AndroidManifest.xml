@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,6 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Netflix"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.CategoriesPage"
+            android:exported="false" />
+        <activity
+            android:name=".activities.HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SearchResultsPage"
+            android:exported="true">
+
+            <!-- Optional intent filter if needed -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.AdminPage"
             android:exported="false" />

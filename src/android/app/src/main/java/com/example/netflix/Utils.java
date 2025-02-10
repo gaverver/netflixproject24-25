@@ -1,5 +1,9 @@
 package com.example.netflix;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
+
 import org.json.JSONObject;
 
 import retrofit2.Response;
@@ -23,5 +27,14 @@ public class Utils {
         // update the values in the webResponse Object
         res.setResponseCode(responseCode);
         res.setResponseMsg(errorMessage);
+    }
+
+    public static void setImageFromByteArray(ImageView imageView, byte[] imageData) {
+        // using Bitmap to insert the image to the imageView
+        if (imageData != null && imageData.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+            imageView.setImageBitmap(bitmap);
+        }
+        // else, image cannot be inserted to the ImageView
     }
 }
