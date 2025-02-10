@@ -1,0 +1,294 @@
+package com.example.netflix.api;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.netflix.MyApplication;
+import com.example.netflix.RetrofitClient;
+import com.example.netflix.Utils;
+import com.example.netflix.WebResponse;
+import com.example.netflix.entities.Movie;
+import com.example.netflix.repositories.MovieDao;
+
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import android.os.AsyncTask;
+
+public class MovieAPI {
+    private MovieDao dao;
+    private Retrofit retrofit;
+    private MovieWebServiceAPI movieWebServiceAPI;
+
+    private String userId;
+    private String token;
+
+    private void updateTokens() {
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        this.token = sharedPreferences.getString("token", null);
+        this.userId = sharedPreferences.getString("userId", null);
+    }
+
+    public MovieAPI(MovieDao movieDao) {
+        this.dao = movieDao;
+
+        retrofit = RetrofitClient.getInstance().getRetrofit();
+
+        movieWebServiceAPI = retrofit.create(MovieWebServiceAPI.class);
+
+        updateTokens();
+
+    }
+
+
+    public void getReloadedMovie(String id, WebResponse res, MutableLiveData<Movie> movieMutableLiveData) {
+        Call<Movie> call = movieWebServiceAPI.getMovie(id);
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        Movie movie = dao.get(response.body().getId());
+                        if (movie == null) {
+                            dao.insert(response.body());
+                        } else {
+                            dao.update(response.body());
+                        }
+                        if (movieMutableLiveData != null) {
+                            movieMutableLiveData.postValue(response.body());
+                        }
+                    }).start();
+                    // set the response status to the returned response status - the operation was successful
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("ok");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Internal Server Error" + t.getMessage());
+            }
+        });
+    }
+
+    public void createMovie(Movie movie, WebResponse res) {
+        updateTokens();
+        Call<Void> call = movieWebServiceAPI.createMovie(token, movie);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // get the created userID from the location header
+                    String locationHeader = response.headers().get("Location");
+                    if (locationHeader != null) {
+                        // extract the id from the location header(it is /users/:id)
+                        Pattern pattern = Pattern.compile("\\d+");
+                        Matcher matcher = pattern.matcher(locationHeader);
+                        if (matcher.find()) {
+                            movie.setId(matcher.group());
+                        }
+                    }
+                    new Thread(() -> {
+                        // insert the created user to the room
+                        dao.insert(movie);
+                    }).start();
+                    // set the response status to the returned response status - the operation was successful
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("User Created");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Creation of movie failed" + t.getMessage());
+            }
+        });
+
+
+    }
+
+    public void putMovie(Movie movie, WebResponse res) {
+        updateTokens();
+        Call<Void> call = movieWebServiceAPI.putMovie(token, movie.getId(), movie);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    new Thread(() -> {
+                        // Update the movie in the local database
+                        dao.update(movie);
+                    }).start();
+                    // Set the response status to the returned response status
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("Movie Updated Successfully");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Return response code that indicates there was an error in the server
+                res.setResponseCode(500);
+                res.setResponseMsg("Update of movie failed: " + t.getMessage());
+            }
+        });
+    }
+
+    public void deleteMovie(String movieId, WebResponse res) {
+        updateTokens();
+        Call<Void> call = movieWebServiceAPI.deleteMovie(token, movieId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    new Thread(() -> {
+                        // Delete the movie from the local database
+                        dao.deleteById(movieId);
+                    }).start();
+                    // Set the response status to the returned response status
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("Movie Deleted Successfully");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Return response code that indicates there was an error in the server
+                res.setResponseCode(500);
+                res.setResponseMsg("Deletion of movie failed: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getRecommendationIds(String id, WebResponse res, MutableLiveData<List<String>> movieIds) {
+        updateTokens();
+        Call<List<String>> call = movieWebServiceAPI.getRecommendation(token, userId, id);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        movieIds.postValue(response.body());
+                    }).start();
+                    // set the response status to the returned response status - the operation was successful
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("ok");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Internal Server Error" + t.getMessage());
+            }
+        });
+    }
+
+    public void addWatchedMovie(String id, WebResponse res) {
+        updateTokens();
+        Call<List<String>> call = movieWebServiceAPI.addWatchedMovie(token, userId, id);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // set the response status to the returned response status - the operation was successful
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("ok");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Internal Server Error" + t.getMessage());
+            }
+        });
+    }
+
+    public void searchMovies(String query, WebResponse res, MutableLiveData<List<Movie>> moviesMutableLiveData) {
+        Call<List<Movie>> call = movieWebServiceAPI.searchMovies(query);
+        call.enqueue(new Callback<List<Movie>>() {
+            @Override
+            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        moviesMutableLiveData.postValue(response.body());
+                    }).start();
+                    // set the response status to the returned response status - the operation was successful
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("ok");
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Movie>> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Internal Server Error" + t.getMessage());
+            }
+        });
+    }
+
+    public void getMovies(WebResponse res,  MutableLiveData<Map<String, List<String>>> moviesMutableLiveData) {
+        updateTokens();
+        Call<Map<String, List<String>>> call = movieWebServiceAPI.getMovies(token, userId);
+        call.enqueue(new Callback<Map<String, List<String>>>() {
+            @Override
+            public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        dao.clear();
+                        Map<String, List<String>> responseBody = response.body();
+                        for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
+                            List<String> values = entry.getValue();
+                            for (String value : values) {
+                                getReloadedMovie(value,res,null);
+                            }
+                        }
+                        // set the response status to the returned response status - the operation was successful
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("ok");
+                        moviesMutableLiveData.postValue(response.body());
+                    }).start();
+                } else {
+                    Utils.handleError(response, res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, List<String>>> call, Throwable t) {
+                // return response code that tells that there was error in server
+                res.setResponseCode(500);
+                res.setResponseMsg("Internal Server Error" + t.getMessage());
+            }
+        });
+    }
+
+}

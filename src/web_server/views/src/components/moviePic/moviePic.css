@@ -6,9 +6,9 @@
   cursor: pointer;
   width: 150px; /* Set a fixed width to match the image */
   height: 225px; /* Set a fixed height to match the image */
-  position: relative; /* Add positioning context */
-  overflow: hidden; /* Hide overflow when image scales */
-  border-radius: 10px; /* Smooth rounded corners */
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .movie-pic {
@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.1); /* Slight overlay for depth */
+  background: rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
@@ -48,13 +48,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   transition: box-shadow 0.3s ease;
-  pointer-events: none; /* Ensures clicks go through to the image */
+  pointer-events: none;
 }
 
 .movie-pic-container:hover::after {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Intensify the shadow */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 

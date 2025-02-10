@@ -38,7 +38,7 @@ const SearchResults = () => {
         return navigate("/login");
       }
       // gets the user by fetching to api/user/:id
-      const user_res = await fetch (`http://localhost:3001/api/users/${currentUser}`);
+      const user_res = await fetch (`http://localhost:${process.env.REACT_APP_PORT}/api/users/${currentUser}`);
       // convert to json
       const json = await user_res.json();
       // Store the user in state
@@ -49,7 +49,7 @@ const SearchResults = () => {
       setPhotoURL(photoURL);
       // Fetch the movies based on the search query
       try {
-        const list_res = await fetch(`http://localhost:3001/api/movies/search/${query}`);
+        const list_res = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/search/${query}`);
         // if the server crushed
         if (!list_res.ok) {
           return navigate("/serverError");

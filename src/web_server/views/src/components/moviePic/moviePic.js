@@ -17,7 +17,7 @@ const MoviePic = ({ id }) => {
     const fetchMovie = async () => {
       try {
         // Fetch movie details
-        const res = await fetch(`http://localhost:3001/api/movies/${id}`);
+        const res = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
         if (!res.ok) {
           // will be catch later
           throw new Error("Failed to fetch movie");
@@ -36,7 +36,7 @@ const MoviePic = ({ id }) => {
   }, [id]); // Run the effect only when `id` changes
 
   const whenClicked = () => {
-    navigate(`/movies/${id}`); // Navigate to movie details page
+    navigate(`/movies/information/${id}`); // Navigate to movie details page
   };
 
   // Show a placeholder or error message if the movie is not yet loaded

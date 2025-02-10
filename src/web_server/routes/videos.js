@@ -13,6 +13,7 @@ router.route('/:id')
     .delete(tokenController.isLoggedIn, tokenController.isAdmin, videoController.DeleteVideoById)
 
 router.route('/watch/:id')
-    .get(tokenController.isLoggedIn, videoController.streamVideoById)
+    // .get(tokenController.isLoggedIn, videoController.streamVideoById)\
+    .get(videoController.streamVideoById)
 
 module.exports = router;
