@@ -1,6 +1,7 @@
 package com.example.netflix.entities;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Movie {
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "id")
     private String id;
     private String name;
     private String description;

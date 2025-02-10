@@ -13,6 +13,8 @@ public class Category {
     private Boolean promoted;
     private String[] movies;
 
+    public Category() {};
+
     // constructor without id (for new categories before MongoDB assigns an ID)
     public Category(String name, Boolean promoted, String[] movies) {
         this.name = name;

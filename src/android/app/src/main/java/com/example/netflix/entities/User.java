@@ -21,8 +21,6 @@ public class User {
    private String id;
    private String username;
    @Ignore
-   private String password;
-   @Ignore
    private String email;
    @Ignore
    private String phoneNumber;
@@ -32,14 +30,19 @@ public class User {
    private List<String> movies_watched;
    private String picture;
 
-   public User() {};
 
-    public User(String username, String picture, String password, String email, String phoneNumber) {
+   public User() {};
+  
+   public User(String id, String username, String picture) {
+      this.id = id;
+      this.username = username;
+      this.picture = picture;
+   }
+    public User(String username, String picture, String email, String phoneNumber) {
        // temp value that will be changed afterwards.
        this.id = "temp";
        this.username = username;
        this.picture = picture;
-       this.password = password;
        this.email = email;
        this.phoneNumber = phoneNumber;
        this.privilegeLevel = 0;

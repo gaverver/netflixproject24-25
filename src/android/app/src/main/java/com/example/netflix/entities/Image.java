@@ -17,6 +17,8 @@ public class Image {
 
     private String contentType; // MIME type (e.g., "image/png")
 
+    public Image() {};
+
     // constructor without id (for new images before MongoDB assigns an ID)
     public Image(byte[] data, String contentType) {
         this.data = data;
