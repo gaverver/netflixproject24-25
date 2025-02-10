@@ -3,14 +3,23 @@ package com.example.netflix.entities;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.example.netflix.converters.StringArrayConverter;
+import com.example.netflix.converters.StringListConverter;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+@TypeConverters({StringListConverter.class, StringArrayConverter.class})
 @Entity(tableName = "categories")
-public class Category {
+public class Category implements Serializable {
     @PrimaryKey
     @NonNull
     private String id = ""; // temporary placeholder, will be updated later
     private String name;
     private Boolean promoted;
+    @SerializedName("movieIds")
     private String[] movies;
 
     public Category() {};
