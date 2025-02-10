@@ -1,9 +1,16 @@
 package com.example.netflix.entities;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import com.example.netflix.converters.StringListConverter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity(foreignKeys = @ForeignKey(
         entity = Image.class,
@@ -14,23 +21,24 @@ import androidx.room.PrimaryKey;
 public class Movie {
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "id")
     private String id;
     private String name;
     private String description;
-    private String[] actors;
+    private List<String> actors;
     private int age_limit;
-    private String[] creators;
-    private String[] categories;
+    private List<String> creators;
+    private List<String> categories;
     private String photoId;
 
-    public Movie(@NonNull String id, String name, String description, String[] actors, int age_limit, String[] creators, String[] categories, String photoId) {
+    public Movie(@NonNull String id, String name, String description, List<String> actors, int age_limit, List<String> creators, List<String> categories, String photoId) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.actors = actors;
+        this.actors = new ArrayList<>(actors);
         this.age_limit = age_limit;
-        this.creators = creators;
-        this.categories = categories;
+        this.creators = new ArrayList<>(creators);
+        this.categories = new ArrayList<>(categories);
         this.photoId = photoId;
     }
 
@@ -59,11 +67,11 @@ public class Movie {
         this.description = description;
     }
 
-    public String[] getActors() {
+    public List<String> getActors() {
         return actors;
     }
 
-    public void setActors(String[] actors) {
+    public void setActors(List<String> actors) {
         this.actors = actors;
     }
 
@@ -75,19 +83,19 @@ public class Movie {
         this.age_limit = age_limit;
     }
 
-    public String[] getCreators() {
+    public List<String> getCreators() {
         return creators;
     }
 
-    public void setCreators(String[] creators) {
+    public void setCreators(List<String> creators) {
         this.creators = creators;
     }
 
-    public String[] getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
-    public void setCategories(String[] categories) {
+    public void setCategories(List<String> categories) {
         this.categories = categories;
     }
 

@@ -12,10 +12,10 @@ import java.util.List;
 
 @Dao
 public interface MovieDao {
-    @Query("SELECT * FROM movie")
+    @Query("SELECT * FROM movies")
     List<Movie> getMovies();
 
-    @Query("SELECT * FROM movie WHERE id = :id")
+    @Query("SELECT * FROM movies WHERE id = :id")
     Movie get(String id);
 
     @Insert
@@ -27,9 +27,9 @@ public interface MovieDao {
     @Delete
     void delete(Movie... movies);
 
-    @Query("DELETE FROM movie WHERE id = :movieId")
+    @Query("DELETE FROM movies WHERE id = :movieId")
     void deleteById(String movieId);
 
-    @Query("DELETE FROM movie")
+    @Query("DELETE FROM movies")
     void clear();
 }

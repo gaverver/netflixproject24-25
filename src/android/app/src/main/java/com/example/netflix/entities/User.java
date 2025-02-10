@@ -30,9 +30,9 @@ public class User {
    private List<String> movies_watched;
    private String picture;
 
-   public User() {
 
-   }
+   public User() {};
+  
    public User(String id, String username, String picture) {
       this.id = id;
       this.username = username;
