@@ -8,7 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
+import com.example.netflix.MyApplication;
 import com.example.netflix.R;
 import com.example.netflix.entities.Category;
 import com.example.netflix.viewmodels.CategoryViewModel;
@@ -43,8 +48,21 @@ public class AddCategoryFragment extends Fragment {
         String[] movies = etMovies.getText().toString().split(",");
 
         Category category = new Category(name, promoted, movies);
+        WebResponse res = new WebResponse();
+        res.getResponseCode().observe(this.getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Toast.makeText(getContext(), "Response code: " + integer.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        categoryViewModel.create(category, "your_token_here", new WebResponse());
+        res.getResponseMsg().observe(this.getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show();
+            }
+        });
+        categoryViewModel.create(category, res);
     }
 }
 
