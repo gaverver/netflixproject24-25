@@ -1,7 +1,7 @@
 package com.example.netflix.data;
 
 import android.content.Context;
-import android.media.Image;
+import com.example.netflix.entities.Image;
 
 import androidx.room.Database;
 import androidx.room.Room;
