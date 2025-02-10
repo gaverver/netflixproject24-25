@@ -1,6 +1,8 @@
 package com.example.netflix.data;
 
 import android.content.Context;
+
+import com.example.netflix.converters.StringArrayConverter;
 import com.example.netflix.entities.Image;
 
 import androidx.room.Database;
@@ -17,7 +19,7 @@ import com.example.netflix.repositories.ImageDao;
 import com.example.netflix.repositories.MovieDao;
 import com.example.netflix.repositories.UserDao;
 
-@TypeConverters(StringListConverter.class)
+@TypeConverters({StringListConverter.class, StringArrayConverter.class})
 @Database(entities = {User.class, Movie.class, Image.class, Category.class}, version=1)
 public abstract class LocalDatabase extends RoomDatabase {
     public abstract UserDao userDao();
