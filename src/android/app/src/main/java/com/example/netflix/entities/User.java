@@ -32,6 +32,8 @@ public class User {
    private List<String> movies_watched;
    private String picture;
 
+   public User() {};
+
     public User(String username, String picture, String password, String email, String phoneNumber) {
        // temp value that will be changed afterwards.
        this.id = "temp";
