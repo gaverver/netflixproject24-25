@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import com.example.netflix.converters.StringListConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity(foreignKeys = @ForeignKey(
         entity = Image.class,

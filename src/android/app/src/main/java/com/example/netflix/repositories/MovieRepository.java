@@ -19,7 +19,7 @@ public class MovieRepository {
     private final ExecutorService executorService;
 
     public MovieRepository() {
-        LocalDataBase db = LocalDataBase.getInstance();
+        LocalDatabase db = LocalDatabase.getInstance();
         this.dao = db.movieDao();
         this.api = new MovieAPI(dao);
         this.executorService = Executors.newSingleThreadExecutor();
