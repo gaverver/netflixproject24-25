@@ -6,7 +6,9 @@ import android.media.Image;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
+import com.example.netflix.converters.StringListConverter;
 import com.example.netflix.entities.Category;
 import com.example.netflix.entities.Movie;
 import com.example.netflix.entities.User;
@@ -15,6 +17,7 @@ import com.example.netflix.repositories.ImageDao;
 import com.example.netflix.repositories.MovieDao;
 import com.example.netflix.repositories.UserDao;
 
+@TypeConverters(StringListConverter.class)
 @Database(entities = {User.class, Movie.class, Image.class, Category.class}, version=1)
 public abstract class LocalDatabase extends RoomDatabase {
     public abstract UserDao userDao();
