@@ -1,22 +1,24 @@
 package com.example.netflix;
 
+import androidx.lifecycle.MutableLiveData;
+
 public class WebResponse {
-    private int responseCode;
-    private String ResponseMsg;
+    private MutableLiveData<Integer> responseCode;
+    private MutableLiveData<String> ResponseMsg;
 
     public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
+        this.responseCode.postValue(responseCode);
     }
 
     public void setResponseMsg(String responseMsg) {
-        ResponseMsg = responseMsg;
+        this.ResponseMsg.postValue(responseMsg);
     }
 
-    public int getResponseCode() {
+    public MutableLiveData<Integer> getResponseCode() {
         return responseCode;
     }
 
-    public String getResponseMsg() {
+    public MutableLiveData<String> getResponseMsg() {
         return ResponseMsg;
     }
 }
