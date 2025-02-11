@@ -110,7 +110,7 @@ const updateCategory = async (req, res) => {
     }
 
     // for comfort
-    const { name, promoted, movieIds } = req.body;
+    let { name, promoted, movieIds } = req.body;
 
     // check if the body has some new data, if not, it's a bad request
     if (name === undefined && promoted === undefined && movieIds === undefined) {
@@ -125,6 +125,9 @@ const updateCategory = async (req, res) => {
     if (promoted !== undefined && typeof promoted !== 'boolean') {
         return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
     }
+
+    // convert [""] to [] (empty)
+    movieIds = convertToEmpty(movieIds);
 
     // movieIds doesn't have to be passed, it has a default value
     if (movieIds !== undefined) {
