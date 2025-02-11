@@ -1,12 +1,27 @@
 const categoryService = require('../services/categories');
 const mongoose = require('mongoose')
 
+// helper function to convert the array from [""] to [] if needed
+const convertToEmpty = (array) => {
+    // if the array is defined
+    if (array !== undefined) {
+        // if the array inserted is really an array
+        if (Array.isArray(array)) {
+            // if the array has only 1 entry, and it's empty string
+            if (array.length === 1 && array.at(0) === "") {
+                return [];
+            }
+        }
+    }
+    return array;
+};
+
 const createCategory = async (req, res) => {
     
     // avoid server crushes, by catching an error
     try {
         // for comfort
-        const { name, promoted, movieIds } = req.body;
+        let { name, promoted, movieIds } = req.body;
 
         // name is a required field
         if (name === undefined) {
@@ -22,6 +37,9 @@ const createCategory = async (req, res) => {
         if (promoted !== undefined && typeof promoted !== 'boolean') {
             return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
         }
+
+        // convert [""] to [] (empty)
+        movieIds = convertToEmpty(movieIds);
 
         // movieIds doesn't have to be passed, it has a default value
         if (movieIds !== undefined) {
@@ -92,7 +110,7 @@ const updateCategory = async (req, res) => {
     }
 
     // for comfort
-    const { name, promoted, movieIds } = req.body;
+    let { name, promoted, movieIds } = req.body;
 
     // check if the body has some new data, if not, it's a bad request
     if (name === undefined && promoted === undefined && movieIds === undefined) {
@@ -107,6 +125,9 @@ const updateCategory = async (req, res) => {
     if (promoted !== undefined && typeof promoted !== 'boolean') {
         return res.status(400).json({ error: 'Invalid data: promoted must be a boolean' });
     }
+
+    // convert [""] to [] (empty)
+    movieIds = convertToEmpty(movieIds);
 
     // movieIds doesn't have to be passed, it has a default value
     if (movieIds !== undefined) {

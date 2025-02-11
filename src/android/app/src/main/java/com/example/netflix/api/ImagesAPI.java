@@ -41,7 +41,7 @@ public class ImagesAPI {
 
     public void insertImage(Image image, WebResponse res) {
         RequestBody requestBody = RequestBody.create(MediaType.parse(image.getContentType()), image.getData());
-        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody, image.getContentType());
+        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -59,9 +59,9 @@ public class ImagesAPI {
                             }
                             dao.insert(image);
                         }
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Image Uploaded");
                     }).start();
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Image Uploaded");
                 } else {
                     Utils.handleError(response, res);
                 }
