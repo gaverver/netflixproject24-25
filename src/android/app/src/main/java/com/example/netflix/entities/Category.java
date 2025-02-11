@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class Category implements Serializable {
     @PrimaryKey
     @NonNull
+    @SerializedName("_id")
     private String id = ""; // temporary placeholder, will be updated later
     private String name;
     private Boolean promoted;

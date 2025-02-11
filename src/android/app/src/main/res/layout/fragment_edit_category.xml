@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- ID Input -->
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Category ID" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search" />
+
+    <!-- Container for editing fields, initially hidden -->
+    <LinearLayout
+        android:id="@+id/edit_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Category Name" />
+
+        <EditText
+            android:id="@+id/et_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Movies (comma separated)" />
+
+        <Switch
+            android:id="@+id/sw_promoted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Promoted" />
+
+        <Button
+            android:id="@+id/btn_edit_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Category" />
+    </LinearLayout>
+
+</LinearLayout>
