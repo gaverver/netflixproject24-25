@@ -7,7 +7,9 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import com.example.netflix.converters.StringListConverter;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,28 +20,33 @@ import java.util.List;
         childColumns = "photoId",
         onDelete = ForeignKey.SET_NULL
 ), tableName = "movies")
-public class Movie {
+public class Movie implements Serializable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
+    @SerializedName("_id")
     private String id;
     private String name;
     private String description;
     private List<String> actors;
+    private String published;
     private int age_limit;
     private List<String> creators;
     private List<String> categories;
+    @SerializedName("photo")
     private String photoId;
-
-    public Movie(@NonNull String id, String name, String description, List<String> actors, int age_limit, List<String> creators, List<String> categories, String photoId) {
+    private String video;
+    public Movie(@NonNull String id, String name, String description, List<String> actors, String published,int age_limit, List<String> creators, List<String> categories, String photoId, String video) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.actors = new ArrayList<>(actors);
+        this.published = published;
         this.age_limit = age_limit;
         this.creators = new ArrayList<>(creators);
         this.categories = new ArrayList<>(categories);
         this.photoId = photoId;
+        this.video = video;
     }
 
     @NonNull
@@ -75,6 +82,14 @@ public class Movie {
         this.actors = actors;
     }
 
+    public String getPublished() {
+        return published;
+    }
+
+    public void setPublished(String published) {
+        this.published = published;
+    }
+
     public int getAge_limit() {
         return age_limit;
     }
@@ -105,5 +120,13 @@ public class Movie {
 
     public void setPhotoId(String photoId) {
         this.photoId = photoId;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 }

@@ -50,7 +50,7 @@ public class MovieViewModel {
     }
 
     public LiveData<Map<String, List<String>>> getMovies(WebResponse res) {
-        return getMovies(res);
+        return movieRepository.getMovies(res);
     }
 
 

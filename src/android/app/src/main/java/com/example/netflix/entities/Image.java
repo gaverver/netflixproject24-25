@@ -5,11 +5,16 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 @Entity(tableName = "images")
-public class Image {
+public class Image implements Serializable {
 
     @PrimaryKey
     @NonNull
+    @SerializedName("_id")
     private String id = ""; // temporary placeholder, will be updated later
 
     @ColumnInfo(name = "data", typeAffinity = ColumnInfo.BLOB)
