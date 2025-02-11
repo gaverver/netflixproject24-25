@@ -19,9 +19,9 @@ public interface ImageWebServiceAPI {
     @Headers("Content-Type: application/octet-stream")
     Call<Void> uploadImage(
             // the data of the image as RequestBody object
-            @Body RequestBody image,
+            @Body RequestBody image
             // add content type dynamically (jpg, png, ...)
-            @Header("Content-Type") String contentType
+//            @Header("Content-Type") String contentType
     );
 
     // getting image details

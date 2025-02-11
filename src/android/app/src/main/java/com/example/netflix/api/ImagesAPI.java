@@ -27,7 +27,7 @@ import retrofit2.Callback;
  * and will ALWAYS! check in the server in get commands.
  * (even if the image is already in the ROOM DB)
  * and so in the ImageRepository class, get method should check for the image in the ROOM first!
-*/
+ */
 
 public class ImagesAPI {
     private final ImageDao dao;
