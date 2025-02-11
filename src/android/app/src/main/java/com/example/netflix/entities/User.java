@@ -6,18 +6,16 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Image.class,
-        parentColumns = "id",
-        childColumns = "picture",
-        onDelete = ForeignKey.SET_NULL
-))
+@Entity()
 public class User {
    @PrimaryKey
    @NonNull
+   @SerializedName("_id")
    private String id;
    private String username;
    @Ignore
