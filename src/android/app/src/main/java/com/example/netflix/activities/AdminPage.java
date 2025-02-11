@@ -19,7 +19,7 @@ import com.example.netflix.R;
 import com.example.netflix.fragments.AddCategoryFragment;
 import com.example.netflix.fragments.AddMovieFragment;
 import com.example.netflix.fragments.EditCategoryFragment;
-//import com.example.netflix.fragments.EditMovieFragment;
+import com.example.netflix.fragments.EditMovieFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdminPage extends AppCompatActivity {
@@ -38,7 +38,7 @@ public class AdminPage extends AppCompatActivity {
             if (itemId == R.id.nav_add_movie) {
                 selectedFragment = new AddMovieFragment();
             } else if (itemId == R.id.nav_edit_movie) {
-//                selectedFragment = new EditMovieFragment();
+                selectedFragment = new EditMovieFragment();
             } else if (itemId == R.id .nav_add_category) {
                 selectedFragment = new AddCategoryFragment();
             } else if (itemId == R.id.nav_edit_category) {
