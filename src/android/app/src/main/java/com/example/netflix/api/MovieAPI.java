@@ -22,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class MovieAPI {
     private MovieDao dao;
@@ -94,7 +95,7 @@ public class MovieAPI {
                     String locationHeader = response.headers().get("Location");
                     if (locationHeader != null) {
                         // extract the id from the location header(it is /users/:id)
-                        Pattern pattern = Pattern.compile("\\d+");
+                        Pattern pattern = Pattern.compile("[^/]+$");
                         Matcher matcher = pattern.matcher(locationHeader);
                         if (matcher.find()) {
                             movie.setId(matcher.group());
@@ -106,7 +107,7 @@ public class MovieAPI {
                     }).start();
                     // set the response status to the returned response status - the operation was successful
                     res.setResponseCode(response.code());
-                    res.setResponseMsg("User Created");
+                    res.setResponseMsg("Movie Created");
                 } else {
                     Utils.handleError(response, res);
                 }
