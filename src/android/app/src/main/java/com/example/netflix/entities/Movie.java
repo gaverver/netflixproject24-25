@@ -36,7 +36,7 @@ public class Movie implements Serializable {
     @SerializedName("photo")
     private String photoId;
     private String video;
-    public Movie(@NonNull String id, String name, String description, List<String> actors, String published,int age_limit, List<String> creators, List<String> categories, String photoId, String videoId) {
+    public Movie(@NonNull String id, String name, String description, List<String> actors, String published,int age_limit, List<String> creators, List<String> categories, String photoId, String video) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -46,7 +46,7 @@ public class Movie implements Serializable {
         this.creators = new ArrayList<>(creators);
         this.categories = new ArrayList<>(categories);
         this.photoId = photoId;
-        this.video = videoId;
+        this.video = video;
     }
 
     @NonNull
@@ -126,7 +126,7 @@ public class Movie implements Serializable {
         return video;
     }
 
-    public void setVideo(String videoId) {
-        this.video = videoId;
+    public void setVideo(String video) {
+        this.video = video;
     }
 }
