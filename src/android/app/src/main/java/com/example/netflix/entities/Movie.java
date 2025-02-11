@@ -14,12 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Image.class,
-        parentColumns = "id",
-        childColumns = "photoId",
-        onDelete = ForeignKey.SET_NULL
-), tableName = "movies")
+@Entity(tableName = "movies")
 public class Movie implements Serializable {
     @PrimaryKey
     @NonNull
