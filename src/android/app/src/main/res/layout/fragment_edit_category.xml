@@ -3,20 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#141414">
 
     <!-- ID Input -->
     <EditText
         android:id="@+id/et_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Category ID" />
+        android:layout_height="56dp"
+        android:hint="Enter Category ID"
+        android:textColor="#b3b3b3"
+        android:textColorHint="#b3b3b3"
+        android:background="@drawable/edittext_background"
+        android:padding="12dp" />
 
     <Button
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search" />
+        android:text="Search"
+        android:background="#e50914"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:layout_marginTop="8dp" />
 
     <!-- Container for editing fields, initially hidden -->
     <LinearLayout
@@ -24,31 +34,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Category Name" />
+            android:layout_height="56dp"
+            android:hint="Category Name"
+            android:textColor="#b3b3b3"
+            android:textColorHint="#b3b3b3"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/et_movies"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Movies (comma separated)" />
+            android:layout_height="56dp"
+            android:hint="Movies (comma separated)"
+            android:textColor="#b3b3b3"
+            android:textColorHint="#b3b3b3"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
 
         <Switch
             android:id="@+id/sw_promoted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Promoted" />
+            android:text="Promoted"
+            android:textColor="#b3b3b3"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/btn_edit_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Category" />
+            android:text="Edit Category"
+            android:background="#e50914"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginTop="16dp" />
 
         <!-- New Delete Button -->
         <Button
@@ -56,8 +83,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete Category"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="#FF0000" />
+            android:background="#d32f2f"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
 </LinearLayout>
