@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/menuScreen"
+    android:background="@color/black">
+
+    <!-- Logo Text at the Top-Left -->
+    <TextView
+        android:id="@+id/logoMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/catflix"
+        android:textColor="@color/red"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <!-- search view for searching for movies -->
+    <SearchView
+        android:id="@+id/navigateButton"
+        android:layout_width="183dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="124dp"
+        android:background="@android:color/darker_gray"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search..." />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="64dp"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/userPic"
+        android:layout_width="42dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp"/>
+
+    <!-- LinearLayout for Home, Categories, and Administration buttons -->
+    <LinearLayout
+        android:id="@+id/navigationButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/logoMenu"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <Button
+            android:id="@+id/home_page_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:text="Home"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/darker_gray"/>
+
+        <Button
+            android:id="@+id/categories_page_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:text="Categories"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/darker_gray"/>
+
+        <Button
+            android:id="@+id/administration_page_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:text="Admin"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
+    <!-- Menu Container -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <!-- Sliding Menu Bar -->
+        <LinearLayout
+            android:id="@+id/menuBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="16dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml">
+
+            <Switch
+                android:id="@+id/dark_light_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark-Mode"/>
+
+            <Button
+                android:id="@+id/sign_out_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Out"
+                android:backgroundTint="@color/black"/>
+        </LinearLayout>
+
+        <!-- Toggle Button ("<" / ">") -->
+        <Button
+            android:id="@+id/toggleButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="&lt;"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:backgroundTint="@android:color/darker_gray"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </FrameLayout>
+
+</RelativeLayout>
+
