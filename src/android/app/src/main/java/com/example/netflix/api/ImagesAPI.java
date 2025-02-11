@@ -1,5 +1,7 @@
 package com.example.netflix.api;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -59,9 +61,10 @@ public class ImagesAPI {
                             }
                             dao.insert(image);
                         }
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Image Uploaded");
                     }).start();
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Image Uploaded");
+
                 } else {
                     Utils.handleError(response, res);
                 }
@@ -82,31 +85,30 @@ public class ImagesAPI {
             @Override
             public void onResponse(@NonNull Call<Image> call, @NonNull Response<Image> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("ImagesAPI", "Image fetched successfully: " + response.body().toString());
                     new Thread(() -> {
-                        // the image is now deserialized correctly with the byte[] data
                         Image image = response.body();
                         image.setId(id);
-
-                        // insert the image into the Room database
                         dao.insert(image);
-                        // insert to the mutableLiveData got in the arguments
                         data.postValue(image);
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Ok");
                     }).start();
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Ok");
                 } else {
+                    Log.d("ImagesAPI", "Failed to fetch image: " + response.message());
                     Utils.handleError(response, res);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Image> call, @NonNull Throwable t) {
-                // can't connect to server
+                Log.d("ImagesAPI", "Error fetching image: " + t.getMessage());
                 res.setResponseCode(500);
                 res.setResponseMsg("Internal Server Error" + t.getMessage());
             }
         });
     }
+
 
     public void deleteImage(String id, WebResponse res) {
         Call<Void> call = imageWebServiceAPI.deleteImage(id);
@@ -122,9 +124,10 @@ public class ImagesAPI {
                             // delete the image from the Room database
                             dao.delete(image);
                         }
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Image Deleted");
                     }).start();
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Image Deleted");
+
                 } else {
                     Utils.handleError(response, res);
                 }
