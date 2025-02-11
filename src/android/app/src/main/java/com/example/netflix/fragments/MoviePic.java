@@ -17,6 +17,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.netflix.R;
+import com.example.netflix.Utils;
 import com.example.netflix.WebResponse;
 import com.example.netflix.entities.Image;
 import com.example.netflix.entities.Movie;
@@ -46,7 +47,7 @@ public class MoviePic extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        imageView = view.findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.movieImageView);
         MovieViewModel movieModel = new MovieViewModel();
         ImageViewModel imageViewModel = new ImageViewModel();
 
@@ -107,19 +108,7 @@ public class MoviePic extends Fragment {
                             byte[] imageData = image.getData();
 
                             if (imageData != null && imageData.length > 0) {
-                                Log.d("MoviePic", "Image data size: " + imageData.length);
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-
-                                // Scaling the image to fit the ImageView size
-                                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, imageView.getWidth(), imageView.getHeight(), true);
-
-                                // Ensure the image view is set on the UI thread
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        imageView.setImageBitmap(scaledBitmap);
-                                    }
-                                });
+                                Utils.setImageFromByteArray(getContext() ,imageView, image.getData());
                             } else {
                                 Toast.makeText(getContext(), "Image data is empty", Toast.LENGTH_SHORT).show();
                             }
