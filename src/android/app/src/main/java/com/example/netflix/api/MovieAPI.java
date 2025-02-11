@@ -9,8 +9,10 @@ import com.example.netflix.MyApplication;
 import com.example.netflix.RetrofitClient;
 import com.example.netflix.Utils;
 import com.example.netflix.WebResponse;
+import com.example.netflix.entities.Image;
 import com.example.netflix.entities.Movie;
 import com.example.netflix.repositories.MovieDao;
+import com.example.netflix.viewmodels.ImageViewModel;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class MovieAPI {
     private MovieDao dao;
     private Retrofit retrofit;
     private MovieWebServiceAPI movieWebServiceAPI;
-
+    private ImageViewModel imageViewModel;
     private String userId;
     private String token;
 
@@ -45,6 +47,8 @@ public class MovieAPI {
 
         movieWebServiceAPI = retrofit.create(MovieWebServiceAPI.class);
 
+        imageViewModel = new ImageViewModel();
+
         updateTokens();
 
     }
@@ -58,6 +62,7 @@ public class MovieAPI {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
                         Movie movie = dao.get(response.body().getId());
+                        imageViewModel.get(response.body().getId(), new WebResponse());
                         if (movie == null) {
                             dao.insert(response.body());
                         } else {
@@ -66,10 +71,10 @@ public class MovieAPI {
                         if (movieMutableLiveData != null) {
                             movieMutableLiveData.postValue(response.body());
                         }
+                        // set the response status to the returned response status - the operation was successful
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("ok");
                     }).start();
-                    // set the response status to the returned response status - the operation was successful
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("ok");
                 } else {
                     Utils.handleError(response, res);
                 }
