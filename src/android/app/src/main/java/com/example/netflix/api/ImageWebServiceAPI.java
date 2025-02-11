@@ -1,8 +1,11 @@
 package com.example.netflix.api;
 
+import com.example.netflix.ImageResponse;
 import com.example.netflix.entities.Image;
 
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -26,7 +29,7 @@ public interface ImageWebServiceAPI {
 
     // getting image details
     @GET("/images/{id}")
-    Call<Image> getImage(@Path("id") String id);
+    Call<ImageResponse> getImage(@Path("id") String id);
 
     // deleting image by id
     @DELETE("/images/{id}")

@@ -1,21 +1,29 @@
 package com.example.netflix.api;
 
+
+import android.os.Looper;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.netflix.ImageResponse;
 import com.example.netflix.WebResponse;
 import com.example.netflix.Utils;
 import com.example.netflix.entities.Image;
 import com.example.netflix.repositories.ImageDao;
 import com.example.netflix.ImageRetrofitClient;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
@@ -80,20 +88,27 @@ public class ImagesAPI {
     }
 
     public void getImage(String id, MutableLiveData<Image> data, WebResponse res) {
-        Call<Image> call = imageWebServiceAPI.getImage(id);
-        call.enqueue(new Callback<Image>() {
+        Call<ImageResponse> call = imageWebServiceAPI.getImage(id);
+        call.enqueue(new Callback<ImageResponse>() {
             @Override
-            public void onResponse(@NonNull Call<Image> call, @NonNull Response<Image> response) {
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("ImagesAPI", "Image fetched successfully: " + response.body().toString());
-                    new Thread(() -> {
-                        Image image = response.body();
-                        image.setId(id);
-                        dao.insert(image);
-                        data.postValue(image);
-                        res.setResponseCode(response.code());
-                        res.setResponseMsg("Ok");
-                    }).start();
+                    ImageResponse imageResponse = response.body();
+
+                    byte[] imageBytes = imageResponse.getByteArray();
+
+                    // Create the Image object
+                    Image image = new Image(imageResponse.getId(), imageBytes, "image/webp");
+
+                    // Insert into Room Database
+                    dao.insert(image);
+
+                    // Update LiveData
+                    data.postValue(image);
+
+                    // set response code and message
+                    res.setResponseCode(response.code());
+                    res.setResponseMsg("Ok");
                 } else {
                     Log.d("ImagesAPI", "Failed to fetch image: " + response.message());
                     Utils.handleError(response, res);
@@ -101,10 +116,9 @@ public class ImagesAPI {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Image> call, @NonNull Throwable t) {
-                Log.d("ImagesAPI", "Error fetching image: " + t.getMessage());
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
                 res.setResponseCode(500);
-                res.setResponseMsg("Internal Server Error" + t.getMessage());
+                res.setResponseMsg("Internal Server Error: " + t.getMessage());
             }
         });
     }
