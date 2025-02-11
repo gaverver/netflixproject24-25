@@ -60,7 +60,7 @@ public class VideoAPI {
                     String videoId = "";
                     if (locationHeader != null) {
                         // extract the id from the location header(it is /users/:id)
-                        Pattern pattern = Pattern.compile("\\d+");
+                        Pattern pattern = Pattern.compile("[^/]+$");
                         Matcher matcher = pattern.matcher(locationHeader);
                         if (matcher.find()) {
                             videoId = matcher.group();
