@@ -55,6 +55,8 @@ public class MenuFragment extends Fragment {
     private Button signOutButton;
     private View rootView;
 
+    private TextView userName;
+
     public MenuFragment() {
         // empty
     }
@@ -73,6 +75,7 @@ public class MenuFragment extends Fragment {
         adminButton = rootView.findViewById(R.id.administration_page_button);
         categoriesButton = rootView.findViewById(R.id.categories_page_button);
         signOutButton = rootView.findViewById(R.id.sign_out_button);
+        userName = rootView.findViewById(R.id.userName);
 
         // getting if the user is an admin through the sharedPreference
         SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -99,7 +102,6 @@ public class MenuFragment extends Fragment {
     }
 
     private void getsUserDetails(SharedPreferences sharedPreferences) {
-        TextView userName = rootView.findViewById(R.id.userName);
         ImageView userPic = rootView.findViewById(R.id.userPic);
         // gets the user's name and picture to show it on the screen
         String userId = sharedPreferences.getString("userId", null);
@@ -212,6 +214,7 @@ public class MenuFragment extends Fragment {
         menuBar.startAnimation(slideAnimation);
     }
 
+    // update the theme according to the current state
     private void updateTheme() {
         // first, put the mode in the shared preference
         SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -229,7 +232,7 @@ public class MenuFragment extends Fragment {
         homeButton.setTextColor(getResources().getColor(textColor));
         categoriesButton.setTextColor(getResources().getColor(textColor));
         adminButton.setTextColor(getResources().getColor(textColor));
-        // ... update other views as needed
+        userName.setTextColor(getResources().getColor(textColor));
     }
 }
 

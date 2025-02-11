@@ -21,6 +21,7 @@
         android:layout_alignParentTop="true" />
 
     <!-- search view for searching for movies -->
+
     <SearchView
         android:id="@+id/navigateButton"
         android:layout_width="183dp"
@@ -28,7 +29,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginEnd="127dp"
         android:background="@android:color/darker_gray"
         android:iconifiedByDefault="false"
         android:queryHint="Search..." />
@@ -39,18 +40,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="35dp"
-        android:layout_marginEnd="75dp"
+        android:layout_marginEnd="78dp"
         android:text="gavrial"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/userPic"
-        android:layout_width="73dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="0dp" />
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_launcher_background"
+        android:scaleType="centerCrop" />
 
     <!-- LinearLayout for Home, Categories, and Administration buttons -->
     <LinearLayout
@@ -143,4 +146,3 @@
     </FrameLayout>
 
 </RelativeLayout>
-
