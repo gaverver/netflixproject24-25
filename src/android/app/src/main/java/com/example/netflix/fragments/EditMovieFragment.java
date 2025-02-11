@@ -84,7 +84,7 @@ public class EditMovieFragment extends Fragment {
             return;
         }
 
-        movieViewModel.getMovie(id, new WebResponse()).observe(getViewLifecycleOwner(), movie -> {
+        movieViewModel.getReloadedMovie(id, new WebResponse()).observe(getViewLifecycleOwner(), movie -> {
             photoId = movie.getPhotoId();
             videoId = movie.getVideo();
             updateMovie(movie, id);
