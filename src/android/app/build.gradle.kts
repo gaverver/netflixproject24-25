@@ -43,6 +43,8 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.gson)
     implementation(libs.appcompat)
+    implementation(libs.glide)
+    annotationProcessor(libs.glideCompiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

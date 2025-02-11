@@ -1,5 +1,6 @@
 package com.example.netflix.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;

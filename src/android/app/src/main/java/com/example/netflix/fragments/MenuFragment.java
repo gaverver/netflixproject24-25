@@ -3,7 +3,9 @@ package com.example.netflix.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.netflix.MyApplication;
 import com.example.netflix.R;
@@ -94,29 +98,56 @@ public class MenuFragment extends Fragment {
         return rootView;
     }
 
-    // TODO - fix this function and see if it gets the user correctly
     private void getsUserDetails(SharedPreferences sharedPreferences) {
+        TextView userName = rootView.findViewById(R.id.userName);
+        ImageView userPic = rootView.findViewById(R.id.userPic);
         // gets the user's name and picture to show it on the screen
         String userId = sharedPreferences.getString("userId", null);
         UserViewModel userServices = new UserViewModel();
         ImageViewModel imageServices = new ImageViewModel();
         WebResponse res = new WebResponse();
         LiveData<User> user = userServices.get(userId, res);
-        if (res.getResponseCode() != 200) {
-            // an error occur
-            return;
-        }
-        TextView userName = rootView.findViewById(R.id.userName);
-        ImageView userPic = rootView.findViewById(R.id.userPic);
-        // set user name
-        userName.setText(Objects.requireNonNull(user.getValue()).getUsername());
-        LiveData<Image> image = imageServices.get(user.getValue().getPicture(), res);
-        if (res.getResponseCode() != 200) {
-            // an error occur
-            return;
-        }
-        // set user picture
-        Utils.setImageFromByteArray(userPic, Objects.requireNonNull(image.getValue()).getData());
+
+        // observe the response code
+        res.getResponseCode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer responseCode1) {
+                if (responseCode1 == 200) {
+                    // observe to see the user Live data changes
+                    user.observe(getViewLifecycleOwner(), new Observer<User>() {
+                        @Override
+                        public void onChanged(User user) {
+                            // set user name
+                            userName.setText(user.getUsername());
+                            // try to get the user's image
+                            LiveData<Image> image = imageServices.get(user.getPicture(), res);
+                            // observe where it's changed
+                            res.getResponseCode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                                @Override
+                                public void onChanged(Integer responseCode2) {
+                                    if (responseCode2 == 200) {
+                                        // observe when the image is changed
+                                        image.observe(getViewLifecycleOwner(), new Observer<Image>() {
+                                            @Override
+                                            public void onChanged(Image image) {
+                                                // upload the image to the imageView
+                                                Utils.setImageFromByteArray(getContext() ,userPic, image.getData());
+                                            }
+                                        });
+                                    } else {
+                                        // raise a toast
+                                        Toast.makeText(getContext(), "Failed to fetch picture, failed with code: " + responseCode1, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    // raise a toast
+                    Toast.makeText(getContext(), "Failed to fetch user details, failed with code: " + responseCode1, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setupListeners() {
