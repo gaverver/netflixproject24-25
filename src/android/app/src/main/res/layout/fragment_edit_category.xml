@@ -49,6 +49,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Category" />
+
+        <!-- New Delete Button -->
+        <Button
+            android:id="@+id/btn_delete_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Category"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FF0000" />
     </LinearLayout>
 
 </LinearLayout>

@@ -16,7 +16,6 @@ import com.example.netflix.entities.Category;
 import com.example.netflix.viewmodels.CategoryViewModel;
 import com.example.netflix.WebResponse;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class EditCategoryFragment extends Fragment {
@@ -24,7 +23,7 @@ public class EditCategoryFragment extends Fragment {
     private CategoryViewModel categoryViewModel;
     private EditText etId, etName, etMovies;
     private Switch swPromoted;
-    private Button btnSearch, btnEditCategory;
+    private Button btnSearch, btnEditCategory, btnDeleteCategory;
     private ViewGroup editContainer;
 
     @Override
@@ -39,16 +38,20 @@ public class EditCategoryFragment extends Fragment {
         swPromoted = view.findViewById(R.id.sw_promoted);
         btnSearch = view.findViewById(R.id.btn_search);
         btnEditCategory = view.findViewById(R.id.btn_edit_category);
+        btnDeleteCategory = view.findViewById(R.id.btn_delete_category);
         editContainer = view.findViewById(R.id.edit_container);
 
-        // Hide editing fields initially
+        // Hide editing fields and delete button initially
         editContainer.setVisibility(View.GONE);
+        btnDeleteCategory.setVisibility(View.GONE);
 
         btnSearch.setOnClickListener(v -> searchCategory());
         btnEditCategory.setOnClickListener(v -> editCategory());
+        btnDeleteCategory.setOnClickListener(v -> deleteCategory());
 
         return view;
     }
+
     private void updateCategory(List<Category> categories, String id) {
         Category category = new Category();
         boolean flag = false;
@@ -60,15 +63,19 @@ public class EditCategoryFragment extends Fragment {
             }
         }
         if (flag) {
-            Toast.makeText(getContext(), "got the category successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Got the category successfully", Toast.LENGTH_SHORT).show();
             etName.setText(category.getName());
             etMovies.setText(String.join(",", category.getMovies()));
             swPromoted.setChecked(category.getPromoted());
             editContainer.setVisibility(View.VISIBLE);
+            btnDeleteCategory.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(getContext(), "category not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Category not found", Toast.LENGTH_SHORT).show();
+            editContainer.setVisibility(View.GONE);
+            btnDeleteCategory.setVisibility(View.GONE);
         }
     }
+
     private void searchCategory() {
         String id = etId.getText().toString().trim();
         if (id.isEmpty()) {
@@ -76,28 +83,17 @@ public class EditCategoryFragment extends Fragment {
             return;
         }
 
-        categoryViewModel.getAll().observe(this.getViewLifecycleOwner(), new Observer<List<Category>>() {
-            @Override
-            public void onChanged(List<Category> categories) {
-                updateCategory(categories, id);
-            }
-        });
+        categoryViewModel.getAll().observe(getViewLifecycleOwner(), categories -> updateCategory(categories, id));
 
         WebResponse webResponseForReload = new WebResponse();
-        webResponseForReload.getResponseCode().observe(this.getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer != 200) {
-                    Toast.makeText(getContext(), "Response code: " + integer.toString(), Toast.LENGTH_SHORT).show();
-                }
+        webResponseForReload.getResponseCode().observe(getViewLifecycleOwner(), integer -> {
+            if (integer != 200) {
+                Toast.makeText(getContext(), "Response code: " + integer, Toast.LENGTH_SHORT).show();
             }
         });
-        webResponseForReload.getResponseMsg().observe(this.getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (!s.equals("Ok")) {
-                    Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show();
-                }
+        webResponseForReload.getResponseMsg().observe(getViewLifecycleOwner(), s -> {
+            if (!s.equals("Ok")) {
+                Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show();
             }
         });
         categoryViewModel.reload(webResponseForReload);
@@ -113,13 +109,31 @@ public class EditCategoryFragment extends Fragment {
 
         WebResponse webResponse = new WebResponse();
 
-        webResponse.getResponseMsg().observe(this.getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show();
-            }
-        });
+        webResponse.getResponseMsg().observe(getViewLifecycleOwner(), s ->
+                Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show());
 
         categoryViewModel.update(category, webResponse);
     }
+
+    private void deleteCategory() {
+        String id = etId.getText().toString();
+
+        WebResponse webResponse = new WebResponse();
+
+        webResponse.getResponseMsg().observe(getViewLifecycleOwner(), s -> {
+            Toast.makeText(getContext(), "Response message: " + s, Toast.LENGTH_LONG).show();
+            if (s.equals("Ok")) {
+                // Clear fields and hide edit container and delete button if deletion is successful
+                etId.setText("");
+                etName.setText("");
+                etMovies.setText("");
+                swPromoted.setChecked(false);
+                editContainer.setVisibility(View.GONE);
+                btnDeleteCategory.setVisibility(View.GONE);
+            }
+        });
+
+        categoryViewModel.delete(id, webResponse);
+    }
 }
+
