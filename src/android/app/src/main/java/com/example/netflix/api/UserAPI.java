@@ -50,10 +50,11 @@ public class UserAPI {
                     new Thread(() -> {
                         // insert the created user to the room
                         dao.insert(user);
+                        // set the response status to the returned response status - the operation was successful
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("User Created");
                     }).start();
-                    // set the response status to the returned response status - the operation was successful
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("User Created");
+
                 } else {
                     Utils.handleError(response, res);
                 }
@@ -80,10 +81,11 @@ public class UserAPI {
                         dao.insert(response.body());
                         // update the mutable live data to the given user
                         user.postValue(response.body());
+                        // set the response status to the returned response status - the operation was successful
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("ok");
                     }).start();
-                    // set the response status to the returned response status - the operation was successful
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("ok");
+
                 } else {
                     Utils.handleError(response, res);
                 }

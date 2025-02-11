@@ -1,5 +1,6 @@
 package com.example.netflix.api;
 
+
 import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
@@ -34,7 +35,7 @@ import retrofit2.Callback;
  * and will ALWAYS! check in the server in get commands.
  * (even if the image is already in the ROOM DB)
  * and so in the ImageRepository class, get method should check for the image in the ROOM first!
-*/
+ */
 
 public class ImagesAPI {
     private final ImageDao dao;
@@ -50,7 +51,7 @@ public class ImagesAPI {
 
     public void insertImage(Image image, WebResponse res) {
         RequestBody requestBody = RequestBody.create(MediaType.parse(image.getContentType()), image.getData());
-        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody);
+        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody, image.getContentType());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -71,6 +72,7 @@ public class ImagesAPI {
                         res.setResponseCode(response.code());
                         res.setResponseMsg("Image Uploaded");
                     }).start();
+
                 } else {
                     Utils.handleError(response, res);
                 }
@@ -108,6 +110,7 @@ public class ImagesAPI {
                     res.setResponseCode(response.code());
                     res.setResponseMsg("Ok");
                 } else {
+                    Log.d("ImagesAPI", "Failed to fetch image: " + response.message());
                     Utils.handleError(response, res);
                 }
             }
@@ -119,6 +122,7 @@ public class ImagesAPI {
             }
         });
     }
+
 
     public void deleteImage(String id, WebResponse res) {
         Call<Void> call = imageWebServiceAPI.deleteImage(id);
@@ -134,9 +138,10 @@ public class ImagesAPI {
                             // delete the image from the Room database
                             dao.delete(image);
                         }
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Image Deleted");
                     }).start();
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Image Deleted");
+
                 } else {
                     Utils.handleError(response, res);
                 }

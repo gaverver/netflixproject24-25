@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.netflix.WebResponse;
 import com.example.netflix.api.UserAPI;
 import com.example.netflix.data.LocalDatabase;
+import com.example.netflix.entities.Image;
 import com.example.netflix.entities.User;
 
 public class UserRepository {
@@ -22,7 +23,22 @@ public class UserRepository {
 
     public MutableLiveData<User> get(String id, WebResponse webRes) {
         MutableLiveData<User> res = new MutableLiveData<>();
-        api.getUser(id, webRes, res);
+        new Thread(() -> {
+
+            // first, check if the image exists in the local Room database
+            User localUser = dao.get(id);
+
+            if (localUser == null) {
+
+                // if not in Room, fetch from the API and insert it
+                api.getUser(id, webRes, res);
+
+            } else {
+                // found in ROOM, no need for API fetch
+                res.postValue(localUser);
+            }
+
+        });
         return res;
     }
 }

@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Catflix</string>
     <string name="BaseUrl">http://10.0.2.2:3001/</string>
+    <string name="unlimited_films">Unlimited Films</string>
+    <string name="ready_to_watch_create_an_account_and_start_watching_movies">Ready to watch? create an account and start watching movies!</string>
+    <string name="get_started">Get started</string>
+    <string name="catflix">Catflix</string>
+    <string name="sign_in">Sign In</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="catflix">Catflix</string>
+
+    
 </resources>
