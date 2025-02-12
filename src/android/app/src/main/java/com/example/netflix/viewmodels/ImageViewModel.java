@@ -1,5 +1,7 @@
 package com.example.netflix.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.netflix.WebResponse;

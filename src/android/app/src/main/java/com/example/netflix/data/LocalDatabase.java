@@ -20,7 +20,7 @@ import com.example.netflix.repositories.MovieDao;
 import com.example.netflix.repositories.UserDao;
 
 @TypeConverters({StringListConverter.class, StringArrayConverter.class})
-@Database(entities = {User.class, Movie.class, Image.class, Category.class}, version=1)
+@Database(entities = {User.class, Movie.class, Image.class, Category.class}, version=2)
 public abstract class LocalDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract MovieDao movieDao();

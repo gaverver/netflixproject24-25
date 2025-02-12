@@ -44,6 +44,10 @@ public class Movie implements Serializable {
         this.video = video;
     }
 
+    public Movie() {
+        this.id = "temp";
+    }
+
     @NonNull
     public String getId() {
         return id;
