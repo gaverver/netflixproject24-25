@@ -51,7 +51,7 @@ public class ImagesAPI {
 
     public void insertImage(Image image, WebResponse res) {
         RequestBody requestBody = RequestBody.create(MediaType.parse(image.getContentType()), image.getData());
-        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody, image.getContentType());
+        Call<Void> call = imageWebServiceAPI.uploadImage(requestBody);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -99,16 +99,18 @@ public class ImagesAPI {
 
                     // Create the Image object
                     Image image = new Image(imageResponse.getId(), imageBytes, "image/webp");
+                    new Thread(() -> {
+                        // Insert into Room Database
+                        dao.insert(image);
 
-                    // Insert into Room Database
-                    dao.insert(image);
+                        // Update LiveData
+                        data.postValue(image);
 
-                    // Update LiveData
-                    data.postValue(image);
+                        // set response code and message
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Ok");
+                    }).start();
 
-                    // set response code and message
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Ok");
                 } else {
                     Log.d("ImagesAPI", "Failed to fetch image: " + response.message());
                     Utils.handleError(response, res);
