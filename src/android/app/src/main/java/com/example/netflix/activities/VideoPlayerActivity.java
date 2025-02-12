@@ -20,8 +20,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video_player);
 
         // Get the video ID from the Intent
-//        String videoId = getIntent().getStringExtra(VIDEO_ID_KEY);
-        String videoId = "679806919532fcb94353efda";
+        String videoId = getIntent().getStringExtra(VIDEO_ID_KEY);
         if (videoId != null) {
             // Construct the video URL from the video ID
             String videoUrl = MyApplication.getAppContext().getString(R.string.BaseUrl) + "videos/watch/" + videoId;
