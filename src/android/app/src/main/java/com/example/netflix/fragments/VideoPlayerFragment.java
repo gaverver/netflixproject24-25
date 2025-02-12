@@ -56,7 +56,7 @@ public class VideoPlayerFragment extends Fragment {
         setupExoPlayer();
     }
 
-    private void setupExoPlayer() {
+    public void setupExoPlayer() {
         if (videoUrl == null || videoUrl.isEmpty()) {
             Log.e(TAG, "Video URL is null or empty");
             return;
