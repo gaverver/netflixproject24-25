@@ -14,9 +14,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.netflix.MyApplication;
 import com.example.netflix.R;
+import com.example.netflix.adapters.MoviesAdapter;
 import com.example.netflix.entities.Movie;
 import com.example.netflix.fragments.VideoPlayerFragment;
 import com.example.netflix.viewmodels.MovieViewModel;
@@ -31,7 +34,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
 
-    private Movie movie;
+
+    private RecyclerView recommendationsRecycler;
+    private MoviesAdapter recommendationsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +68,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvPublished = findViewById(R.id.tv_published);
         btnWatchFullScreen = findViewById(R.id.btn_watch_full_screen);
 
-//        // Get movie ID from intent
-//        String movieId = getIntent().getStringExtra("MOVIE_ID");
-//        if (movieId == null) {
-//            Toast.makeText(this, "Movie ID not provided", Toast.LENGTH_SHORT).show();
-//            finish();
-//            return;
-//        }
-        String movieId = "67ab5ab3291bc1c6e022c940";
+        recommendationsRecycler = findViewById(R.id.recommendations_recycler);
+        recommendationsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        // Get movie ID from intent
+        String movieId = getIntent().getStringExtra("MOVIE_ID");
+        if (movieId == null) {
+            Toast.makeText(this, "Movie ID not provided", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Load movie details
         loadMovieDetails(movieId);
+        loadRecommendations(movieId);
     }
 
     private void loadMovieDetails(String movieId) {
@@ -93,7 +101,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI(Movie movie) {
-        this.movie = movie;
         tvName.setText(movie.getName());
         tvDescription.setText(movie.getDescription());
         tvActors.setText("Actors: " + String.join(", ", movie.getActors()));
@@ -117,6 +124,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(MovieDetailsActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("video_id_key", movie.getVideo());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void loadRecommendations(String movieId) {
+        movieViewModel.getRecommendationIds(movieId, new WebResponse()).observe(this, recommendationIds -> {
+            if (recommendationIds != null && !recommendationIds.isEmpty()) {
+                Log.d("SomeTag", "Got: " + recommendationIds.get(0));
+                recommendationsAdapter = new MoviesAdapter(this, recommendationIds);
+                recommendationsRecycler.setAdapter(recommendationsAdapter);
             }
         });
     }
