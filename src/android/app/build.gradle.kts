@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.material)
