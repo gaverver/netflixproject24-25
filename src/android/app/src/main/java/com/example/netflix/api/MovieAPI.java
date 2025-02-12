@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.netflix.MyApplication;
 import com.example.netflix.RetrofitClient;
+import com.example.netflix.SearchResultsResponse;
 import com.example.netflix.Utils;
 import com.example.netflix.WebResponse;
 import com.example.netflix.entities.Image;
@@ -237,13 +238,13 @@ public class MovieAPI {
     }
 
     public void searchMovies(String query, WebResponse res, MutableLiveData<List<Movie>> moviesMutableLiveData) {
-        Call<List<Movie>> call = movieWebServiceAPI.searchMovies(query);
-        call.enqueue(new Callback<List<Movie>>() {
+        Call<SearchResultsResponse> call = movieWebServiceAPI.searchMovies(query);
+        call.enqueue(new Callback<SearchResultsResponse>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+            public void onResponse(Call<SearchResultsResponse> call, Response<SearchResultsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
-                        moviesMutableLiveData.postValue(response.body());
+                        moviesMutableLiveData.postValue(response.body().getMovies());
                     }).start();
                     // set the response status to the returned response status - the operation was successful
                     res.setResponseCode(response.code());
@@ -254,7 +255,7 @@ public class MovieAPI {
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<SearchResultsResponse> call, Throwable t) {
                 // return response code that tells that there was error in server
                 res.setResponseCode(500);
                 res.setResponseMsg("Internal Server Error" + t.getMessage());

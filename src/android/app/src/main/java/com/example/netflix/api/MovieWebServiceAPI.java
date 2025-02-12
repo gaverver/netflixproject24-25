@@ -1,5 +1,6 @@
 package com.example.netflix.api;
 
+import com.example.netflix.SearchResultsResponse;
 import com.example.netflix.entities.Movie;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public interface MovieWebServiceAPI {
     @POST("/api/movies/{id}/recommend")
     Call<List<String>> addWatchedMovie(@Header("Authorization") String token, @Header("userId") String userId, @Path("id") String MovieId);
 
-    @GET("/api/movies/search/:query")
-    Call<List<Movie>> searchMovies(@Path("query") String query);
+    @GET("/api/movies/search/{query}")
+    Call<SearchResultsResponse> searchMovies(@Path("query") String query);
 
     @GET("/api/movies")
     Call<Map<String, List<String>>> getMovies(@Header("Authorization") String token, @Header("userId") String userId);

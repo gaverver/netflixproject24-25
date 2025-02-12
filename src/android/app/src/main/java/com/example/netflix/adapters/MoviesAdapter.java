@@ -42,7 +42,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             ((FragmentActivity) context).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(holder.fragmentContainer.getId(), MoviePic.newInstance(movieId))
-                    .commit();
+                    .commitAllowingStateLoss();
         }
 
         // Navigate to movie details when clicked
