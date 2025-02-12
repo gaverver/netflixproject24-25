@@ -99,16 +99,18 @@ public class ImagesAPI {
 
                     // Create the Image object
                     Image image = new Image(imageResponse.getId(), imageBytes, "image/webp");
+                    new Thread(() -> {
+                        // Insert into Room Database
+                        dao.insert(image);
 
-                    // Insert into Room Database
-                    dao.insert(image);
+                        // Update LiveData
+                        data.postValue(image);
 
-                    // Update LiveData
-                    data.postValue(image);
+                        // set response code and message
+                        res.setResponseCode(response.code());
+                        res.setResponseMsg("Ok");
+                    }).start();
 
-                    // set response code and message
-                    res.setResponseCode(response.code());
-                    res.setResponseMsg("Ok");
                 } else {
                     Log.d("ImagesAPI", "Failed to fetch image: " + response.message());
                     Utils.handleError(response, res);
