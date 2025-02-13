@@ -43,28 +43,42 @@ const getVideoById = async (req, res) => {
 
 
 const streamVideoById = async (req, res) => {
-    const videoId = req.params.id;
-    // Get the video’s actual location and size
-    x = await videoService.getVideoById(videoId);
-    const videoPath = (await videoService.getVideoById(videoId)).filePath;
-    const leSize = fs.statSync(videoPath).size;
-    // Extract the range requested by the browser
+  const videoId = req.params.id;
+  
+  try {
+    const video = await videoService.getVideoById(videoId);
+    const videoPath = video.filePath;
+    const stat = fs.statSync(videoPath);
+    const fileSize = stat.size;
     const range = req.headers.range;
-    const parts = range.substring(6).split('-');
-    const start = parseInt(parts[0]);
-    const chunk_size = 10 ** 6; // 1MB
-    const end = Math.min(start + chunk_size, leSize - 1);
-    const le = fs.createReadStream(videoPath, { start, end });
-    // Stream requested chunk
-    const head = {
-        'Content-Range': `bytes ${start}-${end}/${leSize}`,
+
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunksize = (end - start) + 1;
+      const file = fs.createReadStream(videoPath, {start, end});
+      const head = {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
         'Accept-Ranges': 'bytes',
-        'Content-Length': chunk_size,
+        'Content-Length': chunksize,
         'Content-Type': 'video/mp4',
-    };
-    res.writeHead(206, head);
-    le.pipe(res);
-}
+      };
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      const head = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(videoPath).pipe(res);
+    }
+  } catch (error) {
+    console.error('Error streaming video:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 const DeleteVideoById = async (req, res) => {
     const id = req.params.id

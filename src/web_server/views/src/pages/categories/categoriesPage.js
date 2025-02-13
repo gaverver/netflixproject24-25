@@ -1,6 +1,6 @@
 import './categoriesPage.css';
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Menu from '../../components/menu/menu';
 import MovieList from '../../components/movieList/movieList'
 
@@ -34,7 +34,7 @@ const CategoriesPage = () => {
         return navigate("/login");
       }
       // gets the user by fetching to api/user/:id
-      const user_res = await fetch (`http://localhost:3001/api/users/${currentUser}`);
+      const user_res = await fetch (`http://localhost:${process.env.REACT_APP_PORT}/api/users/${currentUser}`);
       // convert to json
       const json = await user_res.json();
       // Store the user in state
@@ -45,7 +45,7 @@ const CategoriesPage = () => {
       setPhotoURL(photoURL);
       // Fetch all categories
       try {
-        const list_res = await fetch("http://localhost:3001/api/categories");
+        const list_res = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`);
         // if the server crushed
         if (!list_res.ok) {
           return navigate("/serverError");
@@ -77,9 +77,10 @@ const CategoriesPage = () => {
       )}
       {/* display different categories in different lines */}
       <div className="categories-lines">
-        {categoryList.map((category) => (
-          <MovieList key={category._id} list={category.movieIds} contentType={category.name}/>
-        ))}
+        {categoryList.map((category) =>
+          // show categories
+          <MovieList key={category._id} list={category.movieIds} contentType={category.name} />
+        )}
       </div>
     </div>
   );

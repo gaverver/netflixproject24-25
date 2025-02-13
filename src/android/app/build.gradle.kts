@@ -32,12 +32,21 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.appcompat)
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation(libs.material)
     implementation(libs.activity)
+    implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.room.runtime)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.gson)
+    implementation(libs.appcompat)
+    implementation(libs.glide)
+    annotationProcessor(libs.glideCompiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    annotationProcessor(libs.room.compiler)
 }

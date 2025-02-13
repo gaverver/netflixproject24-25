@@ -2,6 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#E71D26</color>
-    <color name="grey">#6F5E5E</color>
+    <color name="red">#FF0000</color>
+    <color name="netflix_red">#E50914</color>
+    <color name="netflix_red_dark">#B20710</color>
+    <color name="netflix_black">#141414</color>
+    <color name="netflix_gray">#333333</color>
+    <color name="netflix_white">#FFFFFF</color>
 </resources>
