@@ -96,4 +96,12 @@ public class VideoPlayerFragment extends Fragment {
             exoPlayer = null;
         }
     }
+
+    public void releasePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
+    }
 }

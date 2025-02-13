@@ -4,7 +4,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/netflix_black">
+    android:background="@color/netflix_black"
+    android:fitsSystemWindows="true">
 
   <!-- Main Content -->
   <LinearLayout
@@ -121,9 +122,8 @@
   </LinearLayout>
 
   <!-- Navigation Drawer -->
-  <fragment
+  <FrameLayout
       android:id="@+id/navigation_fragment"
-      android:name="com.example.netflix.fragments.NavigationDrawerFragment"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_gravity="start"
