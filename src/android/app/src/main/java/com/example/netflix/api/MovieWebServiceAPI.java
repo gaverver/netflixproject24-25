@@ -1,5 +1,6 @@
 package com.example.netflix.api;
 
+import com.example.netflix.GetMoviesResponse;
 import com.example.netflix.SearchResultsResponse;
 import com.example.netflix.entities.Movie;
 
@@ -38,5 +39,5 @@ public interface MovieWebServiceAPI {
     Call<SearchResultsResponse> searchMovies(@Path("query") String query);
 
     @GET("/api/movies")
-    Call<Map<String, List<String>>> getMovies(@Header("Authorization") String token, @Header("userId") String userId);
+    Call<GetMoviesResponse> getMovies(@Header("Authorization") String token, @Header("userId") String userId);
 }

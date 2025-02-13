@@ -96,8 +96,7 @@ public class TopMenuFragment extends Fragment {
     private void getsUserDetails(SharedPreferences sharedPreferences) {
         ImageView userPic = rootView.findViewById(R.id.userPic);
         // gets the user's name and picture to show it on the screen
-        //String userId = sharedPreferences.getString("userId", "67ace864bba4c17183532833");
-        String userId = "67ad156dbba4c17183532838";
+        String userId = sharedPreferences.getString("userId", "679c0a6a0a6cabd498442b92");
         UserViewModel userServices = new UserViewModel();
         ImageViewModel imageServices = new ImageViewModel();
         WebResponse res = new WebResponse();

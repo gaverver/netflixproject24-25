@@ -49,7 +49,6 @@ public class SearchResultsPage extends AppCompatActivity {
 
         // Set up RecyclerView with a GridLayoutManager (3 columns)
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        Log.d("msg2", "kdsvs");
         searchForMovies();
     }
 
@@ -76,7 +75,6 @@ public class SearchResultsPage extends AppCompatActivity {
                     noMoviesFound.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 } else {
-                    //Log.d("hello", "first movie id: " + movies.get(0).getId() + "   " + movieIds.get(0));
                     noMoviesFound.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     adapter = new MoviesAdapter(this, movieIds);

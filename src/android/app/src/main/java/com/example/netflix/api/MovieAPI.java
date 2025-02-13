@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.netflix.GetMoviesResponse;
 import com.example.netflix.MyApplication;
 import com.example.netflix.RetrofitClient;
 import com.example.netflix.SearchResultsResponse;
@@ -37,8 +38,8 @@ public class MovieAPI {
 
     private void updateTokens() {
         SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        this.token = sharedPreferences.getString("token", null);
-        this.userId = sharedPreferences.getString("userId", null);
+        this.token = sharedPreferences.getString("token", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk2YmY3OWJkMjA1ZmI0YzQ5ZjdiNjEiLCJwcml2aWxlZ2VMZXZlbCI6MSwiaWF0IjoxNzM5NDY5Mjc3fQ._bQpbrAZUUJlXAZD77mJ1NWECk10KqSkpiTKt33mLoY");
+        this.userId = sharedPreferences.getString("userId", "679c0a6a0a6cabd498442b92");
     }
 
     public MovieAPI(MovieDao movieDao) {
@@ -265,14 +266,17 @@ public class MovieAPI {
 
     public void getMovies(WebResponse res,  MutableLiveData<Map<String, List<String>>> moviesMutableLiveData) {
         updateTokens();
-        Call<Map<String, List<String>>> call = movieWebServiceAPI.getMovies(token, userId);
-        call.enqueue(new Callback<Map<String, List<String>>>() {
+        Log.d("hello", "token is: " + token);
+        Log.d("hello", "userId is: " + userId);
+        Call<GetMoviesResponse> call = movieWebServiceAPI.getMovies(token, userId);
+        call.enqueue(new Callback<GetMoviesResponse>() {
             @Override
-            public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
+            public void onResponse(Call<GetMoviesResponse> call, Response<GetMoviesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
                         dao.clear();
-                        Map<String, List<String>> responseBody = response.body();
+                        GetMoviesResponse getMoviesResponse = response.body();
+                        Map<String, List<String>> responseBody = getMoviesResponse.getMovies();
                         for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
                             List<String> values = entry.getValue();
                             for (String value : values) {
@@ -282,15 +286,18 @@ public class MovieAPI {
                         // set the response status to the returned response status - the operation was successful
                         res.setResponseCode(response.code());
                         res.setResponseMsg("ok");
-                        moviesMutableLiveData.postValue(response.body());
+                        moviesMutableLiveData.postValue(responseBody);
                     }).start();
                 } else {
-                    Utils.handleError(response, res);
+                    res.setResponseMsg(response.message());
+                    res.setResponseCode(response.code());
+                    Log.d("hello", String.valueOf(response.code()));
+                    //Utils.handleError(response, res);
                 }
             }
 
             @Override
-            public void onFailure(Call<Map<String, List<String>>> call, Throwable t) {
+            public void onFailure(Call<GetMoviesResponse> call, Throwable t) {
                 // return response code that tells that there was error in server
                 res.setResponseCode(500);
                 res.setResponseMsg("Internal Server Error" + t.getMessage());
