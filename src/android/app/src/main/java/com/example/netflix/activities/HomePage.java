@@ -1,25 +1,34 @@
 package com.example.netflix.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.netflix.MyApplication;
 import com.example.netflix.R;
 import com.example.netflix.WebResponse;
 import com.example.netflix.adapters.CategoryAdapter;
 import com.example.netflix.entities.Category;
+import com.example.netflix.entities.Movie;
+import com.example.netflix.fragments.VideoPlayerFragment;
 import com.example.netflix.viewmodels.CategoryViewModel;
 import com.example.netflix.viewmodels.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -29,6 +38,11 @@ public class HomePage extends AppCompatActivity {
     private final MovieViewModel movieViewModel = new MovieViewModel();
     private final WebResponse res = new WebResponse();
     private LiveData<Map<String, List<String>>> allMovies;
+    private String randomMovieId;
+    private Button playButton;
+    private Button moreInfoButton;
+    private TextView movieTitle;
+    private TextView ageLimit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +50,10 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         categoriesRecyclerView = findViewById(R.id.categoriesRecyclerView);
+        playButton = findViewById(R.id.playButton);
+        moreInfoButton = findViewById(R.id.moreInfoButton);
+        movieTitle = findViewById(R.id.movieTitle);
+        ageLimit = findViewById(R.id.ageLimit);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         fetchMovies();
@@ -53,6 +71,44 @@ public class HomePage extends AppCompatActivity {
 
             // wait for the movies to fetch
             allMovies.observe(this, movies -> {
+                // stream a random movie to the screen
+                randomMovieId = getRandomMovie(movies);
+                LiveData<Movie> randomMovie = movieViewModel.getMovie(randomMovieId, res);
+                res.getResponseCode().observe(this, code2 -> {
+                    // if failed
+                    if (code2 != 200) {
+                        // make a toast to let the user know
+                        Toast.makeText(getApplicationContext(), "Failed to stream random movie", Toast.LENGTH_LONG).show();
+                    } else {
+                        randomMovie.observe(this, movie -> {
+                            // set the name, age limit and buttons of the movie
+                            movieTitle.setText(movie.getName());
+                            ageLimit.setText(movie.getAge_limit());
+
+                            playButton.setOnClickListener(v -> {
+                                if (randomMovieId != null) {
+                                    Intent intent = new Intent(HomePage.this, VideoPlayerActivity.class);
+                                    intent.putExtra("VIDEO_ID_KEY", movie.getVideo());
+                                    startActivity(intent);
+                                }
+                            });
+
+                            moreInfoButton.setOnClickListener(v -> {
+                                if (randomMovieId != null) {
+                                    Intent intent = new Intent(HomePage.this, MovieDetailsActivity.class);
+                                    intent.putExtra("MOVIE_ID", randomMovieId);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            // streaming the video
+                            String videoId = movie.getVideo();
+                            String videoUrl = MyApplication.getAppContext().getString(R.string.BaseUrl) + "videos/watch/" + videoId;
+                            setupVideoPlayer(videoUrl);
+                        });
+                    }
+                });
+
                 // gets all the movies in categories form
                 List<Category> finalMovies = getMoviesFromResponse(movies);
                 // show only the categories whose movies' list isn't empty
@@ -67,11 +123,44 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
+    private void setupVideoPlayer(String videoUrl) {
+        VideoPlayerFragment videoPlayerFragment = VideoPlayerFragment.newInstance(videoUrl);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.runRandomMovie, videoPlayerFragment);
+        transaction.commit();
+    }
+
+    // a function to convert from Map<String, List<String>> to List<Category>
     private List<Category> getMoviesFromResponse(Map<String, List<String>> movies) {
         List<Category> results = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : movies.entrySet()) {
             results.add(new Category(entry.getKey(), true, entry.getValue().toArray(new String[0])));
         }
         return results;
+    }
+
+    private static String getRandomMovie(Map<String, List<String>> movies) {
+        if (movies == null || movies.isEmpty()) {
+            return null; // No movies available
+        }
+
+        List<String> categories = new ArrayList<>(movies.keySet());
+        Random random = new Random();
+
+        while (!categories.isEmpty()) {
+            // Pick a random category
+            String randomCategory = categories.get(random.nextInt(categories.size()));
+            List<String> movieList = movies.get(randomCategory);
+
+            // If the selected category has movies, return a random movie
+            if (movieList != null && !movieList.isEmpty()) {
+                return movieList.get(random.nextInt(movieList.size()));
+            }
+
+            // If the selected category is empty, remove it and try again
+            categories.remove(randomCategory);
+        }
+
+        return null; // No movies in any category
     }
 }
