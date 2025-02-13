@@ -32,6 +32,9 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.customview:customview-poolingcontainer:1.0.0")
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation(libs.material)
     implementation(libs.activity)
@@ -42,9 +45,9 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.gson)
-    implementation(libs.appcompat)
     implementation(libs.glide)
     annotationProcessor(libs.glideCompiler)
+    implementation(libs.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
