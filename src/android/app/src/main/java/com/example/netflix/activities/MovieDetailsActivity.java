@@ -21,6 +21,7 @@ import com.example.netflix.MyApplication;
 import com.example.netflix.R;
 import com.example.netflix.adapters.MoviesAdapter;
 import com.example.netflix.entities.Movie;
+import com.example.netflix.fragments.NavigationDrawerFragment;
 import com.example.netflix.fragments.VideoPlayerFragment;
 import com.example.netflix.viewmodels.MovieViewModel;
 import com.example.netflix.WebResponse;
@@ -42,19 +43,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
-
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        // Enable Up navigation button (Hamburger icon)
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
+        toggle.syncState();
 
         movieViewModel = new MovieViewModel();
 
@@ -82,6 +85,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Load movie details
         loadMovieDetails(movieId);
         loadRecommendations(movieId);
+
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+            transaction.replace(R.id.navigation_fragment, navigationDrawerFragment); // Add to container
+            transaction.commit();
+        }
     }
 
     private void loadMovieDetails(String movieId) {
@@ -131,11 +141,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void loadRecommendations(String movieId) {
         movieViewModel.getRecommendationIds(movieId, new WebResponse()).observe(this, recommendationIds -> {
             if (recommendationIds != null && !recommendationIds.isEmpty()) {
-                Log.d("SomeTag", "Got: " + recommendationIds.get(0));
                 recommendationsAdapter = new MoviesAdapter(this, recommendationIds);
                 recommendationsRecycler.setAdapter(recommendationsAdapter);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Find the VideoPlayerFragment
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
+        if (videoFragment != null) {
+            // Stop and release the ExoPlayer
+            videoFragment.releasePlayer();
+        }
     }
 
     @Override
@@ -145,6 +166,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
         if (videoFragment != null) {
             videoFragment.setupExoPlayer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
+        if (videoFragment != null) {
+            videoFragment.releasePlayer();
         }
     }
 }
