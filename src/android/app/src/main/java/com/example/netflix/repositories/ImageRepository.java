@@ -51,6 +51,8 @@ public class ImageRepository {
             } else {
                 // found in ROOM, no need for API fetch
                 liveData.postValue(localImage);
+                res.setResponseCode(200);
+                res.setResponseMsg("ok");
             }
 
         });

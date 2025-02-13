@@ -36,9 +36,11 @@ public class UserRepository {
             } else {
                 // found in ROOM, no need for API fetch
                 res.postValue(localUser);
+                webRes.setResponseCode(200);
+                webRes.setResponseMsg("ok");
             }
 
-        });
+        }).start();
         return res;
     }
 }
