@@ -70,7 +70,7 @@ public class ImagesAPI {
                             dao.insert(image);
                         }
                         res.setResponseCode(response.code());
-                        res.setResponseMsg("Image Uploaded");
+                        res.setResponseMsg(image.getId());
                     }).start();
 
                 } else {
