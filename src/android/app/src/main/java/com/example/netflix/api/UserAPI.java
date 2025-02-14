@@ -1,5 +1,7 @@
 package com.example.netflix.api;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.netflix.RetrofitClient;
@@ -31,6 +33,7 @@ public class UserAPI {
 
 
     public void create(User user, WebResponse res) {
+        Log.d("hello", "f" + user.getPassword());
         // create an api call to the web server for user creation
         Call<Void> call = userWebServiceAPI.createUser(user);
         call.enqueue(new Callback<Void>() {
@@ -41,10 +44,10 @@ public class UserAPI {
                     String locationHeader = response.headers().get("Location");
                     if (locationHeader != null) {
                         // extract the id from the location header(it is /users/:id)
-                        Pattern pattern = Pattern.compile("\\d+");
+                        Pattern pattern = Pattern.compile("/users/([a-fA-F0-9]+)");
                         Matcher matcher = pattern.matcher(locationHeader);
                         if (matcher.find()) {
-                            user.setId(matcher.group());
+                            user.setId(matcher.group(1));
                         }
                     }
                     new Thread(() -> {
@@ -62,6 +65,7 @@ public class UserAPI {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+
                 // return response code that tells that there was error in server
                 res.setResponseCode(500);
                 res.setResponseMsg("Registration Failed" + t.getMessage());

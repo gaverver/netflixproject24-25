@@ -26,21 +26,24 @@ public class User {
    private int privilegeLevel;
    @Ignore
    private List<String> movies_watched;
+   @Ignore
+   private String password;
    private String picture;
 
 
-   public User() {};
+
   
    public User(String id, String username, String picture) {
       this.id = id;
       this.username = username;
       this.picture = picture;
    }
-    public User(String username, String picture, String email, String phoneNumber) {
+    public User(String username, String password, String email, String phoneNumber, String picture) {
        // temp value that will be changed afterwards.
        this.id = "temp";
        this.username = username;
        this.picture = picture;
+       this.password = password;
        this.email = email;
        this.phoneNumber = phoneNumber;
        this.privilegeLevel = 0;
@@ -55,7 +58,9 @@ public class User {
       return picture;
    }
 
-
+   public int getPrivilegeLevel() {
+      return privilegeLevel;
+   }
 
    @NonNull
    public String getId() {
@@ -74,6 +79,10 @@ public class User {
 
    public void setId(@NonNull String id) {
       this.id = id;
+   }
+
+   public String getPassword() {
+      return password;
    }
 }
 
