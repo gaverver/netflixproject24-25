@@ -43,6 +43,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        //add toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -85,7 +86,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Load movie details
         loadMovieDetails(movieId);
         loadRecommendations(movieId);
-
+        //add fragment for navigation drawer
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
