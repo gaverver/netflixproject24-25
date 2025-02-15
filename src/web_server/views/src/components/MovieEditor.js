@@ -14,7 +14,7 @@ const MovieEditor = ({id, setId}) => {
     const [categories, setCategories] = useState([]);
     const [photo, setPhoto] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const token = sessionStorage.getItem("jwt");
     const fetchMovie = async () => {
         try {
             const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
@@ -57,6 +57,7 @@ const MovieEditor = ({id, setId}) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/octet-stream",
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: new Blob([selectedFile]),
                 });
@@ -89,6 +90,7 @@ const MovieEditor = ({id, setId}) => {
                 method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedMovie),
             });
@@ -104,7 +106,10 @@ const MovieEditor = ({id, setId}) => {
             if (response.status === 204) {
                 if (selectedFile) {
                     const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images/${previousPhoto}`, {
-                        method: "DELETE"
+                        method: "DELETE",
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        }
                     })   
                 }
                 alert("update successfully")
@@ -119,7 +124,10 @@ const MovieEditor = ({id, setId}) => {
     const handleDelete = async () => {
         try {
             const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
             });
             if (response.status === 404 || response.status === 400) {
                 const errorData = await response.json();

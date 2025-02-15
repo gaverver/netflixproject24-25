@@ -14,7 +14,7 @@ const MovieCreator = () => {
     const [categories, setCategories] = useState([]);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
     const [selectedVideo, setSelectedVideo] = useState(null);
-
+    const token = sessionStorage.getItem("jwt");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,6 +42,7 @@ const MovieCreator = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/octet-stream",
+                'Authorization': `Bearer ${token}`,
             },
             body: new Blob([selectedPhoto]),
             });
@@ -71,6 +72,7 @@ const MovieCreator = () => {
                 method: "POST",
                 body: formData,
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
@@ -97,6 +99,7 @@ const MovieCreator = () => {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedMovie),
             });

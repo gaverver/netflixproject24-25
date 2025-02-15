@@ -8,6 +8,7 @@ const CategoryEditor = ( {categoryId, setCategoryId} ) => {
     const [movieIds, setMovieIds] = useState([]);
     const [movieNames, setMovieNames] = useState([]);
     const [currentId, setCurrentId] = useState('')
+    const token = sessionStorage.getItem("jwt");
 
     const fetchCategory = async () => {
         try {
@@ -41,7 +42,10 @@ const CategoryEditor = ( {categoryId, setCategoryId} ) => {
     const handleDelete = async () => {
         try {
             const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${categoryId}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             if (response.status === 404 || response.status === 400) {
                 const errorData = await response.json();
@@ -80,6 +84,7 @@ const CategoryEditor = ( {categoryId, setCategoryId} ) => {
                 method: "PATCH",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedCategory),
             });
@@ -116,6 +121,7 @@ const CategoryEditor = ( {categoryId, setCategoryId} ) => {
                     method: "GET",
                     headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
                     },
                 });
                 if (response.status === 404 || response.status === 400) {

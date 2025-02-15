@@ -7,6 +7,7 @@ const CategoryCreator = () => {
     const [movieIds, setMovieIds] = useState([]);
     const [movieNames, setMovieNames] = useState([]);
     const [currentId, setCurrentId] = useState('')
+    const token = sessionStorage.getItem("jwt");
 
 
     const handleSubmit = async (e) => {
@@ -26,6 +27,7 @@ const CategoryCreator = () => {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedCategory),
             });
