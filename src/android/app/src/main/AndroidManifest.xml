@@ -38,19 +38,10 @@
             android:exported="false" />
         <activity
             android:name=".activities.SearchResultsPage"
-            android:exported="true">
-         <activity
+            android:exported="true" />
+        <activity
           android:name=".activities.VideoPlayerActivity"
           android:exported="true" />
-        <activity
-            android:name=".activities.CategoriesPage"
-            android:exported="false" />
-        <activity
-            android:name=".activities.HomePage"
-            android:exported="false" />
-            <activity
-        android:name=".activities.SearchResultsPage"
-        android:exported="true">
 
         <!-- Optional intent filter if needed -->
 <!--        <intent-filter>-->
@@ -58,8 +49,6 @@
 
 <!--            <category android:name="android.intent.category.DEFAULT" />-->
 <!--        </intent-filter>-->
-    </activity>
-
     
     <activity
         android:name=".activities.AdminPage"
