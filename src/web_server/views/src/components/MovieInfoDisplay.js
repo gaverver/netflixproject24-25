@@ -17,7 +17,7 @@ const MovieInfoDisplay = ({id, userId}) => {
 
     const fetchMovie = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/api/movies/${id}`);
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -29,7 +29,7 @@ const MovieInfoDisplay = ({id, userId}) => {
             setAge_limit(data.age_limit)
             setCreators(data.creators)
             for (const category of data.categories) {
-                const response2 = await fetch(`http://localhost:3001/api/categories/${category}`);
+                const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${category}`);
                 const data2 = await response2.json();
                 if (!response.ok || !data2.name) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -55,7 +55,7 @@ const MovieInfoDisplay = ({id, userId}) => {
             return;
             }
             console.log(userId)
-            const response = await fetch(`http://localhost:3001/api/movies/${id}/recommend`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}/recommend`, {
                 method: "GET",
                 headers: {
                 "userid": `${userId}`,
