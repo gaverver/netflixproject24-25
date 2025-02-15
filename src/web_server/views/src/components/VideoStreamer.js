@@ -18,7 +18,6 @@ const VideoStreamer = ({ videoId, controls }) => {
                   headers: {
                       Authorization: `Bearer ${token}`,
                       range: `bytes=0-`,
-                      'Authorization': `Bearer ${token}`
                   },
               });
               if (!response.ok) {
