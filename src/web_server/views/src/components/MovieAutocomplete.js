@@ -10,7 +10,7 @@ const MovieAutocomplete = ({setId}) => {
   const fetchMovies = async (searchQuery) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:3001/api/movies/search/${searchQuery}`);
+      const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/search/${searchQuery}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

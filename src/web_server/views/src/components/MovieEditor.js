@@ -17,7 +17,7 @@ const MovieEditor = ({id, setId}) => {
 
     const fetchMovie = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/api/movies/${id}`);
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -53,7 +53,7 @@ const MovieEditor = ({id, setId}) => {
         const previousPhoto = photo;
         if (selectedFile) {
             try {
-                const response = await fetch("http://localhost:3001/images", {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/octet-stream",
@@ -85,7 +85,7 @@ const MovieEditor = ({id, setId}) => {
         //send put
     
         try {
-            const response = await fetch(`http://localhost:3001/api/movies/${id}`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`, {
                 method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const MovieEditor = ({id, setId}) => {
             }
             if (response.status === 204) {
                 if (selectedFile) {
-                    const response2 = await fetch(`http://localhost:3001/images/${previousPhoto}`, {
+                    const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images/${previousPhoto}`, {
                         method: "DELETE"
                     })   
                 }
@@ -118,7 +118,7 @@ const MovieEditor = ({id, setId}) => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/api/movies/${id}`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`, {
                 method: "DELETE"
             });
             if (response.status === 404 || response.status === 400) {

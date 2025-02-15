@@ -22,7 +22,7 @@ const CategoryCreator = () => {
         };
         //send POST
         try {
-            const response = await fetch(`http://localhost:3001/api/categories`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const CategoryCreator = () => {
     useEffect(() => {
         const updateMovies = async () => {
             if (currentId) {
-                const response = await fetch(`http://localhost:3001/api/movies/${currentId}`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${currentId}`, {
                     method: "GET",
                     headers: {
                     "Content-Type": "application/json",
