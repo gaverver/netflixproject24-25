@@ -53,7 +53,9 @@ function MovieInformation() {
     };
 
     fetchData();
-  }, [id, fetchUserId]);
+    const userToken = sessionStorage.getItem('jwt');
+    fetchUserId(userToken);
+  }, [id]);
 
   return (
     <div>

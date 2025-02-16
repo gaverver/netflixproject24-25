@@ -1,0 +1,34 @@
+services:
+  cpp-service:
+    container_name: serverContainer
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    expose:
+      - "${CPP_PORT}" 
+    entrypoint: ["./netflix", "${CPP_PORT}"]
+    ports:
+      - "${CPP_PORT}:${CPP_PORT}"
+    networks:
+      - netflix_network
+
+  node-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        CONNECTION_STRING: ${CONNECTION_STRING}
+        PORT: ${PORT}
+        JWT_SECRET: ${JWT_SECRET}
+        CPP_IP: serverContainer
+        CPP_PORT: ${CPP_PORT}
+    depends_on:
+      - cpp-service
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - netflix_network
+
+networks:
+  netflix_network:
+    driver: bridge
