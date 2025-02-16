@@ -10,7 +10,7 @@ import com.example.netflix.entities.User;
 
 @Dao
 public interface UserDao {
-    @Query("SELECT * FROM user WHERE id = :id")
+    @Query("SELECT * FROM users WHERE id = :id")
     User get(String id);
     @Insert
     void insert(User... users);
@@ -18,7 +18,7 @@ public interface UserDao {
     @Update
     void update(User... users);
 
-    @Delete
-    void delete(User... users);
+    @Query("DELETE FROM users WHERE id = :movieId")
+    void deleteById(String movieId);
 
 }

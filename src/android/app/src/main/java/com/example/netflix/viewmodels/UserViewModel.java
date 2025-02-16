@@ -19,4 +19,8 @@ public class UserViewModel {
     public MutableLiveData<User> get(String id, WebResponse res) {
         return repository.get(id, res);
     }
+
+    public void removeById(String id) {
+        repository.removeById(id);
+    }
 }
