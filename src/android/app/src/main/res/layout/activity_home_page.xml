@@ -1,10 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HomePage">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Menu Fragment -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/TopMenuFragment"
+        android:name="com.example.netflix.fragments.TopMenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/contentContainer" />
+
+    <!-- Random movie on background -->
+    <FrameLayout
+        android:id="@+id/runRandomMovie"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/netflix_gray"
+        android:foreground="?attr/selectableItemBackground">
+
+        <!-- Age Limit -->
+        <TextView
+            android:id="@+id/ageLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16+"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center|start"
+            android:paddingStart="16dp"/>
+
+        <!-- Movie Info Layout (Pushed Further to the Right) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center|end"
+            android:paddingEnd="64dp"> <!-- Increased padding to push further right -->
+
+            <!-- Movie Name (Even More to the Right & Larger) -->
+
+            <!-- Button Layout (Further Right-Aligned) -->
+
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="8dp"
+                android:text="Movie Title"
+                android:textColor="@android:color/white"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Play Button -->
+                <Button
+                    android:id="@+id/playButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@android:color/white"
+                    android:layout_marginEnd="16dp"/>
+
+                <!-- More Info Button -->
+                <Button
+                    android:id="@+id/moreInfoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="More Info"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Categories RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoriesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+</LinearLayout>
