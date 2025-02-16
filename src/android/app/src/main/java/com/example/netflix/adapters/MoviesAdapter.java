@@ -44,13 +44,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         String movieId = movieIds.get(position);
 
-        // Load the fragment inside the FragmentContainerView
-        if (context instanceof FragmentActivity) {
-            ((FragmentActivity) context).getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(holder.fragmentContainer.getId(), MoviePic.newInstance(movieId))
-                    .commit();
-        }
+        Log.d("SomeTag", "Position: " + position + " value: " + movieId);
+
+        // Fetch movie details and load image
+        MovieViewModel movieModel = new MovieViewModel();
+        WebResponse movieResponse = new WebResponse();
+
+        movieModel.getMovie(movieId, movieResponse).observe((LifecycleOwner) context, movie -> {
+            if (movie != null) {
+                String photoId = movie.getPhotoId();
+                if (photoId != null) {
+                    ImageViewModel imageViewModel = new ImageViewModel();
+                    WebResponse imageResponse = new WebResponse();
+                    imageViewModel.get(photoId, imageResponse).observe((LifecycleOwner) context, image -> {
+                        if (image != null && image.getData() != null) {
+                            Utils.setImageFromByteArray(context, holder.movieImageView, image.getData());
+                        }
+                    });
+                }
+            }
+        });
 
         // Click to open Movie Details
         holder.movieImageView.setOnClickListener(v -> {

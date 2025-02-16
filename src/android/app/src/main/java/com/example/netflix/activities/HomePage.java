@@ -37,6 +37,7 @@ public class HomePage extends AppCompatActivity {
     private CategoryAdapter categoryAdapter;
     private final MovieViewModel movieViewModel = new MovieViewModel();
     private final WebResponse res = new WebResponse();
+    private final WebResponse res2 = new WebResponse();
     private LiveData<Map<String, List<String>>> allMovies;
     private String randomMovieId;
     private Button playButton;
@@ -73,17 +74,18 @@ public class HomePage extends AppCompatActivity {
             allMovies.observe(this, movies -> {
                 // stream a random movie to the screen
                 randomMovieId = getRandomMovie(movies);
-                LiveData<Movie> randomMovie = movieViewModel.getMovie(randomMovieId, res);
-                res.getResponseCode().observe(this, code2 -> {
+                LiveData<Movie> randomMovie = movieViewModel.getMovie(randomMovieId, res2);
+                res2.getResponseCode().observe(this, code2 -> {
                     // if failed
                     if (code2 != 200) {
                         // make a toast to let the user know
                         Toast.makeText(getApplicationContext(), "Failed to stream random movie", Toast.LENGTH_LONG).show();
                     } else {
                         randomMovie.observe(this, movie -> {
+                            Log.d("hello", "random movie is: " + movie.getId());
                             // set the name, age limit and buttons of the movie
                             movieTitle.setText(movie.getName());
-                            ageLimit.setText(movie.getAge_limit());
+                            ageLimit.setText(String.valueOf(movie.getAge_limit()));
 
                             playButton.setOnClickListener(v -> {
                                 if (randomMovieId != null) {
@@ -141,7 +143,7 @@ public class HomePage extends AppCompatActivity {
 
     private static String getRandomMovie(Map<String, List<String>> movies) {
         if (movies == null || movies.isEmpty()) {
-            return null; // No movies available
+            return ""; // No movies available
         }
 
         List<String> categories = new ArrayList<>(movies.keySet());
@@ -161,6 +163,47 @@ public class HomePage extends AppCompatActivity {
             categories.remove(randomCategory);
         }
 
-        return null; // No movies in any category
+        return ""; // No movies in any category
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Find the VideoPlayerFragment
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
+        if (videoFragment != null) {
+            // Stop and release the ExoPlayer
+            videoFragment.releasePlayer();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
+        if (videoFragment != null) {
+            videoFragment.setupExoPlayer();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
+        if (videoFragment != null) {
+            videoFragment.setupExoPlayer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
+        if (videoFragment != null) {
+            videoFragment.releasePlayer();
+        }
     }
 }
