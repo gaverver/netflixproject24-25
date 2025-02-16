@@ -38,8 +38,8 @@ public class MovieAPI {
 
     private void updateTokens() {
         SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        this.token = sharedPreferences.getString("token", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk2YmY3OWJkMjA1ZmI0YzQ5ZjdiNjEiLCJwcml2aWxlZ2VMZXZlbCI6MSwiaWF0IjoxNzM5NDY5Mjc3fQ._bQpbrAZUUJlXAZD77mJ1NWECk10KqSkpiTKt33mLoY");
-        this.userId = sharedPreferences.getString("userId", "679c0a6a0a6cabd498442b92");
+        this.token = sharedPreferences.getString("token", null);
+        this.userId = sharedPreferences.getString("userId", null);
     }
 
     public MovieAPI(MovieDao movieDao) {
