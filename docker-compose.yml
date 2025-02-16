@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   cpp-service:
     container_name: serverContainer
@@ -8,7 +6,7 @@ services:
       dockerfile: Dockerfile.server
     expose:
       - "${CPP_PORT}" 
-    entrypoint: ["server", "${CPP_PORT}"]
+    entrypoint: ["./netflix", "${CPP_PORT}"]
     ports:
       - "${CPP_PORT}:${CPP_PORT}"
     networks:

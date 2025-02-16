@@ -15,6 +15,10 @@ const MovieInfoDisplay = ({id, userId}) => {
     const [video, setVideo] = useState(null);
     const [recommendMovies,setRecommendMovies] = useState([]);
 
+    const play = () => {
+        navigate(`/movies/watch/${id}`)
+    }
+
     const fetchMovie = async () => {
         try {
             const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
@@ -94,6 +98,13 @@ const MovieInfoDisplay = ({id, userId}) => {
     return (
         <div className="movieDisplay">
             <VideoStreamer videoId={video} controls={false}/>
+            <div className="random-movie-info">
+                <div className="movieButtons">
+                    <button className="play-random-movie" onClick={play}>
+                        Play
+                    </button>
+                </div>
+            </div>
             <h1>{name}</h1>
             <p><strong>Description:</strong> {description}</p>
             <p><strong>Age Limit:</strong> {age_limit}</p>
