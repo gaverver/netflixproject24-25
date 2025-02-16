@@ -43,4 +43,10 @@ public class UserRepository {
         }).start();
         return res;
     }
+
+    public void removeById(String id) {
+        new Thread(() -> {
+            dao.deleteById(id);
+        }).start();
+    }
 }
