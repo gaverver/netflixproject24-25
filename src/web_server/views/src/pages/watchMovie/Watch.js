@@ -18,7 +18,7 @@ function Watch() {
             navigate("/home")
             return;
         }
-        const response = await fetch(`http://localhost:3001/api/tokens/${token}`);
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens/${token}`);
         if (!response.ok) {
           console.error("token isn't valid");
           //navigate home
@@ -27,7 +27,7 @@ function Watch() {
         }
         const data = await response.json();
         const userId = data.userId;
-        const response2 = await fetch(`http://localhost:3001/api/movies/${id}/recommend`, {
+        const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}/recommend`, {
             method: "POST",
             headers: {
             "userid": `${userId}`,
@@ -39,7 +39,7 @@ function Watch() {
     }
 
     const fetchVideo = async () => {
-        const response = await fetch(`http://localhost:3001/api/movies/${id}`);
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${id}`);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

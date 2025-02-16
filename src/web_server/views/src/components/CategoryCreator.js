@@ -7,6 +7,7 @@ const CategoryCreator = () => {
     const [movieIds, setMovieIds] = useState([]);
     const [movieNames, setMovieNames] = useState([]);
     const [currentId, setCurrentId] = useState('')
+    const token = sessionStorage.getItem("jwt");
 
 
     const handleSubmit = async (e) => {
@@ -22,10 +23,11 @@ const CategoryCreator = () => {
         };
         //send POST
         try {
-            const response = await fetch(`http://localhost:3001/api/categories`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedCategory),
             });
@@ -58,7 +60,7 @@ const CategoryCreator = () => {
     useEffect(() => {
         const updateMovies = async () => {
             if (currentId) {
-                const response = await fetch(`http://localhost:3001/api/movies/${currentId}`, {
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies/${currentId}`, {
                     method: "GET",
                     headers: {
                     "Content-Type": "application/json",

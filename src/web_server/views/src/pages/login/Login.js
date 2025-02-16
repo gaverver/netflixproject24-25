@@ -49,7 +49,7 @@ function Login() {
                 username,
                 password
             }
-            const tokenResponse = await fetch('http://localhost:3001/api/tokens', {
+            const tokenResponse = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/tokens`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,10 +67,10 @@ function Login() {
             let token = tokenJson.token
             // save the token of the user in the session storage
             sessionStorage.setItem("jwt", token)
-            showToast("Registration success!", "green");
+            showToast("Login success!", "green");
             navHome();
         } catch (error) {
-            showToast("Registration error", "red");
+            showToast("Login error", "red");
         }
     }
     return (

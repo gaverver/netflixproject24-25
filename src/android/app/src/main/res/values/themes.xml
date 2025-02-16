@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Netflix" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Netflix" parent="Theme.AppCompat.NoActionBar">
         <!-- Override Material 3 colors to remove purple -->
         <item name="colorPrimary">@color/netflix_red</item>
         <item name="colorPrimaryContainer">@color/netflix_red_dark</item>

@@ -7,7 +7,7 @@ const MovieImage = ({ photo }) => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/images/${photo}`);
+        const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images/${photo}`);
         if (!response.ok) {
           throw new Error('Image not found');
         }
