@@ -7,9 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ import com.example.netflix.WebResponse;
 import com.example.netflix.adapters.CategoryAdapter;
 import com.example.netflix.entities.Category;
 import com.example.netflix.entities.Movie;
+import com.example.netflix.fragments.NavigationDrawerFragment;
 import com.example.netflix.fragments.VideoPlayerFragment;
 import com.example.netflix.viewmodels.CategoryViewModel;
 import com.example.netflix.viewmodels.MovieViewModel;
@@ -44,6 +48,9 @@ public class HomePage extends AppCompatActivity {
     private Button moreInfoButton;
     private TextView movieTitle;
     private TextView ageLimit;
+    private View rootView;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +63,31 @@ public class HomePage extends AppCompatActivity {
         movieTitle = findViewById(R.id.movieTitle);
         ageLimit = findViewById(R.id.ageLimit);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rootView = findViewById(android.R.id.content).getRootView();
+
+        //add toolbar
+        toolbar = findViewById(R.id.menuToolbar2);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
+        toggle.syncState();
+
+        //add fragment for navigation drawer
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+            transaction.replace(R.id.navigation_fragment, navigationDrawerFragment); // Add to container
+            transaction.commit();
+        }
 
         fetchMovies();
     }

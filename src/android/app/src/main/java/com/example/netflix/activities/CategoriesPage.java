@@ -1,20 +1,29 @@
 package com.example.netflix.activities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.netflix.MyApplication;
 import com.example.netflix.R;
 import com.example.netflix.WebResponse;
 import com.example.netflix.adapters.CategoryAdapter;
 import com.example.netflix.entities.Category;
+import com.example.netflix.fragments.NavigationDrawerFragment;
 import com.example.netflix.viewmodels.CategoryViewModel;
 
 import java.util.ArrayList;
@@ -28,6 +37,9 @@ public class CategoriesPage extends AppCompatActivity {
     private final CategoryViewModel categoryViewModel = new CategoryViewModel();
     private final WebResponse res = new WebResponse();
     private LiveData<List<Category>> categoriesLiveData;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private View rootView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,8 +47,41 @@ public class CategoriesPage extends AppCompatActivity {
         setContentView(R.layout.activity_categories_page);
         categoriesRecyclerView = findViewById(R.id.categoriesRecyclerView);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rootView = findViewById(android.R.id.content).getRootView();
+
+        //add toolbar
+        toolbar = findViewById(R.id.menuToolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
+        toggle.syncState();
+
+        //add fragment for navigation drawer
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+            transaction.replace(R.id.navigation_fragment, navigationDrawerFragment); // Add to container
+            transaction.commit();
+        }
 
         fetchCategories();
+
+        updateTheme();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTheme();
     }
 
     private void fetchCategories() {
@@ -62,5 +107,22 @@ public class CategoriesPage extends AppCompatActivity {
                 categoriesRecyclerView.setAdapter(categoryAdapter);
             });
         });
+    }
+
+    private void updateTheme() {
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
+        //WindowInsetsControllerCompat windowInsetsController = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+
+        //if (isDarkMode) {
+        //    windowInsetsController.setAppearanceLightStatusBars(false);
+        //} else {
+        //    windowInsetsController.setAppearanceLightStatusBars(true);
+        //}
+
+        int color = isDarkMode ? ContextCompat.getColor(this, R.color.black)
+                : ContextCompat.getColor(this, R.color.white);
+
+        rootView.setBackgroundColor(color);
     }
 }
