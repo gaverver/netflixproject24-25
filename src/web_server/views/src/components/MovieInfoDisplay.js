@@ -35,10 +35,10 @@ const MovieInfoDisplay = ({id, userId}) => {
             for (const category of data.categories) {
                 const response2 = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${category}`);
                 const data2 = await response2.json();
-                if (!response.ok || !data2.name) {
+                if (!response2.ok || !data2.name) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                setCategories([...categories, data2.name])
+                setCategories((prevCategories) => [...prevCategories, data2.name]);
             }
             setVideo(data.video)
 

@@ -12,7 +12,7 @@ body.dark-mode .results-page {
 }
 
 .movies-grid {
-  display: grid;
+  display: wrap;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Dynamic resizing */
   gap: 20px; /* Space between items */
   justify-content: center; /* Center the grid horizontally */
