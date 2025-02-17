@@ -67,7 +67,7 @@ public class RegistrationPage extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RegistrationPage.this, HomePage.class);
+                Intent intent = new Intent(RegistrationPage.this, MainActivity.class);
                 startActivity(intent);
             }
         });
