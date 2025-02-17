@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.lifecycle.Observer;
 
 import com.example.netflix.R;
@@ -41,6 +42,7 @@ public class RegistrationPage extends AppCompatActivity {
     private TextInputEditText email;
     private TextInputEditText phoneNumber;
     private Button register;
+    private AppCompatImageButton home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,21 @@ public class RegistrationPage extends AppCompatActivity {
         email = findViewById(R.id.emailInput);
         phoneNumber = findViewById(R.id.phoneNumberInput);
         register = findViewById(R.id.register);
+        home = findViewById(R.id.backButton);
         // the sign in should navigate to the login page.
         TextView signInLink = findViewById(R.id.signInLink);
         signInLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RegistrationPage.this, LoginPage.class);
+                startActivity(intent);
+            }
+        });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegistrationPage.this, HomePage.class);
                 startActivity(intent);
             }
         });
