@@ -122,7 +122,7 @@ public class HomePage extends AppCompatActivity {
                             Log.d("hello", "random movie is: " + movie.getId());
                             // set the name, age limit and buttons of the movie
                             movieTitle.setText(movie.getName());
-                            ageLimit.setText(String.valueOf(movie.getAge_limit()));
+                            ageLimit.setText(String.valueOf(movie.getAge_limit()) + "+");
 
                             playButton.setOnClickListener(v -> {
                                 if (randomMovieId != null) {
