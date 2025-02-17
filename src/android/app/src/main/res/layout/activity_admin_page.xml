@@ -5,14 +5,14 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/netflix_black"
+    android:background="?attr/colorSecondary"
     android:fitsSystemWindows="true">
     <!-- Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/netflix_black">
+        android:background="?attr/colorSecondary">
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
@@ -26,7 +26,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#141414">
+            android:background="?attr/colorSecondary">
 
             <FrameLayout
                 android:id="@+id/fragment_container"
@@ -40,9 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 app:menu="@menu/bottom_navigation_menu"
-                android:background="#1c1c1c"
-                app:itemIconTint="#b3b3b3"
-                app:itemTextColor="#b3b3b3">
+                android:background="?attr/colorSecondary"
+                app:itemIconTint="?attr/colorTertiary"
+                app:itemTextColor="?attr/colorTertiary">
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         </RelativeLayout>

@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -94,7 +96,6 @@ public class HomePage extends AppCompatActivity {
 
         fetchMovies();
 
-        updateTheme();
     }
 
     private void fetchMovies() {
@@ -127,7 +128,8 @@ public class HomePage extends AppCompatActivity {
                             playButton.setOnClickListener(v -> {
                                 if (randomMovieId != null) {
                                     Intent intent = new Intent(HomePage.this, VideoPlayerActivity.class);
-                                    intent.putExtra("VIDEO_ID_KEY", movie.getVideo());
+                                    intent.putExtra("video_id_key", movie.getVideo());
+                                    intent.putExtra("movie_id_key", movie.getId());
                                     startActivity(intent);
                                 }
                             });
@@ -212,6 +214,10 @@ public class HomePage extends AppCompatActivity {
         if (videoFragment != null) {
             // Stop and release the ExoPlayer
             videoFragment.releasePlayer();
+            // Begin transaction to remove the fragment
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.remove(videoFragment);
+            transaction.commit();
         }
     }
 
@@ -241,17 +247,11 @@ public class HomePage extends AppCompatActivity {
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
         if (videoFragment != null) {
             videoFragment.releasePlayer();
+            // Begin transaction to remove the fragment
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.remove(videoFragment);
+            transaction.commit();
         }
-    }
-
-    private void updateTheme() {
-        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
-
-        int color = isDarkMode ? ContextCompat.getColor(this, R.color.black)
-                : ContextCompat.getColor(this, R.color.white);
-
-        rootView.setBackgroundColor(color);
     }
 }
 

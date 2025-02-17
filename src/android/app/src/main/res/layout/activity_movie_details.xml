@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/netflix_black"
+    android:background="?attr/colorSecondary"
     android:fitsSystemWindows="true">
 
   <!-- Main Content -->
@@ -12,14 +12,14 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      android:background="@color/netflix_black">
+      android:background="?attr/colorSecondary">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/netflix_red"
+        android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <ScrollView
@@ -32,14 +32,14 @@
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:padding="16dp"
-          android:background="@color/netflix_black">
+          android:background="?attr/colorSecondary">
 
         <!-- Video Container -->
         <FrameLayout
             android:id="@+id/video_container"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/netflix_gray"
+            android:background="?attr/colorSecondaryContainer"
             android:foreground="?attr/selectableItemBackground" />
 
         <!-- Movie Title -->
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="@color/netflix_white"
+            android:textColor="?attr/colorTertiary"
             android:layout_marginTop="16dp" />
 
         <!-- Description -->
@@ -57,7 +57,7 @@
             android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_white"
+            android:textColor="?attr/colorTertiary"
             android:layout_marginTop="8dp" />
 
         <!-- Additional Details -->
@@ -65,14 +65,14 @@
             android:id="@+id/tv_actors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_gray"
+            android:textColor="?attr/colorSecondaryContainer"
             android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/tv_age_limit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_gray"
+            android:textColor="?attr/colorSecondaryContainer"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
@@ -80,21 +80,21 @@
             android:id="@+id/tv_creators"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_gray"
+            android:textColor="?attr/colorSecondaryContainer"
             android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/tv_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_gray"
+            android:textColor="?attr/colorSecondaryContainer"
             android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/tv_published"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/netflix_gray"
+            android:textColor="?attr/colorSecondaryContainer"
             android:layout_marginTop="8dp" />
 
         <!-- Watch Button -->
@@ -105,8 +105,8 @@
             android:text="▶ Watch Now"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@color/netflix_red"
+            android:textColor="?attr/colorTertiary"
+            android:background="?attr/colorPrimary"
             android:layout_marginTop="16dp"
             android:padding="10dp"/>
 
@@ -127,6 +127,6 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_gravity="start"
-      android:background="@color/netflix_gray" />
+      android:background="?attr/colorSecondaryContainer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

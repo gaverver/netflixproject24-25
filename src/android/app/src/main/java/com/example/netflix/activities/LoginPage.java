@@ -126,7 +126,7 @@ public class LoginPage extends AppCompatActivity {
                                                                 @Override
                                                                 public void onChanged(User user) {
                                                                     // update the shared preference for future usages.
-                                                                    editor.putString("token", s);
+                                                                    editor.putString("token", "Bearer: " + s);
                                                                     editor.putString("userId", user.getId());
                                                                     editor.putInt("privilegeLevel", user.getPrivilegeLevel());
                                                                     editor.apply();

@@ -16,6 +16,7 @@ import com.example.netflix.entities.Movie;
 import com.example.netflix.repositories.MovieDao;
 import com.example.netflix.viewmodels.ImageViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -277,10 +278,14 @@ public class MovieAPI {
                         dao.clear();
                         GetMoviesResponse getMoviesResponse = response.body();
                         Map<String, List<String>> responseBody = getMoviesResponse.getMovies();
+                        List<String> usedValues = new ArrayList<>();
                         for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
                             List<String> values = entry.getValue();
                             for (String value : values) {
-                                getReloadedMovie(value,res,null);
+                                if (!usedValues.contains(value)) {
+                                    usedValues.add(value);
+                                    getReloadedMovie(value,res,null);
+                                }
                             }
                         }
                         // set the response status to the returned response status - the operation was successful

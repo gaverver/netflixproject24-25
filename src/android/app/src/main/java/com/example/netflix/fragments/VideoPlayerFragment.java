@@ -104,4 +104,11 @@ public class VideoPlayerFragment extends Fragment {
             exoPlayer = null;
         }
     }
+
+    public void resumePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.prepare();
+            exoPlayer.play();
+        }
+    }
 }

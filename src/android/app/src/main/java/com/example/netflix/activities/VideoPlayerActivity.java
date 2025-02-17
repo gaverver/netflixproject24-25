@@ -8,11 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.netflix.MyApplication;
 import com.example.netflix.R;
+import com.example.netflix.WebResponse;
 import com.example.netflix.fragments.VideoPlayerFragment;
+import com.example.netflix.viewmodels.MovieViewModel;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
     private static final String VIDEO_ID_KEY = "video_id_key";
+    private static final String MOVIE_ID_KEY = "movie_id_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, videoPlayerFragment);
             transaction.commit();
+            String movieId = getIntent().getStringExtra(MOVIE_ID_KEY);
+            MovieViewModel movieViewModel = new MovieViewModel();
+            movieViewModel.addWatchedMovie(movieId, new WebResponse());
+
         }
     }
 }
