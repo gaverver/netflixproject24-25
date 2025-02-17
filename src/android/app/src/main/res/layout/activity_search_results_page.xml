@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SearchResultsPage">
+    android:fitsSystemWindows="true">
 
-    <!-- Menu Fragment -->
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/TopMenuFragment"
-        android:name="com.example.netflix.fragments.TopMenuFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/contentContainer" />
-
-    <!-- Content Container -->
+    <!-- Main Content -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentContainer"
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        tools:context=".activities.SearchResultsPage">
 
-        app:layout_constraintTop_toBottomOf="@id/TopMenuFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- "No Movies Found" Text -->
-
-        <!-- the user could scroll to see more movies -->
-
-        <TextView
-            android:id="@+id/noMoviesFound"
-            android:layout_width="367dp"
-            android:layout_height="75dp"
-            android:text="@string/noMoviesText"
-            android:textSize="20sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.636"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
-
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
-
-        <!-- RecyclerView for Movie Results -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menuToolbar3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            android:orientation="horizontal"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        </ScrollView>
+        <!-- TopMenu Fragment -->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/TopMenuFragment"
+            android:name="com.example.netflix.fragments.TopMenuFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/menuToolbar3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/contentContainer" />
+
+        <!-- Content Container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/TopMenuFragment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- "No Movies Found" Text -->
+            <TextView
+                android:id="@+id/noMoviesFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/noMoviesText"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <!-- Scrollable Movie List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Navigation Drawer -->
+    <FrameLayout
+        android:id="@+id/navigation_fragment3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/netflix_gray" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

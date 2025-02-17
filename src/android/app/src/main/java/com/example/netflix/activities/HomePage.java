@@ -1,6 +1,8 @@
 package com.example.netflix.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -85,11 +88,13 @@ public class HomePage extends AppCompatActivity {
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
-            transaction.replace(R.id.navigation_fragment, navigationDrawerFragment); // Add to container
+            transaction.replace(R.id.navigation_fragment2, navigationDrawerFragment); // Add to container
             transaction.commit();
         }
 
         fetchMovies();
+
+        updateTheme();
     }
 
     private void fetchMovies() {
@@ -216,7 +221,7 @@ public class HomePage extends AppCompatActivity {
 
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.runRandomMovie);
         if (videoFragment != null) {
-            videoFragment.setupExoPlayer();
+            //videoFragment.setupExoPlayer();
         }
     }
 
@@ -238,4 +243,15 @@ public class HomePage extends AppCompatActivity {
             videoFragment.releasePlayer();
         }
     }
+
+    private void updateTheme() {
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
+
+        int color = isDarkMode ? ContextCompat.getColor(this, R.color.black)
+                : ContextCompat.getColor(this, R.color.white);
+
+        rootView.setBackgroundColor(color);
+    }
 }
+

@@ -112,13 +112,6 @@ public class CategoriesPage extends AppCompatActivity {
     private void updateTheme() {
         SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
-        //WindowInsetsControllerCompat windowInsetsController = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-
-        //if (isDarkMode) {
-        //    windowInsetsController.setAppearanceLightStatusBars(false);
-        //} else {
-        //    windowInsetsController.setAppearanceLightStatusBars(true);
-        //}
 
         int color = isDarkMode ? ContextCompat.getColor(this, R.color.black)
                 : ContextCompat.getColor(this, R.color.white);

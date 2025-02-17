@@ -2,22 +2,30 @@ package com.example.netflix.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.netflix.MyApplication;
 import com.example.netflix.R;
 import com.example.netflix.WebResponse;
 import com.example.netflix.adapters.MoviesAdapter;
 import com.example.netflix.entities.Movie;
+import com.example.netflix.fragments.NavigationDrawerFragment;
 import com.example.netflix.viewmodels.MovieViewModel;
 
 import java.util.ArrayList;
@@ -31,6 +39,9 @@ public class SearchResultsPage extends AppCompatActivity {
     private TextView noMoviesFound;
     private RecyclerView recyclerView;
     private MoviesAdapter adapter;
+    private View rootView;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +60,36 @@ public class SearchResultsPage extends AppCompatActivity {
 
         // Set up RecyclerView with a GridLayoutManager (3 columns)
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
+        rootView = findViewById(android.R.id.content).getRootView();
+
+        //add toolbar
+        toolbar = findViewById(R.id.menuToolbar3);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
+        toggle.syncState();
+
+        //add fragment for navigation drawer
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+            transaction.replace(R.id.navigation_fragment3, navigationDrawerFragment); // Add to container
+            transaction.commit();
+        }
+
         searchForMovies();
+
+        updateTheme();
     }
 
     private List<String> convertToIds(List<Movie> movies) {
@@ -82,5 +122,25 @@ public class SearchResultsPage extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private void updateTheme() {
+        // gets the mode (dark or light) from the sharedPreference
+        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
+
+        // set the screen and texts color by the mode
+        int screenColor, textColor;
+
+        if (isDarkMode) {
+            screenColor = ContextCompat.getColor(this, R.color.black);
+            textColor = ContextCompat.getColor(this, R.color.white);
+        } else {
+            screenColor = ContextCompat.getColor(this, R.color.white);
+            textColor = ContextCompat.getColor(this, R.color.black);
+        }
+
+        rootView.setBackgroundColor(screenColor);
+        noMoviesFound.setTextColor(textColor);
     }
 }
