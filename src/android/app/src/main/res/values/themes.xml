@@ -1,15 +1,11 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Netflix" parent="Theme.AppCompat.NoActionBar">
-        <!-- Override Material 3 colors to remove purple -->
+<resources>
+    <style name="Base.Theme.Netflix" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Dark theme colors -->
         <item name="colorPrimary">@color/netflix_red</item>
         <item name="colorPrimaryContainer">@color/netflix_red_dark</item>
         <item name="colorSecondary">@color/netflix_black</item>
         <item name="colorSecondaryContainer">@color/netflix_gray</item>
         <item name="colorTertiary">@color/netflix_white</item>
-
-        <!-- Disable dynamic colors (Android 12+) -->
-        <item name="android:forceDarkAllowed">false</item>
     </style>
 
     <style name="Theme.Netflix" parent="Base.Theme.Netflix" />

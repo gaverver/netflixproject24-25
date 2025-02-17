@@ -100,6 +100,7 @@ public class TopMenuFragment extends Fragment {
         UserViewModel userServices = new UserViewModel();
         ImageViewModel imageServices = new ImageViewModel();
         WebResponse res = new WebResponse();
+        WebResponse res2 = new WebResponse();
         LiveData<User> user2 = userServices.get(userId, res);
 
         // observe the response code
@@ -114,9 +115,9 @@ public class TopMenuFragment extends Fragment {
                             // set user name
                             userName.setText(user.getUsername());
                             // try to get the user's image
-                            LiveData<Image> image = imageServices.get(user.getPicture(), res);
+                            LiveData<Image> image = imageServices.get(user.getPicture(), res2);
                             // observe where it's changed
-                            res.getResponseCode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                            res2.getResponseCode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
                                 @Override
                                 public void onChanged(Integer responseCode2) {
                                     if (responseCode2 == 200) {

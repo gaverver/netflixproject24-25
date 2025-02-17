@@ -1,7 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Netflix" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<resources>
+    <style name="Base.Theme.Netflix" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Light theme colors -->
+        <item name="colorPrimary">@color/netflix_red</item>
+        <item name="colorPrimaryContainer">@color/netflix_red_dark</item>
+        <item name="colorSecondary">@color/netflix_white</item>
+        <item name="colorSecondaryContainer">@color/netflix_gray</item>
+        <item name="colorTertiary">@color/netflix_black</item>
     </style>
+
+    <style name="Theme.Netflix" parent="Base.Theme.Netflix" />
 </resources>

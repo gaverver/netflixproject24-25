@@ -16,7 +16,7 @@
             android:id="@+id/menuToolbar2"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/black" />
+            android:background="?attr/colorSecondary" />
 
         <!-- Menu Fragment -->
         <androidx.fragment.app.FragmentContainerView
@@ -49,7 +49,7 @@
                         android:id="@+id/runRandomMovie"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
-                        android:background="@color/netflix_gray"
+                        android:background="?attr/colorSecondary"
                         android:foreground="?attr/selectableItemBackground" />
 
                     <TextView
@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:paddingBottom="8dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="?attr/colorTertiary"
                             android:textSize="26sp"
                             android:textStyle="bold" />
 

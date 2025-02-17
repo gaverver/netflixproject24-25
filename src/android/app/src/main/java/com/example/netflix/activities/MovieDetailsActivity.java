@@ -1,6 +1,8 @@
 package com.example.netflix.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -38,6 +41,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private RecyclerView recommendationsRecycler;
     private MoviesAdapter recommendationsAdapter;
+    private String videoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +105,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onChanged(Movie movie) {
                 if (movie != null) {
                     updateUI(movie);
-                    String url = MyApplication.getAppContext().getString(R.string.BaseUrl) + "videos/watch/" + movie.getVideo();
-                    setupVideoPlayer(url);
+                    videoUrl = MyApplication.getAppContext().getString(R.string.BaseUrl) + "videos/watch/" + movie.getVideo();
+                    setupVideoPlayer(videoUrl);
                     setupWatchFullScreenButton(movie);
                 } else {
                     Toast.makeText(MovieDetailsActivity.this, "Failed to load movie details", Toast.LENGTH_SHORT).show();
@@ -134,6 +138,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MovieDetailsActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("video_id_key", movie.getVideo());
+                intent.putExtra("movie_id_key", movie.getId());
                 startActivity(intent);
             }
         });
@@ -156,7 +161,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
         if (videoFragment != null) {
             // Stop and release the ExoPlayer
+            Log.d("SOLID", "im here 3");
             videoFragment.releasePlayer();
+//            // Begin transaction to remove the fragment
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.remove(videoFragment);
+//            transaction.commit();
         }
     }
 
@@ -166,7 +176,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
         if (videoFragment != null) {
-            videoFragment.setupExoPlayer();
+            videoFragment.resumePlayer();
+        } else {
+            VideoPlayerFragment videoPlayerFragment = VideoPlayerFragment.newInstance(this.videoUrl);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.video_container, videoPlayerFragment);
+            transaction.commit();
         }
     }
 
@@ -176,6 +191,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         VideoPlayerFragment videoFragment = (VideoPlayerFragment) getSupportFragmentManager().findFragmentById(R.id.video_container);
         if (videoFragment != null) {
             videoFragment.releasePlayer();
+            // Begin transaction to remove the fragment
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.remove(videoFragment);
+            transaction.commit();
+
         }
     }
 }
