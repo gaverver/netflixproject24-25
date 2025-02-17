@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -28,6 +29,7 @@ public class LoginPage extends AppCompatActivity {
     private TextInputEditText username;
     private TextInputEditText password;
     private Button login;
+    private AppCompatImageButton home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class LoginPage extends AppCompatActivity {
         username = findViewById(R.id.usernameInput);
         password = findViewById(R.id.passwordInput);
         login = findViewById(R.id.login);
+        home = findViewById(R.id.backButton);
         // the sign in should navigate to the login page.
         TextView RegisterLink = findViewById(R.id.RegisterLink);
         RegisterLink.setOnClickListener(new View.OnClickListener() {
@@ -47,12 +50,21 @@ public class LoginPage extends AppCompatActivity {
         });
 
 
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginUser();
             }
         });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginPage.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
