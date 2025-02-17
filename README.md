@@ -29,6 +29,8 @@ In the strings.xml file, change the "Base_url" to match the values you entered i
 
 for more details about our web app, see in the wiki: https://github.com/gaverver/netflixproject24-25/wiki
 
+Note: Zvika gave us permission to submit untial 18.02(including 18.02)
+
 
 
 
