@@ -20,7 +20,7 @@ const MoviecatEditor = ({ categories, setCategories }) => {
                     alert(`Category ID ${categoryId} already selected.`);
                     return;
                 }
-                const response = await fetch(`http://localhost:3001/api/categories/${categoryId}`);
+                const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/categories/${categoryId}`);
                 if (response.status === 404) {
                     alert(`Category ID ${categoryId} does not exist.`);
                 return;

@@ -13,11 +13,11 @@ const VideoStreamer = ({ videoId, controls }) => {
           }
 
           try {
-              const response = await fetch(`http://localhost:3001/videos/watch/${videoId}`, {
+              const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/videos/watch/${videoId}`, {
                   method: "GET",
                   headers: {
                       Authorization: `Bearer ${token}`,
-                      range: `bytes=0-`
+                      range: `bytes=0-`,
                   },
               });
               if (!response.ok) {
@@ -26,7 +26,7 @@ const VideoStreamer = ({ videoId, controls }) => {
 
               const contentLength = response.headers.get("Content-Length");
               if (contentLength > 0) {
-                  setVideoSrc(`http://localhost:3001/videos/watch/${videoId}`)
+                  setVideoSrc(`http://localhost:${process.env.REACT_APP_PORT}/videos/watch/${videoId}`)
               }
           } catch (error) {
               console.error("Error fetching video:", error);

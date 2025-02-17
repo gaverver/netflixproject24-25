@@ -14,7 +14,7 @@ const MovieCreator = () => {
     const [categories, setCategories] = useState([]);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
     const [selectedVideo, setSelectedVideo] = useState(null);
-
+    const token = sessionStorage.getItem("jwt");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,10 +38,11 @@ const MovieCreator = () => {
         };
         //uploading image first
         try {
-            const response = await fetch("http://localhost:3001/images", {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/images`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/octet-stream",
+                'Authorization': `Bearer ${token}`,
             },
             body: new Blob([selectedPhoto]),
             });
@@ -67,10 +68,11 @@ const MovieCreator = () => {
         formData.append("video", selectedVideo);
 
         try {
-            const response = await fetch("http://localhost:3001/videos", {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/videos`, {
                 method: "POST",
                 body: formData,
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
@@ -93,10 +95,11 @@ const MovieCreator = () => {
         }
         //send POST
         try {
-            const response = await fetch(`http://localhost:3001/api/movies`, {
+            const response = await fetch(`http://localhost:${process.env.REACT_APP_PORT}/api/movies`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedMovie),
             });
