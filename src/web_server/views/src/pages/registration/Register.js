@@ -67,6 +67,10 @@ function Register () {
 
     const handleFormSubmission = async (event) => {
         event.preventDefault();
+        if (!imageData) {
+            showToast("No picture was entered", "red");
+            return;
+        }
         let imageInfo = imageData; 
         if (imageData.startsWith("data:image")) {
             imageInfo = imageInfo.split(",")[1];  // Remove the "data:image/png;base64," part
