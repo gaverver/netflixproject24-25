@@ -67,6 +67,8 @@ public class CategoryRepository {
                 api.getCategory(id, liveData, res);
             } else {
                 // already in ROOM, no need for fetching from server
+                res.setResponseCode(200);
+                res.setResponseMsg("found category");
                 liveData.postValue(localCategory);
             }
         });

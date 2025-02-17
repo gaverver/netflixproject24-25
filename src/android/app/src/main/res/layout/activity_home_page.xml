@@ -1,10 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HomePage">
+    android:fitsSystemWindows="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menuToolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black" />
+
+        <!-- Menu Fragment -->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/TopMenuFragment"
+            android:name="com.example.netflix.fragments.TopMenuFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/contentContainer" />
+
+        <!-- Wrap everything inside a LinearLayout -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"> <!-- Ensures the content expands fully -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp">
+
+                    <!-- Random movie on background -->
+                    <FrameLayout
+                        android:id="@+id/runRandomMovie"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:background="@color/netflix_gray"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/ageLimit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="16+"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp" />
+
+                    <!-- Movie Info Layout -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center|end"
+                        android:paddingEnd="64dp">
+
+                        <!-- Movie Name -->
+                        <TextView
+                            android:id="@+id/movieTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingBottom="8dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="26sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- Play Button -->
+                            <Button
+                                android:id="@+id/playButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Play"
+                                android:backgroundTint="@color/black"
+                                android:textColor="@android:color/white"
+                                android:layout_marginEnd="16dp" />
+
+                            <!-- More Info Button -->
+                            <Button
+                                android:id="@+id/moreInfoButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="More Info"
+                                android:backgroundTint="@color/black"
+                                android:textColor="@android:color/white" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <!-- Categories RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/categoriesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <!-- Navigation Drawer -->
+    <FrameLayout
+        android:id="@+id/navigation_fragment2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/netflix_gray" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

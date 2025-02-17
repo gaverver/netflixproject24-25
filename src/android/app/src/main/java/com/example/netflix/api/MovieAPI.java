@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.netflix.GetMoviesResponse;
 import com.example.netflix.MyApplication;
 import com.example.netflix.RetrofitClient;
+import com.example.netflix.SearchResultsResponse;
 import com.example.netflix.Utils;
 import com.example.netflix.WebResponse;
 import com.example.netflix.entities.Image;
@@ -237,13 +239,13 @@ public class MovieAPI {
     }
 
     public void searchMovies(String query, WebResponse res, MutableLiveData<List<Movie>> moviesMutableLiveData) {
-        Call<List<Movie>> call = movieWebServiceAPI.searchMovies(query);
-        call.enqueue(new Callback<List<Movie>>() {
+        Call<SearchResultsResponse> call = movieWebServiceAPI.searchMovies(query);
+        call.enqueue(new Callback<SearchResultsResponse>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+            public void onResponse(Call<SearchResultsResponse> call, Response<SearchResultsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
-                        moviesMutableLiveData.postValue(response.body());
+                        moviesMutableLiveData.postValue(response.body().getMovies());
                     }).start();
                     // set the response status to the returned response status - the operation was successful
                     res.setResponseCode(response.code());
@@ -254,7 +256,7 @@ public class MovieAPI {
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<SearchResultsResponse> call, Throwable t) {
                 // return response code that tells that there was error in server
                 res.setResponseCode(500);
                 res.setResponseMsg("Internal Server Error" + t.getMessage());
@@ -264,14 +266,17 @@ public class MovieAPI {
 
     public void getMovies(WebResponse res,  MutableLiveData<Map<String, List<String>>> moviesMutableLiveData) {
         updateTokens();
-        Call<Map<String, List<String>>> call = movieWebServiceAPI.getMovies(token, userId);
-        call.enqueue(new Callback<Map<String, List<String>>>() {
+        Log.d("hello", "token is: " + token);
+        Log.d("hello", "userId is: " + userId);
+        Call<GetMoviesResponse> call = movieWebServiceAPI.getMovies(token, userId);
+        call.enqueue(new Callback<GetMoviesResponse>() {
             @Override
-            public void onResponse(Call<Map<String, List<String>>> call, Response<Map<String, List<String>>> response) {
+            public void onResponse(Call<GetMoviesResponse> call, Response<GetMoviesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
                         dao.clear();
-                        Map<String, List<String>> responseBody = response.body();
+                        GetMoviesResponse getMoviesResponse = response.body();
+                        Map<String, List<String>> responseBody = getMoviesResponse.getMovies();
                         for (Map.Entry<String, List<String>> entry : responseBody.entrySet()) {
                             List<String> values = entry.getValue();
                             for (String value : values) {
@@ -281,15 +286,18 @@ public class MovieAPI {
                         // set the response status to the returned response status - the operation was successful
                         res.setResponseCode(response.code());
                         res.setResponseMsg("ok");
-                        moviesMutableLiveData.postValue(response.body());
+                        moviesMutableLiveData.postValue(responseBody);
                     }).start();
                 } else {
-                    Utils.handleError(response, res);
+                    res.setResponseMsg(response.message());
+                    res.setResponseCode(response.code());
+                    Log.d("hello", String.valueOf(response.code()));
+                    //Utils.handleError(response, res);
                 }
             }
 
             @Override
-            public void onFailure(Call<Map<String, List<String>>> call, Throwable t) {
+            public void onFailure(Call<GetMoviesResponse> call, Throwable t) {
                 // return response code that tells that there was error in server
                 res.setResponseCode(500);
                 res.setResponseMsg("Internal Server Error" + t.getMessage());
