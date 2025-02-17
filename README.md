@@ -15,8 +15,16 @@ Also did the video streaming part, and also did the side menu part in android (t
 The SCRUM MASTER of this final excercise.
 worked on the Categories and images all the way, also handled token functionality, and the Home for logged in users, Categories and Search Results pages.(both in web and android)
 Also did the top menu in the web and also the top menu in the android, and also the moviePic in the web.
+## Running the app
+In order to run the app, you need to run the docker-compose at first. First, you need to create a .env in the folder of the docker-compose.yml with the following info: CONNECTION_STRING, PORT, CPP_PORT, JWT_SECRET in the exact same format as the following format:  
+![env_file_format](https://github.com/user-attachments/assets/f4b540f6-3770-404c-876a-f854d15116e1)
+then, you need to run the following command:
+`docker-compose --env-file .env up --build`  
+![docker_run1](https://github.com/user-attachments/assets/67f16ff3-0c69-41f6-b318-804d62b1783a)
+![docker_run2](https://github.com/user-attachments/assets/7338d08c-b131-441a-b352-b7860d27d96f)
+Now, you are all set up. You can enter the web using the url's in the web page with the port you have entered in the .env file. Moreover, now you can run the android
 
-for more details about our app, see in https://github.com/gaverver/netflixproject24-25/wiki
+for more details about our web app, see in the wiki: https://github.com/gaverver/netflixproject24-25/wiki
 
 
 
