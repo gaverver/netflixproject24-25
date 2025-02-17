@@ -31,8 +31,18 @@ button:hover {
 }
 
 #register {
-    width: 200px;
+    width: auto;
     height: 40px;
     font-size: 18px;
+}
+
+
+.logoDisconnect {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: red;
+    font-weight: bold;
+    font-size: 32px;
 }
 

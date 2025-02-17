@@ -28,6 +28,7 @@ function Home() {
   // the html of the page + components
   return (
     <div className="backgroundImage">
+      <h1 className="logoDisconnect">Catflix</h1>
       <button id="sign-in" onClick={handleSignInClick}>Sign In</button>
       <h1>Unlimited Movies</h1>
       <form onSubmit={handleFormSubmission}>
