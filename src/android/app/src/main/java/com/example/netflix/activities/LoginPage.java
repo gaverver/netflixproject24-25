@@ -60,7 +60,7 @@ public class LoginPage extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginPage.this, HomePage.class);
+                Intent intent = new Intent(LoginPage.this, MainActivity.class);
                 startActivity(intent);
             }
         });
