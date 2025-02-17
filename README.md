@@ -22,7 +22,10 @@ then, you need to run the following command:
 `docker-compose --env-file .env up --build`  
 ![docker_run1](https://github.com/user-attachments/assets/67f16ff3-0c69-41f6-b318-804d62b1783a)
 ![docker_run2](https://github.com/user-attachments/assets/7338d08c-b131-441a-b352-b7860d27d96f)
-Now, you are all set up. You can enter the web using the url's in the web page with the port you have entered in the .env file. Moreover, now you can run the android
+Now, you are all set up. You can enter the web using the url's in the web page with the port you have entered in the .env file. Moreover, now you can run the android in the following way: 
+clone your project into android studio, and afterwards open the project from the android folder that is inside the src folder.
+In the strings.xml file, change the "Base_url" to match the values you entered in the .env file.
+![BaseUrl](https://github.com/user-attachments/assets/0143c48a-29e9-4375-a1ac-859efa69c50f)
 
 for more details about our web app, see in the wiki: https://github.com/gaverver/netflixproject24-25/wiki
 
