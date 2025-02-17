@@ -58,7 +58,7 @@ function MovieInformation() {
   }, [id]);
 
   return (
-    <div>
+    <div className="movie-info">
         {user && (
           <Menu
             username={user.username}
