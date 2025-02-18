@@ -75,13 +75,11 @@ public class CategoriesPage extends AppCompatActivity {
 
         fetchCategories();
 
-        updateTheme();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateTheme();
     }
 
     private void fetchCategories() {
@@ -107,15 +105,5 @@ public class CategoriesPage extends AppCompatActivity {
                 categoriesRecyclerView.setAdapter(categoryAdapter);
             });
         });
-    }
-
-    private void updateTheme() {
-        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
-
-        int color = isDarkMode ? ContextCompat.getColor(this, R.color.black)
-                : ContextCompat.getColor(this, R.color.white);
-
-        rootView.setBackgroundColor(color);
     }
 }
