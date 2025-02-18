@@ -89,7 +89,6 @@ public class SearchResultsPage extends AppCompatActivity {
 
         searchForMovies();
 
-        updateTheme();
     }
 
     private List<String> convertToIds(List<Movie> movies) {
@@ -122,25 +121,5 @@ public class SearchResultsPage extends AppCompatActivity {
                 }
             });
         });
-    }
-
-    private void updateTheme() {
-        // gets the mode (dark or light) from the sharedPreference
-        SharedPreferences sharedPreferences = MyApplication.getAppContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", true);
-
-        // set the screen and texts color by the mode
-        int screenColor, textColor;
-
-        if (isDarkMode) {
-            screenColor = ContextCompat.getColor(this, R.color.black);
-            textColor = ContextCompat.getColor(this, R.color.white);
-        } else {
-            screenColor = ContextCompat.getColor(this, R.color.white);
-            textColor = ContextCompat.getColor(this, R.color.black);
-        }
-
-        rootView.setBackgroundColor(screenColor);
-        noMoviesFound.setTextColor(textColor);
     }
 }

@@ -65,10 +65,12 @@ public class MovieAPI {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
                         Movie movie = dao.get(response.body().getId());
-                        imageViewModel.get(response.body().getId(), new WebResponse());
                         if (movie == null) {
                             dao.insert(response.body());
+                            imageViewModel.get(response.body().getPhotoId(), new WebResponse());
                         } else {
+                            imageViewModel.delete(movie.getPhotoId(), new WebResponse());
+                            imageViewModel.get(response.body().getPhotoId(), new WebResponse());
                             dao.update(response.body());
                         }
                         if (movieMutableLiveData != null) {
